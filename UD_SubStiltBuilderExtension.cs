@@ -20,18 +20,19 @@ namespace UD_SacredWellHole
         public const string CathedralZoneID = "JoppaWorld.5.2.1.1.10";
         public const string MAP_PARTIAL = "UD_GrandCathedralWell_";
 
-        public static Zone CathedralZone => The.ZoneManager.GetZone(CathedralZoneID);
+        public static Zone CathedralZone => The.ZoneManager?.GetZone(CathedralZoneID);
 
         public static Location2D StiltWellLocation => GetStiltWellLocation(CathedralZone); // [38,12]
 
-        public static Dictionary<int, Zone> CathedralSubStrata => GetCathedralStrataSubStrata(CathedralZone);
+        public static Dictionary<int, string> CathedralSubStrata => GetCathedralStrataSubStrataZoneIDs(CathedralZone);
 
         public override void OnAfterBuild(JoppaWorldBuilder builder)
         {
             // Assign the 10 yet-to-be-created map files for the 10 strata below the stilt.
             ZoneManager zoneManager = The.ZoneManager;
-            foreach ((int key, Zone stratumBelow) in CathedralSubStrata)
+            foreach ((int key, string stratumBelowZoneId) in CathedralSubStrata)
             {
+                Zone stratumBelow = zoneManager.GetZone(stratumBelowZoneId);
                 Cell pitCell = stratumBelow.GetCell(StiltWellLocation);
                 
                 pitCell.Clear().AddObject("Air");
@@ -40,12 +41,17 @@ namespace UD_SacredWellHole
                     // cell?.Clear().AddObject("Sandstone");
                 }
 
-                string MapFileName = MAP_PARTIAL + $"{key}".PadLeft(CathedralSubStrata.Count.ToString().Length, '0');
-
-                if (key == 1)
+                int digitDifference = CathedralSubStrata.Count.ToString().Length - key.ToString().Length;
+                string leadingZeros = "";
+                for (int i = 0; i < digitDifference; i++)
                 {
-                    zoneManager.AddZonePostBuilder(stratumBelow.ZoneID, nameof(MapBuilder), "FileName", $"{MapFileName}", "ClearBeforePlace", false);
+                    leadingZeros += $"{0}";
                 }
+                string MapFileName = MAP_PARTIAL + $"{leadingZeros}{key}";
+
+                UnityEngine.Debug.LogError($"{nameof(UD_SubStiltBuilderExtension)} > {nameof(key)}: {leadingZeros}{key}");
+                UnityEngine.Debug.LogError($"{MapFileName}");
+                zoneManager.AddZonePostBuilder(stratumBelow.ZoneID, nameof(MapBuilder), "FileName", $"{MapFileName}");
             }
 
         }
@@ -60,17 +66,18 @@ namespace UD_SacredWellHole
             return null;
         }
 
-        public static Dictionary<int, Zone> GetCathedralStrataSubStrata(Zone Z)
+        public static Dictionary<int, string> GetCathedralStrataSubStrataZoneIDs(Zone Z)
         {
             if (Z == null)
             {
                 return null;
             }
-            Dictionary<int, Zone> cathedralStrata = new();
+            Dictionary<int, string> cathedralStrata = new();
             for (int i = 1; i < 11; i++)
             {
                 int stratum = Z.Z + i;
-                Zone stratumBelow = The.ZoneManager.GetZone(Z.ZoneWorld, Z.wX, Z.wY, Z.X, Z.Y, stratum);
+
+                string stratumBelow = ZoneID.Assemble(Z.ZoneWorld, Z.wX, Z.wY, Z.X, Z.Y, stratum);
                 if (stratumBelow != null)
                 {
                     cathedralStrata.TryAdd(i, stratumBelow);
