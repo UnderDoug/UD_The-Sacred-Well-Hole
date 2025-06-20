@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Map  ID="UD_GrandCathedralWell_09" Width="80" Height="25">
-  <cell X="0" Y="0"></cell>
+  <cell X="0" Y="0">
+    <object Name="Trashy"></object>
+  </cell>
   <cell X="1" Y="0"></cell>
   <cell X="2" Y="0"></cell>
   <cell X="3" Y="0"></cell>
@@ -56,22 +58,22 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="27" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="28" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="29" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="30" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="31" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="32" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="33" Y="0">
     <object Name="Air"></object>
@@ -125,16 +127,16 @@
     <object Name="Air"></object>
   </cell>
   <cell X="50" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="51" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="52" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="53" Y="0">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="54" Y="0">
     <object Name="Sandstone"></object>
@@ -242,22 +244,22 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="25" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="26" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="27" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="28" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="29" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="30" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="31" Y="1">
     <object Name="Air"></object>
@@ -323,16 +325,16 @@
     <object Name="Air"></object>
   </cell>
   <cell X="52" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="53" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="54" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="55" Y="1">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="56" Y="1">
     <object Name="Sandstone"></object>
@@ -437,16 +439,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="24" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="25" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="26" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="27" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="28" Y="2">
     <object Name="Air"></object>
@@ -527,13 +529,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="54" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="55" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="56" Y="2">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="57" Y="2">
     <object Name="Sandstone"></object>
@@ -639,16 +641,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="22" Y="3">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="3">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="3">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="25" Y="3">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="26" Y="3">
     <object Name="Air"></object>
@@ -741,11 +743,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="56" Y="3">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="57" Y="3">
-    <object Name="Sandstone"></object>
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="58" Y="3">
     <object Name="Sandstone"></object>
@@ -807,7 +808,9 @@
   <cell X="3" Y="4"></cell>
   <cell X="4" Y="4"></cell>
   <cell X="5" Y="4"></cell>
-  <cell X="6" Y="4"></cell>
+  <cell X="6" Y="4">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="7" Y="4"></cell>
   <cell X="8" Y="4">
     <object Name="Sandstone"></object>
@@ -846,19 +849,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="20" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="25" Y="4">
     <object Name="Air"></object>
@@ -957,10 +960,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="57" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="58" Y="4">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="59" Y="4">
     <object Name="Sandstone"></object>
@@ -1013,9 +1016,15 @@
   <cell X="3" Y="5"></cell>
   <cell X="4" Y="5"></cell>
   <cell X="5" Y="5"></cell>
-  <cell X="6" Y="5"></cell>
-  <cell X="7" Y="5"></cell>
-  <cell X="8" Y="5"></cell>
+  <cell X="6" Y="5">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="7" Y="5">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="8" Y="5">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="9" Y="5">
     <object Name="Sandstone"></object>
   </cell>
@@ -1047,19 +1056,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="19" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="5">
     <object Name="Air"></object>
@@ -1098,28 +1107,30 @@
     <object Name="Air"></object>
   </cell>
   <cell X="36" Y="5">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="37" Y="5">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="38" Y="5">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="39" Y="5">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="40" Y="5">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="41" Y="5">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="42" Y="5">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="43" Y="5">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="44" Y="5">
     <object Name="Air"></object>
@@ -1164,13 +1175,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="58" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="59" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="5">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="5">
     <object Name="Sandstone"></object>
@@ -1202,7 +1213,9 @@
   <cell X="70" Y="5">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="71" Y="5"></cell>
+  <cell X="71" Y="5">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="72" Y="5"></cell>
   <cell X="73" Y="5"></cell>
   <cell X="74" Y="5"></cell>
@@ -1218,7 +1231,9 @@
   <cell X="4" Y="6"></cell>
   <cell X="5" Y="6"></cell>
   <cell X="6" Y="6"></cell>
-  <cell X="7" Y="6"></cell>
+  <cell X="7" Y="6">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="8" Y="6">
     <object Name="Sandstone"></object>
   </cell>
@@ -1239,8 +1254,11 @@
   </cell>
   <cell X="14" Y="6">
     <object Name="Sandstone"></object>
+    <object Name="Sandstone"></object>
   </cell>
   <cell X="15" Y="6">
+    <object Name="Sandstone"></object>
+    <object Name="Sandstone"></object>
     <object Name="Sandstone"></object>
   </cell>
   <cell X="16" Y="6">
@@ -1253,16 +1271,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="19" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="6">
     <object Name="Air"></object>
@@ -1292,49 +1310,50 @@
     <object Name="Air"></object>
   </cell>
   <cell X="32" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="34" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="35" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="36" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="37" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="38" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="39" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="40" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="41" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="42" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="43" Y="6">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="44" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="45" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="46" Y="6">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="47" Y="6">
     <object Name="Air"></object>
@@ -1370,13 +1389,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="58" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="59" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="6">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="6">
     <object Name="Sandstone"></object>
@@ -1411,7 +1430,9 @@
   <cell X="71" Y="6">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="72" Y="6"></cell>
+  <cell X="72" Y="6">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="73" Y="6"></cell>
   <cell X="74" Y="6"></cell>
   <cell X="75" Y="6"></cell>
@@ -1460,19 +1481,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="18" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="7">
     <object Name="Air"></object>
@@ -1499,58 +1520,59 @@
     <object Name="Air"></object>
   </cell>
   <cell X="31" Y="7">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="7">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="34" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="35" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="36" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="37" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="38" Y="7">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="39" Y="7">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="40" Y="7">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="41" Y="7">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="42" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="43" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="44" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="45" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="46" Y="7">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="7">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="48" Y="7">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="7">
     <object Name="Air"></object>
@@ -1583,14 +1605,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="59" Y="7">
-    <object Name="Sandstone"></object>
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="7">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="7">
     <object Name="Sandstone"></object>
@@ -1616,12 +1637,18 @@
   <cell X="69" Y="7">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="7"></cell>
+  <cell X="70" Y="7">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="71" Y="7">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="72" Y="7"></cell>
-  <cell X="73" Y="7"></cell>
+  <cell X="72" Y="7">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="7">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="74" Y="7"></cell>
   <cell X="75" Y="7"></cell>
   <cell X="76" Y="7"></cell>
@@ -1671,16 +1698,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="18" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="8">
     <object Name="Air"></object>
@@ -1707,67 +1734,67 @@
     <object Name="Air"></object>
   </cell>
   <cell X="30" Y="8">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="8">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="8">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="8">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="34" Y="8">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="35" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="36" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="37" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="38" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="39" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="40" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="41" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="42" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="43" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="44" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="8">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="8">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="8">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="8">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="8">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="8">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="51" Y="8">
     <object Name="Air"></object>
@@ -1794,13 +1821,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="59" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="8">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="8">
     <object Name="Sandstone"></object>
@@ -1829,9 +1856,15 @@
   <cell X="70" Y="8">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="71" Y="8"></cell>
-  <cell X="72" Y="8"></cell>
-  <cell X="73" Y="8"></cell>
+  <cell X="71" Y="8">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="8">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="8">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="74" Y="8"></cell>
   <cell X="75" Y="8"></cell>
   <cell X="76" Y="8"></cell>
@@ -1878,19 +1911,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="9">
     <object Name="Air"></object>
@@ -1911,70 +1944,71 @@
     <object Name="Air"></object>
   </cell>
   <cell X="28" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="29" Y="9">
     <object Name="Air"></object>
   </cell>
   <cell X="30" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="9">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="33" Y="9">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="34" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="35" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="36" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="37" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="38" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="39" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="40" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="41" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="42" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="43" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="44" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="9">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="9">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="9">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="9">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="9">
     <object Name="Air"></object>
@@ -2007,10 +2041,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="9">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="9">
     <object Name="Sandstone"></object>
@@ -2039,10 +2073,18 @@
   <cell X="70" Y="9">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="71" Y="9"></cell>
-  <cell X="72" Y="9"></cell>
-  <cell X="73" Y="9"></cell>
-  <cell X="74" Y="9"></cell>
+  <cell X="71" Y="9">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="9">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="9">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="9">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="9"></cell>
   <cell X="76" Y="9"></cell>
   <cell X="77" Y="9"></cell>
@@ -2088,19 +2130,20 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="10">
     <object Name="Air"></object>
@@ -2124,70 +2167,70 @@
     <object Name="Air"></object>
   </cell>
   <cell X="29" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="10">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="33" Y="10">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="34" Y="10">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="35" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="36" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="37" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="38" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="39" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="40" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="41" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="42" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="43" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="44" Y="10">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="10">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="10">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="10">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="10">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="51" Y="10">
     <object Name="Air"></object>
@@ -2217,13 +2260,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="10">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="63" Y="10">
     <object Name="Sandstone"></object>
@@ -2252,9 +2295,15 @@
   <cell X="71" Y="10">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="72" Y="10"></cell>
-  <cell X="73" Y="10"></cell>
-  <cell X="74" Y="10"></cell>
+  <cell X="72" Y="10">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="10">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="10">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="10"></cell>
   <cell X="76" Y="10"></cell>
   <cell X="77" Y="10"></cell>
@@ -2302,19 +2351,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="11">
     <object Name="Air"></object>
@@ -2338,70 +2387,70 @@
     <object Name="Air"></object>
   </cell>
   <cell X="29" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="11">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="33" Y="11">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="34" Y="11">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="35" Y="11">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="36" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="37" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="38" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="39" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="40" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="41" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="42" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="43" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="44" Y="11">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="11">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="11">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="11">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="11">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="51" Y="11">
     <object Name="Air"></object>
@@ -2431,10 +2480,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="11">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="11">
     <object Name="Sandstone"></object>
@@ -2460,11 +2509,21 @@
   <cell X="69" Y="11">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="11"></cell>
-  <cell X="71" Y="11"></cell>
-  <cell X="72" Y="11"></cell>
-  <cell X="73" Y="11"></cell>
-  <cell X="74" Y="11"></cell>
+  <cell X="70" Y="11">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="11">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="11">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="11">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="11">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="11"></cell>
   <cell X="76" Y="11"></cell>
   <cell X="77" Y="11"></cell>
@@ -2510,19 +2569,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="12">
     <object Name="Air"></object>
@@ -2543,73 +2602,75 @@
     <object Name="Air"></object>
   </cell>
   <cell X="28" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="29" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="12">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="33" Y="12">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="34" Y="12">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="35" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="36" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="37" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="38" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="39" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="40" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="41" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="42" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="43" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="44" Y="12">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="12">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="12">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="12">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="12">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="51" Y="12">
     <object Name="Air"></object>
@@ -2639,10 +2700,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="12">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="12">
     <object Name="Sandstone"></object>
@@ -2668,11 +2729,21 @@
   <cell X="69" Y="12">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="12"></cell>
-  <cell X="71" Y="12"></cell>
-  <cell X="72" Y="12"></cell>
-  <cell X="73" Y="12"></cell>
-  <cell X="74" Y="12"></cell>
+  <cell X="70" Y="12">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="12">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="12">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="12">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="12">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="12"></cell>
   <cell X="76" Y="12"></cell>
   <cell X="77" Y="12"></cell>
@@ -2718,19 +2789,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="13">
     <object Name="Air"></object>
@@ -2754,70 +2825,71 @@
     <object Name="Air"></object>
   </cell>
   <cell X="29" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="13">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="33" Y="13">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="34" Y="13">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="35" Y="13">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="36" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="37" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="38" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="39" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="40" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="41" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="42" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="43" Y="13">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="44" Y="13">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="13">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="13">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="13">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="13">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="51" Y="13">
     <object Name="Air"></object>
@@ -2847,10 +2919,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="13">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="13">
     <object Name="Sandstone"></object>
@@ -2876,11 +2948,21 @@
   <cell X="69" Y="13">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="13"></cell>
-  <cell X="71" Y="13"></cell>
-  <cell X="72" Y="13"></cell>
-  <cell X="73" Y="13"></cell>
-  <cell X="74" Y="13"></cell>
+  <cell X="70" Y="13">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="13">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="13">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="13">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="13">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="13"></cell>
   <cell X="76" Y="13"></cell>
   <cell X="77" Y="13"></cell>
@@ -2926,20 +3008,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="14">
-    <object Name="Sandstone"></object>
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="14">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="14">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="14">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="14">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="14">
     <object Name="Air"></object>
@@ -2963,67 +3044,67 @@
     <object Name="Air"></object>
   </cell>
   <cell X="29" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="14">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="32" Y="14">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="33" Y="14">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="34" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="35" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="36" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="37" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="38" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="39" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="40" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="41" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkWall"></object>
   </cell>
   <cell X="42" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="43" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="44" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="14">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="46" Y="14">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="14">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="48" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="14">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="14">
     <object Name="Air"></object>
@@ -3056,10 +3137,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="14">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="14">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="62" Y="14">
     <object Name="Sandstone"></object>
@@ -3085,10 +3166,18 @@
   <cell X="69" Y="14">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="14"></cell>
-  <cell X="71" Y="14"></cell>
-  <cell X="72" Y="14"></cell>
-  <cell X="73" Y="14"></cell>
+  <cell X="70" Y="14">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="14">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="14">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="14">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="74" Y="14"></cell>
   <cell X="75" Y="14"></cell>
   <cell X="76" Y="14"></cell>
@@ -3133,19 +3222,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="17" Y="15">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="18" Y="15">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="15">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="15">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="15">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="15">
     <object Name="Air"></object>
@@ -3172,64 +3261,64 @@
     <object Name="Air"></object>
   </cell>
   <cell X="30" Y="15">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="15">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="15">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="15">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="34" Y="15">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="35" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="36" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="37" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="38" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="39" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="40" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="41" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="42" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="43" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="44" Y="15">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="45" Y="15">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="46" Y="15">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="47" Y="15">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="48" Y="15">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="15">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="15">
     <object Name="Air"></object>
@@ -3262,7 +3351,7 @@
     <object Name="Air"></object>
   </cell>
   <cell X="60" Y="15">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="15">
     <object Name="Sandstone"></object>
@@ -3294,10 +3383,18 @@
   <cell X="70" Y="15">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="71" Y="15"></cell>
-  <cell X="72" Y="15"></cell>
-  <cell X="73" Y="15"></cell>
-  <cell X="74" Y="15"></cell>
+  <cell X="71" Y="15">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="15">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="15">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="15">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="15"></cell>
   <cell X="76" Y="15"></cell>
   <cell X="77" Y="15"></cell>
@@ -3344,16 +3441,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="18" Y="16">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="16">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="16">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="16">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="16">
     <object Name="Air"></object>
@@ -3377,67 +3474,67 @@
     <object Name="Air"></object>
   </cell>
   <cell X="29" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="31" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="34" Y="16">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="35" Y="16">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="36" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="37" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="38" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="39" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="40" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="41" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="42" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="43" Y="16">
-    <object Name="Air"></object>
+    <object Name="CollapsingJunkWall"></object>
   </cell>
   <cell X="44" Y="16">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="45" Y="16">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="46" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="47" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="48" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="16">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="50" Y="16">
     <object Name="Air"></object>
@@ -3467,10 +3564,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="59" Y="16">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="16">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="16">
     <object Name="Sandstone"></object>
@@ -3493,13 +3590,27 @@
   <cell X="67" Y="16">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="68" Y="16"></cell>
-  <cell X="69" Y="16"></cell>
-  <cell X="70" Y="16"></cell>
-  <cell X="71" Y="16"></cell>
-  <cell X="72" Y="16"></cell>
-  <cell X="73" Y="16"></cell>
-  <cell X="74" Y="16"></cell>
+  <cell X="68" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="69" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="70" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="16">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="16"></cell>
   <cell X="76" Y="16"></cell>
   <cell X="77" Y="16"></cell>
@@ -3546,19 +3657,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="18" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="19" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="17">
     <object Name="Air"></object>
@@ -3579,64 +3690,64 @@
     <object Name="Air"></object>
   </cell>
   <cell X="29" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="30" Y="17">
     <object Name="Air"></object>
   </cell>
   <cell X="31" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="32" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="34" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="35" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="36" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="37" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="38" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="39" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="40" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="41" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="42" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="43" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="44" Y="17">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="45" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="46" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="47" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="48" Y="17">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="49" Y="17">
     <object Name="Air"></object>
@@ -3669,10 +3780,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="59" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="17">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="17">
     <object Name="Sandstone"></object>
@@ -3698,12 +3809,24 @@
   <cell X="68" Y="17">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="69" Y="17"></cell>
-  <cell X="70" Y="17"></cell>
-  <cell X="71" Y="17"></cell>
-  <cell X="72" Y="17"></cell>
-  <cell X="73" Y="17"></cell>
-  <cell X="74" Y="17"></cell>
+  <cell X="69" Y="17">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="70" Y="17">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="17">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="17">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="17">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="17">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="17"></cell>
   <cell X="76" Y="17"></cell>
   <cell X="77" Y="17"></cell>
@@ -3751,19 +3874,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="19" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="20" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="18">
     <object Name="Air"></object>
@@ -3790,49 +3913,49 @@
     <object Name="Air"></object>
   </cell>
   <cell X="32" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="33" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="34" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="35" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="36" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="37" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="38" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="39" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="40" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="41" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="42" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="43" Y="18">
-    <object Name="Air"></object>
+    <object Name="VeryCollapsedJunkWall"></object>
   </cell>
   <cell X="44" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="45" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="46" Y="18">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="47" Y="18">
     <object Name="Air"></object>
@@ -3868,14 +3991,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="58" Y="18">
-    <object Name="Sandstone"></object>
     <object Name="Air"></object>
   </cell>
   <cell X="59" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="18">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="61" Y="18">
     <object Name="Sandstone"></object>
@@ -3907,10 +4029,18 @@
   <cell X="70" Y="18">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="71" Y="18"></cell>
-  <cell X="72" Y="18"></cell>
-  <cell X="73" Y="18"></cell>
-  <cell X="74" Y="18"></cell>
+  <cell X="71" Y="18">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="18">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="18">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="74" Y="18">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="75" Y="18"></cell>
   <cell X="76" Y="18"></cell>
   <cell X="77" Y="18"></cell>
@@ -3961,17 +4091,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="20" Y="19">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="21" Y="19">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="19">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="19">
-    <object Name="Sandstone"></object>
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="19">
     <object Name="Air"></object>
@@ -4001,40 +4130,40 @@
     <object Name="Air"></object>
   </cell>
   <cell X="33" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="34" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="35" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="36" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="37" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="38" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="39" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="40" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="41" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="42" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="43" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="44" Y="19">
-    <object Name="Air"></object>
+    <object Name="JunkHeap"></object>
   </cell>
   <cell X="45" Y="19">
     <object Name="Air"></object>
@@ -4076,10 +4205,10 @@
     <object Name="Air"></object>
   </cell>
   <cell X="58" Y="19">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="59" Y="19">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="19">
     <object Name="Sandstone"></object>
@@ -4119,7 +4248,9 @@
   <cell X="71" Y="19">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="72" Y="19"></cell>
+  <cell X="72" Y="19">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="73" Y="19"></cell>
   <cell X="74" Y="19"></cell>
   <cell X="75" Y="19"></cell>
@@ -4136,7 +4267,9 @@
   <cell X="6" Y="20"></cell>
   <cell X="7" Y="20"></cell>
   <cell X="8" Y="20"></cell>
-  <cell X="9" Y="20"></cell>
+  <cell X="9" Y="20">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="10" Y="20">
     <object Name="Sandstone"></object>
   </cell>
@@ -4171,16 +4304,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="21" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="22" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="25" Y="20">
     <object Name="Air"></object>
@@ -4279,13 +4412,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="57" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="58" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="59" Y="20">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="60" Y="20">
     <object Name="Sandstone"></object>
@@ -4314,11 +4447,21 @@
   <cell X="68" Y="20">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="69" Y="20"></cell>
-  <cell X="70" Y="20"></cell>
-  <cell X="71" Y="20"></cell>
-  <cell X="72" Y="20"></cell>
-  <cell X="73" Y="20"></cell>
+  <cell X="69" Y="20">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="70" Y="20">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="20">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="72" Y="20">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="73" Y="20">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="74" Y="20"></cell>
   <cell X="75" Y="20"></cell>
   <cell X="76" Y="20"></cell>
@@ -4332,10 +4475,18 @@
   <cell X="4" Y="21"></cell>
   <cell X="5" Y="21"></cell>
   <cell X="6" Y="21"></cell>
-  <cell X="7" Y="21"></cell>
-  <cell X="8" Y="21"></cell>
-  <cell X="9" Y="21"></cell>
-  <cell X="10" Y="21"></cell>
+  <cell X="7" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="8" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="9" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="10" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="11" Y="21">
     <object Name="Sandstone"></object>
   </cell>
@@ -4370,16 +4521,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="22" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="23" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="24" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="25" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="26" Y="21">
     <object Name="Air"></object>
@@ -4472,13 +4623,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="56" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="57" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="58" Y="21">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="59" Y="21">
     <object Name="Sandstone"></object>
@@ -4513,10 +4664,16 @@
   <cell X="69" Y="21">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="21"></cell>
-  <cell X="71" Y="21"></cell>
+  <cell X="70" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="71" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="72" Y="21"></cell>
-  <cell X="73" Y="21"></cell>
+  <cell X="73" Y="21">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="74" Y="21"></cell>
   <cell X="75" Y="21"></cell>
   <cell X="76" Y="21"></cell>
@@ -4533,9 +4690,15 @@
   <cell X="7" Y="22"></cell>
   <cell X="8" Y="22"></cell>
   <cell X="9" Y="22"></cell>
-  <cell X="10" Y="22"></cell>
-  <cell X="11" Y="22"></cell>
-  <cell X="12" Y="22"></cell>
+  <cell X="10" Y="22">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="11" Y="22">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="12" Y="22">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="13" Y="22">
     <object Name="Sandstone"></object>
   </cell>
@@ -4570,16 +4733,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="24" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="25" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="26" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="27" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="28" Y="22">
     <object Name="Air"></object>
@@ -4660,13 +4823,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="54" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="55" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="56" Y="22">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="57" Y="22">
     <object Name="Sandstone"></object>
@@ -4707,7 +4870,9 @@
   <cell X="69" Y="22">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="70" Y="22"></cell>
+  <cell X="70" Y="22">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="71" Y="22"></cell>
   <cell X="72" Y="22"></cell>
   <cell X="73" Y="22"></cell>
@@ -4730,7 +4895,9 @@
   <cell X="10" Y="23"></cell>
   <cell X="11" Y="23"></cell>
   <cell X="12" Y="23"></cell>
-  <cell X="13" Y="23"></cell>
+  <cell X="13" Y="23">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="14" Y="23">
     <object Name="Sandstone"></object>
   </cell>
@@ -4768,16 +4935,16 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="26" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="27" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="28" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="29" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="30" Y="23">
     <object Name="Air"></object>
@@ -4846,13 +5013,13 @@
     <object Name="Air"></object>
   </cell>
   <cell X="52" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="53" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="54" Y="23">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="55" Y="23">
     <object Name="Sandstone"></object>
@@ -4893,9 +5060,15 @@
   <cell X="67" Y="23">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="68" Y="23"></cell>
-  <cell X="69" Y="23"></cell>
-  <cell X="70" Y="23"></cell>
+  <cell X="68" Y="23">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="69" Y="23">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="70" Y="23">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="71" Y="23"></cell>
   <cell X="72" Y="23"></cell>
   <cell X="73" Y="23"></cell>
@@ -4957,19 +5130,19 @@
     <object Name="Sandstone"></object>
   </cell>
   <cell X="27" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="28" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="29" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="30" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="31" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="32" Y="24">
     <object Name="Air"></object>
@@ -5026,16 +5199,16 @@
     <object Name="Air"></object>
   </cell>
   <cell X="50" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="51" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="52" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="53" Y="24">
-    <object Name="Sandstone"></object>
+    <object Name="Air"></object>
   </cell>
   <cell X="54" Y="24">
     <object Name="Sandstone"></object>
@@ -5076,9 +5249,15 @@
   <cell X="66" Y="24">
     <object Name="Sandstone"></object>
   </cell>
-  <cell X="67" Y="24"></cell>
-  <cell X="68" Y="24"></cell>
-  <cell X="69" Y="24"></cell>
+  <cell X="67" Y="24">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="68" Y="24">
+    <object Name="Sandstone"></object>
+  </cell>
+  <cell X="69" Y="24">
+    <object Name="Sandstone"></object>
+  </cell>
   <cell X="70" Y="24"></cell>
   <cell X="71" Y="24"></cell>
   <cell X="72" Y="24"></cell>

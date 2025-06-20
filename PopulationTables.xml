@@ -3,75 +3,104 @@
   
   <population Name="RandomMachineWall">
     <group Name="Options" Style="pickone">
-      <object Blueprint="MachineWallHotTubing" Weight="5" />
-      <object Blueprint="MachineWallHotTubingWithPiping" Weight="5" />
-      <object Blueprint="MachineWallColdTubing" Weight="10" />
-      <object Blueprint="MachineWallEmptyTubing" Weight="25" />
+      <object Weight="5" Blueprint="MachineWallHotTubing" />
+      <object Weight="5" Blueprint="MachineWallHotTubingWithPiping" />
+      <object Weight="10" Blueprint="MachineWallColdTubing" />
+      <object Weight="25" Blueprint="MachineWallEmptyTubing" />
     </group>
   </population>
   
   <population Name="SacrificialJunk">
     <group Name="Options" Style="pickone">
-      <object Blueprint="Junk 1" Weight="32" />
-      <object Blueprint="Junk 2" Weight="64" />
-      <object Blueprint="Junk 3" Weight="64" />
-      <object Blueprint="Junk 4" Weight="32" />
-      <object Blueprint="Junk 5" Weight="16" />
-      <object Blueprint="Junk 6" Weight="8" />
-      <object Blueprint="Junk 7" Weight="4" />
-      <object Blueprint="Junk 8" Weight="1" />
+      <table Weight="256" Name="Junk 1" />
+      <table Weight="512" Name="Junk 2" />
+      <table Weight="1024" Name="Junk 3" />
+      <table Weight="512" Name="Junk 4" />
+      <table Weight="256" Name="Junk 5" />
+      <table Weight="64" Name="Junk 6" />
+      <table Weight="8" Name="Junk 7" />
+      <table Weight="1" Name="Junk 8" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWall">
     <group Name="Options" Style="pickone">
-      <table Name="RandomMachineWall" Weight="10" />
-      <table Name="SacrificialJunk" Weight="10" />
+      <table Weight="10" Name="RandomMachineWall" />
+      <table Weight="10" Name="SacrificialJunk" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallButProbablyWall">
     <group Name="Options" Style="pickone">
-      <table Name="RandomMachineWall" Weight="15" />
-      <table Name="SacrificialJunk" Weight="5" />
+      <table Weight="15" Name="RandomMachineWall" />
+      <table Weight="5" Name="SacrificialJunk" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallButProbablyJunk">
     <group Name="Options" Style="pickone">
-      <table Name="RandomMachineWall" Weight="5" />
-      <table Name="SacrificialJunk" Weight="15" />
+      <table Weight="5" Name="RandomMachineWall" />
+      <table Weight="15" Name="SacrificialJunk" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallOrNothing">
     <group Name="Options" Style="pickone">
-      <table Name="JunkOrMachineWall" Weight="10" />
-      <group Name="Nothing" Weight="5">
+      <table Weight="10" Name="JunkOrMachineWall" />
+      <group Weight="5" Name="Nothing">
       </group>
     </group>
   </population>
   
   <population Name="JunkOrMachineWallOrNothingButProbablyNothing">
     <group Name="Options" Style="pickone">
-      <table Name="JunkOrMachineWall" Weight="5" />
-      <group Name="Nothing" Weight="15">
+      <table Weight="5" Name="JunkOrMachineWall" />
+      <group Weight="15" Name="Nothing">
       </group>
     </group>
   </population>
   
   <population Name="JunkOrMachineWallOrNothingButProbablyNothing">
     <group Name="Options" Style="pickone">
-      <table Name="JunkOrMachineWall" Weight="5" />
-      <group Name="Nothing" Weight="15">
+      <table Weight="5" Name="JunkOrMachineWall" />
+      <group Weight="15" Name="Nothing">
       </group>
     </group>
   </population>
   
   <population Name="JunkOrGarbage">
     <group Name="Options" Style="pickone">
-      <table Name="SacrificialJunk" Weight="10" />
-      <blueprint Name="Garbage" Weight="10" />
+      <table Weight="10" Name="SacrificialJunk" />
+      <object Weight="10" Blueprint="Garbage" />
+    </group>
+  </population>
+  
+  <population Name="JunkOrGarbageButProbablyGarbage">
+    <group Name="Options" Style="pickone">
+      <table Weight="10" Name="JunkOrGarbage" />
+      <object Weight="10" Blueprint="Garbage" />
+    </group>
+  </population>
+  
+  <population Name="JunkOrGarbageOrNothing">
+    <group Name="Options" Style="pickone">
+      <table Weight="10" Name="JunkOrGarbage" />
+      <group Weight="5" Name="Nothing">
+      </group>
+    </group>
+  </population>
+  
+  <population Name="JunkOrProbablyGarbageOrNothing">
+    <group Name="Options" Style="pickone">
+      <table Weight="10" Name="JunkOrGarbageButProbablyGarbage" />
+      <group Weight="5" Name="Nothing">
+      </group>
+    </group>
+  </population>
+  
+  <population Name="Scrappy">
+    <group Name="Contents" Style="pickone">
+      <table Number="550-750" Name="JunkOrProbablyGarbageOrNothing" />
     </group>
   </population>
   

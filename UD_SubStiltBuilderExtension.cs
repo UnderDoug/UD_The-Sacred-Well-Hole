@@ -28,14 +28,17 @@ namespace UD_SacredWellHole
 
         public override void OnAfterBuild(JoppaWorldBuilder builder)
         {
-            // Assign the 10 yet-to-be-created map files for the 10 strata below the stilt.
+            // Assign the 10 yet-to-be-finished map files for the 10 strata below the stilt.
             ZoneManager zoneManager = The.ZoneManager;
             foreach ((int key, string stratumBelowZoneId) in CathedralSubStrata)
             {
                 Zone stratumBelow = zoneManager.GetZone(stratumBelowZoneId);
                 Cell pitCell = stratumBelow.GetCell(StiltWellLocation);
-                
-                pitCell.Clear().AddObject("Air");
+
+                if (key < CathedralSubStrata.Count)
+                {
+                    pitCell.Clear().AddObject("Air");
+                }
                 foreach (Cell cell in pitCell.GetAdjacentCells(BuiltOnly: true))
                 {
                     // cell?.Clear().AddObject("Sandstone");
@@ -49,9 +52,24 @@ namespace UD_SacredWellHole
                 }
                 string MapFileName = MAP_PARTIAL + $"{leadingZeros}{key}";
 
+                // zoneManager.RemoveZoneBuilders(stratumBelowZoneId, nameof(Cave));
+                // zoneManager.RemoveZoneBuilders(stratumBelowZoneId, nameof(SurfaceCave));
+                // zoneManager.RemoveZoneBuilders(stratumBelowZoneId, nameof(Strata));
+                zoneManager.RemoveZoneBuilders(stratumBelowZoneId, nameof(FactionEncounters));
+                zoneManager.ClearZoneBuilders(stratumBelowZoneId);
+
                 UnityEngine.Debug.LogError($"{nameof(UD_SubStiltBuilderExtension)} > {nameof(key)}: {leadingZeros}{key}");
                 UnityEngine.Debug.LogError($"{MapFileName}");
-                zoneManager.AddZonePostBuilder(stratumBelow.ZoneID, nameof(MapBuilder), "FileName", $"{MapFileName}");
+
+                zoneManager.AddZonePostBuilder(stratumBelow.ZoneID, nameof(MapBuilder), "ID", $"{MapFileName}"); //, "ClearBeforePlace", true);
+
+                // zoneManager.SetZoneProperty(stratumBelowZoneId, "SkipTerrainBuilders", true);
+                zoneManager.SetZoneProperty(stratumBelowZoneId, "NoBiomes", "Yes");
+
+                zoneManager.AddZonePostBuilder(stratumBelow.ZoneID, nameof(UD_SubGrandCathedralScrapifier), "WantScrappy", key > 9);
+
+                string zoneName = $"beneath the {GameObjectFactory.Factory.GetBlueprintIfExists("StiltWell").DisplayName()}";
+                zoneManager.SetZoneName(stratumBelowZoneId, zoneName);
             }
 
         }

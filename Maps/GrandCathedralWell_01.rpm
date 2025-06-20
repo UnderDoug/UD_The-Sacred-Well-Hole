@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Map  ID="UD_GrandCathedralWell_01" Width="80" Height="25">
-  <cell X="0" Y="0"></cell>
+  <cell X="0" Y="0">
+    <object Name="Trashy"></object>
+  </cell>
   <cell X="1" Y="0"></cell>
   <cell X="2" Y="0"></cell>
   <cell X="3" Y="0"></cell>
