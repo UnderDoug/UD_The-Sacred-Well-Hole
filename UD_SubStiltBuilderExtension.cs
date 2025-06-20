@@ -51,14 +51,6 @@ namespace UD_SacredWellHole
                 string stratumBelowZoneID = stratumBelow.ZoneID;
                 Cell stiltWellHoleCell = stratumBelow.GetCell(StiltWellLocation);
 
-                if (false && i > (cathedralSubStrata.Count / 2))
-                {
-                    stiltWellHoleCell.Clear().AddObject(EmptyMaterial);
-                }
-                foreach (Cell cell in stiltWellHoleCell.GetAdjacentCells(BuiltOnly: true))
-                {
-                    // cell?.Clear().AddObject("Sandstone");
-                }
 
                 int digitDifference = cathedralSubStrata.Count.ToString().Length - i.ToString().Length;
                 string leadingZeros = "";
@@ -111,6 +103,15 @@ namespace UD_SacredWellHole
                 string zoneName = $"beneath the {GameObjectFactory.Factory.GetBlueprintIfExists("StiltWell").DisplayName()}";
                 zoneManager.SetZoneName(stratumBelowZoneID, zoneName);
                 // solidJunkPileCellsBelow = new(stratumBelow.GetZoneProperty(UD_SubGrandCathedralBuilder.JUNKPILE_SOLID_CELLS_PROP).RegionFromString());
+
+                if (false && i > (cathedralSubStrata.Count / 2))
+                {
+                    stiltWellHoleCell.Clear().AddObject(EmptyMaterial);
+                }
+                foreach (Cell cell in stiltWellHoleCell.GetAdjacentCells(BuiltOnly: true))
+                {
+                    // cell?.Clear().AddObject("Sandstone");
+                }
             }
         }
 
