@@ -60,14 +60,6 @@
     </group>
   </population>
   
-  <population Name="JunkOrMachineWallOrNothingButProbablyNothing">
-    <group Name="Options" Style="pickone">
-      <table Weight="5" Name="JunkOrMachineWall" />
-      <group Weight="15" Name="Nothing">
-      </group>
-    </group>
-  </population>
-  
   <population Name="JunkOrGarbage">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="SacrificialJunk" />
@@ -100,7 +92,7 @@
   
   <population Name="Scrappy">
     <group Name="Contents" Style="pickone">
-      <table Number="550-750" Name="JunkOrProbablyGarbageOrNothing" />
+      <table Number="200-250" Name="JunkOrProbablyGarbageOrNothing" />
     </group>
   </population>
   

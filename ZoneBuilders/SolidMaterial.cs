@@ -22,7 +22,7 @@
         {
             foreach (Cell cell in Z.GetCells())
             {
-                cell.Clear();
+                cell.Clear(Combat: true);
                 cell.AddObject(GameObjectFactory.Factory.CreateObject(Material));
             }
             return true;

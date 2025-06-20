@@ -1,14 +1,9 @@
-﻿using Genkit;
-using Qud.API;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+
 using XRL.Rules;
-using XRL.World.AI.Pathfinding;
+
 using XRL.World.Effects;
-using XRL.World.ObjectBuilders;
-using XRL.World.Parts;
-using static XRL.Core.XRLCore;
 
 namespace XRL.World.ZoneBuilders
 {
@@ -19,7 +14,6 @@ namespace XRL.World.ZoneBuilders
         {
             this.WantScrappy = WantScrappy ?? false;
         }
-
 
         public bool BuildZone(Zone Z, bool? WantScrappy = null)
         {
@@ -32,7 +26,7 @@ namespace XRL.World.ZoneBuilders
             zone = Z;
 
             UnityEngine.Debug.LogError($"{nameof(UD_SubGrandCathedralScrapifier)}, {nameof(Z)}: {Z.ZoneID}");
-            UnityEngine.Debug.LogError($"     {nameof(WantScrappy)}: {WantScrappy}");
+            UnityEngine.Debug.LogError($"    {nameof(WantScrappy)}: {WantScrappy}");
 
             if (WantScrappy)
             {
