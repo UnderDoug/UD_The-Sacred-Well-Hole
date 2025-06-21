@@ -5,6 +5,7 @@ using System.Text;
 using Genkit;
 
 using XRL.World;
+using XRL.World.ZoneBuilders;
 
 namespace UD_SacredWellHole
 {
@@ -23,7 +24,7 @@ namespace UD_SacredWellHole
         {
             Dictionary<string, List<Cell>> Region = new()
             {
-                { Inner, new() },
+                { Inner, Event.NewCellList() },
             };
             Region[Inner] = new(FromCell.GetCellsInACosmeticCircle(IncludePerimerter ? Radius - 1 : Radius, true, ExcludeCells, Filter))
             {
@@ -31,7 +32,7 @@ namespace UD_SacredWellHole
             };
             if (IncludePerimerter)
             {
-                Region.Add(Outer, new());
+                Region.Add(Outer, Event.NewCellList());
                 foreach (Cell outerCell in FromCell.GetCellsInACosmeticCircle(Radius, true, ExcludeCells, Filter))
                 {
                     if (!Region[Inner].Contains(outerCell))
@@ -347,6 +348,30 @@ namespace UD_SacredWellHole
                 }
             }
             yield break;
+        }
+
+        public static Cell PaintCell(this Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true)
+        {
+            UD_SubGrandCathedralBuilder.PaintCell(C, Floor, TileColor, DetailtColor, Tile, Overwrite);
+            return C;
+        }
+
+        public static bool IsOuterCell(this Cell C, Predicate<Cell> Basis)
+        {
+            if (C != null)
+            {
+                return C.AnyAdjacentCell(c => !Basis(c));
+            }
+            return false;
+        }
+
+        public static bool IsInnerCell(this Cell C, Predicate<Cell> Basis)
+        {
+            if (C != null)
+            {
+                return !C.AnyAdjacentCell(c => !Basis(c));
+            }
+            return false;
         }
     }
 }

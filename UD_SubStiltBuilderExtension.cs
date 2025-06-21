@@ -27,10 +27,10 @@ namespace UD_SacredWellHole
 
         public static Dictionary<int, string> CathedralSubStrata => GetCathedralStrataSubStrataZoneIDs(CathedralZone);
 
-        public override void OnAfterBuild(JoppaWorldBuilder builder)
+        public override void OnAfterBuild(JoppaWorldBuilder Builder)
         {
             MetricsManager.rngCheckpoint("sacrifice");
-            builder.BuildStep("Sacrificing artifacts", SacrificeArtifacts);
+            Builder.BuildStep("Sacrificing artifacts", SacrificeArtifacts);
         }
 
         public void SacrificeArtifacts(string WorldID)
@@ -41,6 +41,7 @@ namespace UD_SacredWellHole
             }
             WorldCreationProgress.StepProgress("Sacrificing artifacts...");
 
+            /*
             // Assign the 10 yet-to-be-finished map files for the 10 strata below the stilt.
             List<Location2D> solidJunkPileCellsBelow = new();
             ZoneManager zoneManager = The.ZoneManager;
@@ -60,8 +61,6 @@ namespace UD_SacredWellHole
                 }
                 string MapFileName = MAP_PARTIAL + $"{leadingZeros}{i}";
 
-                zoneManager.RemoveZoneBuilders(stratumBelowZoneID, nameof(Cave));
-                zoneManager.RemoveZoneBuilders(stratumBelowZoneID, nameof(SurfaceCave));
                 zoneManager.RemoveZoneBuilders(stratumBelowZoneID, nameof(Strata));
                 zoneManager.RemoveZoneBuilders(stratumBelowZoneID, nameof(FactionEncounters));
                 zoneManager.ClearZoneBuilders(stratumBelowZoneID);
@@ -75,14 +74,6 @@ namespace UD_SacredWellHole
                 zoneManager.SetZoneProperty(stratumBelowZoneID, "SkipTerrainBuilders", true);
                 // zoneManager.SetZoneProperty(stratumBelowZoneID, "NoBiomes", "Yes");
 
-                List<Location2D> previousSolidJunkPileCellsBelow = new();
-                if (!solidJunkPileCellsBelow.IsNullOrEmpty())
-                {
-                    foreach (Location2D location in solidJunkPileCellsBelow)
-                    {
-                        previousSolidJunkPileCellsBelow.Add(location);
-                    }
-                }
                 /*
                 solidJunkPileCellsBelow = new(new UD_SubGrandCathedralBuilder().BuildZone(
                     Z: stratumBelow,
@@ -91,7 +82,7 @@ namespace UD_SacredWellHole
                     WantScrappy: i > (cathedralSubStrata.Count / 2) - 1));
                 */
 
-                
+                /*
                 zoneManager.AddZonePostBuilder(
                     ZoneID: stratumBelowZoneID, 
                     Class: nameof(UD_SubGrandCathedralBuilder), 
@@ -99,11 +90,11 @@ namespace UD_SacredWellHole
                     Key2: "SolidJunkPileCellsBelow", Value2: solidJunkPileCellsBelow,
                     Key3: "WantScrappy", Value3: i > cathedralSubStrata.Count -1
                     );
-                
-                string zoneName = $"beneath the {GameObjectFactory.Factory.GetBlueprintIfExists("StiltWell").DisplayName()}";
-                zoneManager.SetZoneName(stratumBelowZoneID, zoneName);
+                */
+                // string zoneName = $"beneath the {GameObjectFactory.Factory.GetBlueprintIfExists("StiltWell").DisplayName()}";
+                // zoneManager.SetZoneName(stratumBelowZoneID, zoneName);
                 // solidJunkPileCellsBelow = new(stratumBelow.GetZoneProperty(UD_SubGrandCathedralBuilder.JUNKPILE_SOLID_CELLS_PROP).RegionFromString());
-
+                /*
                 if (false && i > (cathedralSubStrata.Count / 2))
                 {
                     stiltWellHoleCell.Clear().AddObject(EmptyMaterial);
@@ -112,7 +103,9 @@ namespace UD_SacredWellHole
                 {
                     // cell?.Clear().AddObject("Sandstone");
                 }
+                *//*
             }
+            */
         }
 
         public static Location2D GetStiltWellLocation(Zone Z)

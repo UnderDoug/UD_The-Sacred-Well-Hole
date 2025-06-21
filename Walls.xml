@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects>
+
+  <object Name="BaseScrapWall" Inherits="CatacombWall">
+    <part Name="Render" DisplayName="[compacted scrap]" ColorString="&amp;k^w" TileColor="&amp;k" DetailColor="w"/>
+    <part Name="Description" Short="Jagged metal shapes of the chrome form are disarranged to tessellate properly. Round casings require axel-joints to fill the gaps in their sequences. The boundaries of this world are grime-smeared and absent any presence." />
+    <part Name="Metal" />
+    <part Name="Corpse" CorpseChance="50" BuildCorpseChance="50" CorpseBlueprint="SmallOilPuddle" />
+    <part Name="DrawInTheDark" BackgroundTileColor="K" ForegroundTileColor="k" DetailColor="w" />
+    <tag Name="PaintWith" Value="MachineWallsTubing" />
+    <tag Name="BaseObject" Value="*noinherit" />
+    <tag Name="BodyType" Value="MetalWall" />
+    <tag Name="Mods" Value="TechWallMods" />
+    <tag Name="Tier" Value="5" />
+    <part Name="Graffitied" ChanceOneIn="100" />
+    <tag Name="ImpactSound" Value="Sounds/Throw/sfx_throwing_generic_hitMetal" />
+    <tag Name="TakeDamageSound" Value="Sounds/Damage/sfx_damage_tubing"/>
+    <tag Name="DeathSounds" Value="Sounds/Damage/sfx_destroy_tubing" />
+    <tag Name="PitDetailColor" Value="w" />
+    <xtagGrammar massNoun="true" />
+  </object>
+  <object Name="SmallOilPuddle" Inherits="OilPuddle">
+    <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="oil-1000" />
+  </object>
+  <object Name="SmallGelPuddle" Inherits="GelPuddle">
+    <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="gel-1000" />
+  </object>
+  <object Name="SmallUnctuousOilPuddle" Inherits="SmallOilPuddle">
+    <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="oil-675,gel-325" />
+  </object>
+  <object Name="SmallGrimePuddle" Inherits="SmallOilPuddle">
+    <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="oil-600,gel-300,sludge-100" />
+  </object>
+  <object Name="SmallToxicGrimePuddle" Inherits="SmallOilPuddle">
+    <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="oil-600,acid-300,sludge-100" />
+  </object>
+  
+  <object Name="ScrapWall" Inherits="BaseScrapWall">
+    <part Name="Render" DisplayName="compacted scrap" />
+    <part Name="Corpse" CorpseBlueprint="SmallOilPuddle" />
+    <part Name="DrawInTheDark" DetailColor="w" />
+    <tag Name="PitDetailColor" Value="w" />
+  </object>
+  <object Name="CyberneticScrapWall" Inherits="BaseScrapWall">
+    <part Name="Render" DisplayName="compacted cybernetics scrap" ColorString="&amp;r^c" TileColor="&amp;r" DetailColor="c" />
+    <part Name="Corpse" CorpseBlueprint="SmallUnctuousOilPuddle" />
+    <part Name="DrawInTheDark" DetailColor="c" />
+    <tag Name="PitDetailColor" Value="r" />
+  </object>
+  <object Name="MechanicalScrapWall" Inherits="BaseScrapWall">
+    <part Name="Render" DisplayName="compacted mechanical scrap" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y" />
+    <part Name="Corpse" CorpseBlueprint="SmallGrimePuddle" />
+    <removepart Name="DrawInTheDark" />
+    <tag Name="PitDetailColor" Value="w" />
+  </object>
+  <object Name="ElectronicScrapWall" Inherits="BaseScrapWall">
+    <part Name="Render" DisplayName="compacted electronics scrap" ColorString="&amp;K^g" DetailColor="g"/>
+    <part Name="Corpse" CorpseBlueprint="SmallToxicGrimePuddle" />
+    <part Name="DrawInTheDark" DetailColor="g" />
+    <tag Name="PitDetailColor" Value="g" />
+  </object>
+  <object Name="RandomScrapWall" Inherits="BaseScrapWall">
+    <part Name="Render" DisplayName="compacted random scrap" ColorString="&amp;K^g" DetailColor="Y"/>
+    <part Name="Corpse" CorpseBlueprint="SmallGelPuddle" />
+    <part Name="DrawInTheDark" DetailColor="Y" />
+    <tag Name="PitDetailColor" Value="Y" />
+    <part Name="ReplaceObject" Table="ScrapWalls" SeedWithZoneID="false" />
+  </object>
+
+  <object Name="BaseScrapMound" Inherits="Rubble">
+    <part Name="Render" DisplayName="[scrap mound]" ColorString="&amp;w" TileColor="&amp;w" DetailColor="K" />
+    <part Name="Description" Short="Irregular volumes of scrap are heaped together. Across its surface, points of order poke sporadically through the pile of entropy: a cybernetic finger, the gears of a Barathrum clock, a scratched piece of circuitboard." />
+    <stat Name="Hitpoints" Value="3500" />
+    <part Name="Metal" />
+    <part Name="Corpse" CorpseChance="33" BuildCorpseChance="33" CorpseBlueprint="SmallOilPuddle" />
+    <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="K" DetailColor="w" />
+    <tag Name="VaporObject" Value="SmallOilyUnctuousLavaPuddle" />
+    <tag Name="BaseObject" Value="*noinherit" />
+    <tag Name="Mods" Value="TechWallMods" />
+    <tag Name="Tier" Value="2" />
+    <tag Name="ImpactSound" Value="Sounds/Throw/sfx_throwing_generic_hitMetal" />
+    <tag Name="TakeDamageSound" Value="Sounds/Damage/sfx_damage_tubing"/>
+    <tag Name="DeathSounds" Value="Sounds/Damage/sfx_destroy_tubing" />
+    <tag Name="PitDetailColor" Value="w" />
+  </object>
+  <object Name="SmallOilyUnctuousLavaPuddle" Inherits="SmallOilPuddle">
+    <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="lava-800,oil-150,gel-50" />
+  </object>
+  
+  <object Name="ScrapMound" Inherits="BaseScrapMound">
+    <part Name="Render" DisplayName="scrap mound" />
+    <part Name="Corpse" CorpseBlueprint="SmallOilPuddle" />
+    <part Name="DrawInTheDark" DetailColor="w" />
+  </object>
+  <object Name="CyberneticScrapMound" Inherits="BaseScrapMound">
+    <part Name="Render" DisplayName="cybernetics scrap mound" ColorString="&amp;c^r" TileColor="&amp;c" DetailColor="r" />
+    <part Name="Corpse" CorpseBlueprint="SmallUnctuousOilPuddle" />
+    <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="c"  DetailColor="K" />
+  </object>
+  <object Name="MechanicalScrapMound" Inherits="BaseScrapMound">
+    <part Name="Render" DisplayName="mechanical scrap mound" ColorString="&amp;K^w" TileColor="&amp;K" DetailColor="w" />
+    <part Name="Corpse" CorpseBlueprint="SmallGrimePuddle" />
+    <removepart Name="DrawInTheDark" />
+  </object>
+  <object Name="ElectronicScrapMound" Inherits="BaseScrapMound">
+    <part Name="Render" DisplayName="electronic scrap mound" ColorString="&amp;w^g" TileColor="&amp;w" DetailColor="g"/>
+    <part Name="Corpse" CorpseBlueprint="SmallToxicGrimePuddle" />
+    <part Name="DrawInTheDark" DetailColor="g" />
+  </object>
+  <object Name="RandomScrapMound" Inherits="BaseScrapMound">
+    <part Name="Render" DisplayName="random scrap mound" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y"/>
+    <part Name="Corpse" CorpseBlueprint="SmallGelPuddle" />
+    <part Name="DrawInTheDark" DetailColor="Y" />
+    <part Name="ReplaceObject" Table="ScrapMounds" SeedWithZoneID="false" />
+  </object>
+  
+</objects>

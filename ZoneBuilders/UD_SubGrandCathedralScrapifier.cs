@@ -4,12 +4,17 @@ using System.Linq;
 using XRL.Rules;
 
 using XRL.World.Effects;
+using XRL.World.Parts;
 
 namespace XRL.World.ZoneBuilders
 {
     public class UD_SubGrandCathedralScrapifier : ZoneBuilderSandbox
     {
         public bool WantScrappy;
+        public UD_SubGrandCathedralScrapifier()
+        {
+            WantScrappy = false;
+        }
         public UD_SubGrandCathedralScrapifier(bool? WantScrappy = null)
         {
             this.WantScrappy = WantScrappy ?? false;
@@ -30,23 +35,56 @@ namespace XRL.World.ZoneBuilders
 
             if (WantScrappy)
             {
-                new PopTableZoneBuilder().BuildZone(Z, "Scrappy");
+                foreach (Cell emptyCell in zone.GetEmptyCellsShuffled())
+                {
+                    if (!emptyCell.HasWall() && !emptyCell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")))
+                    {
+                        if (zone.Z > 17 
+                            && emptyCell.AnyAdjacentCell(c => c.HasObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall"))) 
+                            && 3.in10())
+                        {
+                            if (8.in10())
+                            {
+                                emptyCell.AddObject("RandomScrapMound");
+                            }
+                            else
+                            {
+                                emptyCell.AddObject("RandomScrapWall");
+                            }
+                        }
+                        else
+                        {
+                            if (Stat.RollCached("1d25") == 1)
+                            {
+                                emptyCell.AddObject("RandomScrapMound");
+                            }
+                            else
+                            {
+                                emptyCell.AddPopulation("JunkOrProbablyGarbageOrNothing");
+                            }
+                        }
+                    }
+                }
             }
-            List<Cell> foodItemCells = new();
+            List<Cell> foodItemCells = Event.NewCellList();
             foreach (GameObject item in zone.GetObjectsThatInheritFrom("Item"))
             {
-                if (item != null)
+                if (item != null && item.Blueprint != "Garbage")
                 {
                     UnityEngine.Debug.LogError($"    {nameof(item)}: {item?.DebugName ?? "\"null\""}");
-                    if (item.GetBlueprint().InheritsFrom("Food"))
+                    if (item.GetBlueprint().InheritsFrom("Food") || item.Blueprint == "PersistentPapaya")
                     {
                         UnityEngine.Debug.LogError($"        Food item, replcaing with Garbage.");
                         foodItemCells.Add(item.CurrentCell);
                         continue;
                     }
 
-                    int high = 30;
+                    if (item.Physics != null)
+                    {
+                        item.Physics.Owner = "Mechanimists";
+                    }
 
+                    int high = 120;
                     // Damage, Rust, or Break most of the items in the well.
                     string randomSeed = $"{zone.ZoneID}-[{item.CurrentCell.Location}]-{item.ID}";
                     int roll = Stat.SeededRandom(randomSeed, 0, 7000) % high;
@@ -92,7 +130,7 @@ namespace XRL.World.ZoneBuilders
             foreach (Cell foodItemCell in foodItemCells)
             {
                 UnityEngine.Debug.LogError($"        {nameof(foodItemCell)}: [{foodItemCell.Location}] {foodItemCell.GetObjectsThatInheritFrom("Food")?.FirstOrDefault()?.DebugName ?? "\"null\""}");
-                foodItemCell.Clear().AddObject("Garbage");
+                foodItemCell.Clear(alsoExclude: GO => !GO.GetBlueprint().InheritsFrom("Food")).AddObject("Garbage");
             }
 
             return true;

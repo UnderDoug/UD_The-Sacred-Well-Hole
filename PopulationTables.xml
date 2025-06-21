@@ -1,25 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <populations>
+
+  <population Name="Nothing">
+    <group Name="Empty" Style="pickone">
+      <object Number ="1" Blueprint="SelfObliterator" />
+    </group>
+  </population>
   
-  <population Name="RandomMachineWall">
+  <population Name="ScrapWalls">
     <group Name="Options" Style="pickone">
-      <object Weight="5" Blueprint="MachineWallHotTubing" />
-      <object Weight="5" Blueprint="MachineWallHotTubingWithPiping" />
-      <object Weight="10" Blueprint="MachineWallColdTubing" />
-      <object Weight="25" Blueprint="MachineWallEmptyTubing" />
+      <object Weight="25" Blueprint="ScrapWall" />
+      <object Weight="10" Blueprint="MechanicalScrapWall" />
+      <object Weight="5" Blueprint="CyberneticScrapWall" />
+      <object Weight="5" Blueprint="ElectronicScrapWall" />
+    </group>
+  </population>
+  
+  <population Name="ScrapMounds">
+    <group Name="Options" Style="pickone">
+      <object Weight="25" Blueprint="ScrapMound" />
+      <object Weight="10" Blueprint="MechanicalScrapMound" />
+      <object Weight="5" Blueprint="CyberneticScrapMound" />
+      <object Weight="5" Blueprint="ElectronicScrapMound" />
     </group>
   </population>
   
   <population Name="SacrificialJunk">
     <group Name="Options" Style="pickone">
+      <table Weight="32" Name="Cybernetics0" />
       <table Weight="256" Name="Junk 1" />
+      <table Weight="32" Name="Cybernetics1" />
       <table Weight="512" Name="Junk 2" />
+      <table Weight="64" Name="Cybernetics2" />
       <table Weight="1024" Name="Junk 3" />
+      <table Weight="128" Name="Cybernetics3" />
       <table Weight="512" Name="Junk 4" />
+      <table Weight="64" Name="Cybernetics4" />
       <table Weight="256" Name="Junk 5" />
+      <table Weight="32" Name="Cybernetics5" />
       <table Weight="64" Name="Junk 6" />
+      <table Weight="16" Name="Cybernetics6" />
       <table Weight="8" Name="Junk 7" />
+      <table Weight="4" Name="Cybernetics7" />
       <table Weight="1" Name="Junk 8" />
+      <table Weight="1" Name="Cybernetics8" />
     </group>
   </population>
   
@@ -47,46 +71,51 @@
   <population Name="JunkOrMachineWallOrNothing">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrMachineWall" />
-      <group Weight="5" Name="Nothing">
-      </group>
+      <table Weight="5" Name="Nothing" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallOrNothingButProbablyNothing">
     <group Name="Options" Style="pickone">
       <table Weight="5" Name="JunkOrMachineWall" />
-      <group Weight="15" Name="Nothing">
-      </group>
+      <table Weight="5" Name="Nothing" />
+    </group>
+  </population>
+  
+  <population Name="GrimyGarbage">
+    <group Name="Options" Style="pickone">
+      <object Weight="32" Blueprint="Garbage" />
+      <object Weight="6" Blueprint="OilPool" />
+      <object Weight="3" Blueprint="GelPool" />
+      <object Weight="1" Blueprint="SludgePool" />
     </group>
   </population>
   
   <population Name="JunkOrGarbage">
     <group Name="Options" Style="pickone">
-      <table Weight="10" Name="SacrificialJunk" />
-      <object Weight="10" Blueprint="Garbage" />
+      <table Weight="40" Name="SacrificialJunk" />
+      <table Weight="40" Name="GrimyGarbage" />
     </group>
   </population>
   
   <population Name="JunkOrGarbageButProbablyGarbage">
     <group Name="Options" Style="pickone">
-      <table Weight="10" Name="JunkOrGarbage" />
-      <object Weight="10" Blueprint="Garbage" />
+      <table Weight="40" Name="JunkOrGarbage" />
+      <table Weight="40" Name="GrimyGarbage" />
     </group>
   </population>
   
   <population Name="JunkOrGarbageOrNothing">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrGarbage" />
-      <group Weight="5" Name="Nothing">
-      </group>
+      <table Weight="5" Name="Nothing" />
     </group>
   </population>
   
   <population Name="JunkOrProbablyGarbageOrNothing">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrGarbageButProbablyGarbage" />
-      <group Weight="5" Name="Nothing">
-      </group>
+      <table Weight="5" Name="Nothing" />
     </group>
   </population>
   

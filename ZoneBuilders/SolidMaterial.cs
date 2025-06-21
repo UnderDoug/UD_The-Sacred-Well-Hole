@@ -1,4 +1,6 @@
-﻿namespace XRL.World.ZoneBuilders
+﻿using System.Collections.Generic;
+
+namespace XRL.World.ZoneBuilders
 {
     public class SolidMaterial
     {
@@ -14,13 +16,14 @@
             this.Material = Material;
         }
 
-        public bool BuildZone(Zone Z)
+        public virtual bool BuildZone(Zone Z)
         {
             return BuildZone(Z, Material);
         }
-        public bool BuildZone(Zone Z, string Material)
+        public virtual bool BuildZone(Zone Z, string Material, List<Cell> Cells = null)
         {
-            foreach (Cell cell in Z.GetCells())
+            Cells ??= Event.NewCellList(Z.GetCells());
+            foreach (Cell cell in Cells)
             {
                 cell.Clear(Combat: true);
                 cell.AddObject(GameObjectFactory.Factory.CreateObject(Material));

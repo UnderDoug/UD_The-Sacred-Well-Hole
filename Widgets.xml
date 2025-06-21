@@ -1,46 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects>
 
+  <object Name="DaylightCell" Inherits="Widget">
+    <part Name="Render" DisplayName="daylight cell" />
+    <part Name="DaylightCell" />
+    <tag Name="ExcludeFromDynamicEncounters" />
+    <tag Name="NoTwiddle" />
+  </object>
+
+  <object Name="SmallDaylightCell" Inherits="DaylightCell">
+    <part Name="Render" DisplayName="small daylight cell" />
+    <part Name="DaylightCell" MaxRadius="2" />
+    <tag Name="NoTwiddle" />
+  </object>
+
+  <object Name="SelfObliterator" Inherits="Widget">
+    <part Name="Render" DisplayName="self obliterator" RenderString="x" ColorString="&amp;K" />
+    <part Name="ObliterateSelf" />
+    <tag Name="ExcludeFromDynamicEncounters" />
+    <tag Name="NoTwiddle" />
+  </object>
+
   <object Name="JunkWall" Inherits="Widget">
     <part Name="Render" Visible="true" DisplayName="junk wall" TileColor="&amp;y" DetailColor="C" RenderString="216" Tile="wall_coolant.png" />
     <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="RandomMachineWall" />
-  </object>
-
-  <object Name="CollapsingJunkWall" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="collapsing junk wall" TileColor="&amp;y" DetailColor="r" RenderString="216" Tile="wall_coolant.png" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="JunkOrMachineWallButProbablyWall" />
-  </object>
-
-  <object Name="VeryCollapsedJunkWall" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="very collapsed junk wall" TileColor="&amp;r" DetailColor="K" RenderString="216" Tile="wall_coolant.png" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="JunkOrMachineWall" />
-  </object>
-
-  <object Name="JunkHeap" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="junk heap" TileColor="&amp;r" DetailColor="K" RenderString="216" Tile="WallOrNot2" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="JunkOrMachineWallButProbablyJunk" />
-  </object>
-
-  <object Name="JunkPile" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="junk pile" TileColor="&amp;K" DetailColor="y" RenderString="216" Tile="RandomDebris.png" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="JunkOrMachineWallOrNothingButProbablyNothing" />
-  </object>
-
-  <object Name="DispersedJunk" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="dispersed junk" TileColor="&amp;r" DetailColor="y" RenderString="216" Tile="RandomDebris.png" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="SacrificialJunk" />
-  </object>
-
-  <object Name="GarbageJunk" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="garbage junk" TileColor="&amp;c" DetailColor="K" RenderString="216" Tile="RandomDebris.png" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="JunkOrGarbage" />
+    <part Name="ReplaceObject" Table="RandomScrapWall" />
+    <tag Name="ExcludeFromDynamicEncounters" />
   </object>
   
 </objects>
