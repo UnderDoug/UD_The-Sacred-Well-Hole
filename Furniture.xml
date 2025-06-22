@@ -4,6 +4,7 @@
     <part Name="Physics" Weight="999999" FlameTemperature="999999" VaporTemperature="999999" />
     <part Name="Description" Short="Sphinx scenes of post-Edification glamour are arrayed in gold and sunken relief around the lip of the black marble fount. The tracery of its bright veins spikes the eye but, downwell, recedes into a starless depth." />
     <part Name="StairsDown" Connected="false" PullDown="true" PullMessage="You plunge into the starless depths." GenericFall="true" JumpPrompt="It looks like an awfully long fall. Are you sure you want to jump?"/>
+    <part Name="SelfSacrifice" />
     <tag Name="OverlayColor" Value="&amp;M^k" />
     <tag Name="ImportantOverlayObject" />
     <tag Name="SpawnBlocker" />

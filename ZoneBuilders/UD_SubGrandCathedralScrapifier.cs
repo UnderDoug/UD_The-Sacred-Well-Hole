@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using XRL.Rules;
+using HistoryKit;
 
+using XRL.Rules;
 using XRL.World.Effects;
 using XRL.World.Parts;
+
+using UD_SacredWellHole;
 
 namespace XRL.World.ZoneBuilders
 {
@@ -37,10 +40,9 @@ namespace XRL.World.ZoneBuilders
             {
                 foreach (Cell emptyCell in zone.GetEmptyCellsShuffled())
                 {
-                    if (!emptyCell.HasWall() && !emptyCell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")))
+                    if (!emptyCell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")))
                     {
-                        if (zone.Z > 17 
-                            && emptyCell.AnyAdjacentCell(c => c.HasObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall"))) 
+                        if (zone.Z > 17 && emptyCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall")) 
                             && 3.in10())
                         {
                             if (8.in10())
@@ -60,7 +62,11 @@ namespace XRL.World.ZoneBuilders
                             }
                             else
                             {
-                                emptyCell.AddPopulation("JunkOrProbablyGarbageOrNothing");
+                                List<GameObject> populationObjects = Event.NewGameObjectList(emptyCell.AddPopulation("JunkOrProbablyGarbageOrNothing"));
+                                foreach (GameObject item in populationObjects)
+                                {
+                                    ModificationFactory.ApplyModifications(item, item.GetBlueprint(), 100, Stat.RollCached("1d2"), "Creation");
+                                }
                             }
                         }
                     }
@@ -69,6 +75,7 @@ namespace XRL.World.ZoneBuilders
             List<Cell> foodItemCells = Event.NewCellList();
             foreach (GameObject item in zone.GetObjectsThatInheritFrom("Item"))
             {
+                item.ModIntProperty("Stilt Well Sacrifice", 1);
                 if (item != null && item.Blueprint != "Garbage")
                 {
                     UnityEngine.Debug.LogError($"    {nameof(item)}: {item?.DebugName ?? "\"null\""}");
@@ -76,6 +83,12 @@ namespace XRL.World.ZoneBuilders
                     {
                         UnityEngine.Debug.LogError($"        Food item, replcaing with Garbage.");
                         foodItemCells.Add(item.CurrentCell);
+                        continue;
+                    }
+
+                    if (StiltWell.GetArtifactReputationValue(item) < 1)
+                    {
+                        item.ReplaceWith("Garbage");
                         continue;
                     }
 

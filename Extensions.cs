@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Genkit;
+using System;
 using System.Collections.Generic;
 using System.Text;
-
-using Genkit;
-
+using XRL.Rules;
 using XRL.World;
 using XRL.World.ZoneBuilders;
 
@@ -350,9 +349,9 @@ namespace UD_SacredWellHole
             yield break;
         }
 
-        public static Cell PaintCell(this Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true)
+        public static Cell PaintCell(this Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true, bool OverrideFloorColors = false)
         {
-            UD_SubGrandCathedralBuilder.PaintCell(C, Floor, TileColor, DetailtColor, Tile, Overwrite);
+            UD_SubGrandCathedralBuilder.PaintCell(C, Floor, TileColor, DetailtColor, Tile, Overwrite, OverrideFloorColors);
             return C;
         }
 
@@ -360,18 +359,102 @@ namespace UD_SacredWellHole
         {
             if (C != null)
             {
-                return C.AnyAdjacentCell(c => !Basis(c));
+                List<Cell> adjacentCells = Event.NewCellList(C.GetAdjacentCells());
+                int adjacentBasisCells = 0;
+                if (!adjacentCells.IsNullOrEmpty())
+                {
+                    foreach (Cell adjacentCell  in adjacentCells)
+                    {
+                        if (Basis(adjacentCell))
+                        {
+                            adjacentBasisCells++;
+                        }
+                    }
+                    return adjacentBasisCells < adjacentCells.Count;
+                }
             }
             return false;
         }
 
-        public static bool IsInnerCell(this Cell C, Predicate<Cell> Basis)
+        public static bool IsInnerCell(this Cell C, Predicate<Cell> Basis, bool Strict = true)
         {
             if (C != null)
             {
-                return !C.AnyAdjacentCell(c => !Basis(c));
+                List<Cell> adjacentCells = Event.NewCellList(C.GetAdjacentCells());
+                int adjacentCardinalCells = 0;
+                int adjacentOrdinalCells = 0;
+                int adjacentCardinalBasisCells = 0;
+                int adjacentOrdinalBasisCells = 0;
+                if (!adjacentCells.IsNullOrEmpty())
+                {
+                    foreach (Cell adjacentCell in adjacentCells)
+                    {
+                        bool isCardinal = C.X == adjacentCell.X || C.Y == adjacentCell.Y;
+                        if (isCardinal)
+                        {
+                            adjacentCardinalCells++;
+                        }
+                        else
+                        {
+                            adjacentOrdinalCells++;
+                        }
+                        if (Basis(adjacentCell))
+                        {
+                            if (isCardinal)
+                            {
+                                adjacentCardinalBasisCells++;
+                            }
+                            else
+                            {
+                                adjacentOrdinalBasisCells++;
+                            }
+                        }
+                    }
+                    bool cardinalsMatch = adjacentCardinalCells == adjacentCardinalBasisCells;
+                    bool ordinalsMatch = adjacentOrdinalCells == adjacentOrdinalBasisCells;
+                    return cardinalsMatch && (ordinalsMatch || (!Strict && adjacentOrdinalCells - 1 == adjacentOrdinalBasisCells));
+                }
             }
             return false;
+        }
+
+        public static int Explode(this DieRoll DieRoll, int Start = 0, int Step = 0, int Limit = 0)
+        {
+            if (DieRoll == null || DieRoll.Max() < 2)
+            {
+                return Start;
+            }
+
+            if (Limit != 0 && Start > Limit)
+            {
+                Start = Limit;
+                return Start;
+            }
+
+            int result = DieRoll.Resolve();
+            if (result == DieRoll.Max())
+            {
+                if (Step == 0)
+                {
+                    Start += result;
+                }
+                else
+                {
+                    Start += Step;
+                }
+                return DieRoll.Explode(Start, Step, Limit);
+            }
+            if (Step == 0)
+            {
+                Start += result;
+            }
+            return Start;
+        }
+
+        public static int ExplodingDie(this string DieRoll, int Start = 0, int Step = 0, int Limit = 0, int Indent = 0)
+        {
+            DieRoll dieRoll = new(DieRoll);
+            return dieRoll.Explode(Start, Step, Limit);
         }
     }
 }

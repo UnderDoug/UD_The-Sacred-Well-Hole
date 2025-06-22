@@ -1,11 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <populations>
-
-  <population Name="Nothing">
-    <group Name="Empty" Style="pickone">
-      <object Number ="1" Blueprint="SelfObliterator" />
-    </group>
-  </population>
   
   <population Name="ScrapWalls">
     <group Name="Options" Style="pickone">

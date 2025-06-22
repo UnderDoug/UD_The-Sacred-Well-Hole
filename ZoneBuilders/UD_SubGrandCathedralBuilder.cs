@@ -59,20 +59,22 @@ namespace XRL.World.ZoneBuilders
             {
                 if (!cell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")))
                 {
-                    string TileColor = Stat.RollCached("1d4") switch
+                    string TileColor = Stat.RollCached("1d6") switch
                     {
-                        4 => "w",
-                        3 => "r",
-                        2 => "c",
-                        1 => "g",
+                        5 => "w",
+                        4 => "r",
+                        3 => "c",
+                        2 => "g",
+                        1 => "K",
                         _ => "y",
                     };
-                    string DetailColor = Stat.RollCached("1d4") switch
+                    string DetailColor = Stat.RollCached("1d6") switch
                     {
-                        4 => "w",
-                        3 => "r",
-                        2 => "c",
-                        1 => "g",
+                        5 => "w",
+                        4 => "r",
+                        3 => "c",
+                        2 => "g",
+                        1 => "K",
                         _ => "y",
                     };
                     List<GameObject> floors = Event.NewGameObjectList(cell.GetObjectsThatInheritFrom("Floor"));
@@ -80,7 +82,10 @@ namespace XRL.World.ZoneBuilders
                     {
                         cell.RemoveObject(floor);
                     }
-                    PaintCell(cell, floorMaterial, TileColor, DetailColor, Overwrite: true);
+                    
+                    Cell cellBelow = cell.GetCellFromDirection("D", BuiltOnly: false);
+                    bool doFloorMaterial = cellBelow != null && cellBelow.HasObjectWithBlueprintEndsWith("ScrapWall");
+                    PaintCell(cell, (doFloorMaterial ? floorMaterial : null), TileColor, DetailColor, Overwrite: true, OverrideFloorColors: true);
                 }
             }
 
@@ -126,7 +131,7 @@ namespace XRL.World.ZoneBuilders
                 }
             }
 
-            int airRadius = Math.Max(0, (int)(strataFromTop * 1.85));
+            int airRadius = strataFromTop < 3 ? 1 : Math.Max(1, (int)((strataFromTop-1) * (strataFromTop * 0.25f)));
 
             Dictionary<string, List<Cell>> openAirRegion = stiltWellCell.GetCircleRegion(airRadius, Filter: c => c != stiltWellCell);
             if (!openAirRegion.IsNullOrEmpty())
@@ -196,17 +201,15 @@ namespace XRL.World.ZoneBuilders
                     {
                         foreach (Cell scrapWallCell in scrapWallCells)
                         {
-                            if (scrapWallCell.IsInnerCell(
-                                Basis: c => c.HasObject(
-                                    GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall")
-                                    )) || Stat.RollCached("1d10") == 3)
+                            if (scrapWallCell.IsInnerCell(Basis: c => c.HasObjectWithBlueprintEndsWith("ScrapWall"), false)
+                                || Stat.RollCached("1d10") == 3)
                             {
                                 GameObject scrapWall = scrapWallCell.GetFirstObject("BaseScrapWall");
                                 if (scrapWall != null && Stat.RollCached("1d4") == 1)
                                 {
                                     if (Stat.RollCached("1d2") == 1)
                                     {
-                                        scrapWallCell.Clear(alsoExclude: GO => GO != scrapWall);
+                                        scrapWallCell.RemoveObject(scrapWall);
                                     }
                                     else
                                     {
@@ -219,10 +222,27 @@ namespace XRL.World.ZoneBuilders
                     }
                 }
             }
+
+            if (zone.Z == 20)
+            {
+                int tier = new DieRoll("1d4").Explode(2, 1, 5);
+                GameObject stiltWellRelic = RelicGenerator.GenerateRelic(Tier: tier);
+                if (stiltWellRelic != null)
+                {
+                    stiltWellCell.Clear(Combat: true).AddObject(stiltWellRelic);
+                }
+                else
+                {
+                    stiltWellCell.AddPopulation("Artifact 8R");
+                }
+                Faction mechanimists = Factions.GetIfExists("Mechanimists");
+                The.Game.GetSystem<HolyPlaceSystem>()?.SetHolyZone(zone, mechanimists);
+            }
+
             return true;
         }
 
-        public static void PaintCell(Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true)
+        public static void PaintCell(Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true, bool OverrideFloorColors = false)
         {
             string paintColorString = TileColor ?? "y";
             string paintTile = Tile ?? "Tiles/tile-dirt1.png";
@@ -232,10 +252,16 @@ namespace XRL.World.ZoneBuilders
             GameObject floorSample = GameObjectFactory.Factory.CreateSampleObject(Floor);
             if (floorSample != null && floorSample.TryGetPart(out Render floorRender))
             {
-                paintColorString = floorRender.ColorString;
+                if (!OverrideFloorColors)
+                {
+                    paintColorString = floorRender.ColorString;
+                }
                 paintTile = floorRender.Tile;
-                paintDetailColor = floorRender.DetailColor;
-                paintTileColor = floorRender.TileColor;
+                if (!OverrideFloorColors)
+                {
+                    paintDetailColor = floorRender.DetailColor;
+                    paintTileColor = floorRender.TileColor;
+                }
                 paintRenderString = floorRender.RenderString;
             }
             if (Overwrite || C.PaintTile.IsNullOrEmpty())
