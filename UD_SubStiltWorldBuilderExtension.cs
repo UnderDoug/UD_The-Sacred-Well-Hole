@@ -1,27 +1,45 @@
 ﻿using Genkit;
 using System.Collections.Generic;
+using UD_SacredWellHole;
 using XRL;
+using XRL.Rules;
 using XRL.UI;
 using XRL.Wish;
 using XRL.World;
+using XRL.World.AI.GoalHandlers;
 using XRL.World.Parts;
-using XRL.World.WorldBuilders;
 using XRL.World.ZoneBuilders;
+using static UD_SacredWellHole.Const;
+using static UD_SacredWellHole.Options;
 
-namespace UD_SacredWellHole
+namespace XRL.World.WorldBuilders
 {
     [HasWishCommand]
     [JoppaWorldBuilderExtension]
-    public class UD_SubStiltBuilderExtension : IJoppaWorldBuilderExtension
+    public class UD_SubStiltWorldBuilderExtension : IJoppaWorldBuilderExtension
     {
-        public static ModInfo ThisMod = ModManager.GetMod("UD_SacredWellHole");
+        private static bool doDebug => getClassDoDebug(nameof(UD_SubStiltWorldBuilderExtension));
+        private static bool getDoDebug(object what = null)
+        {
+            List<object> doList = new()
+            {
+                'V',    // Vomit
+            };
+            List<object> dontList = new()
+            {
+                'X',    // Trace
+            };
 
-        public const string CathedralZoneID = "JoppaWorld.5.2.1.1.10";
-        public const string MAP_PARTIAL = "UD_GrandCathedralWell_";
+            if (what != null && doList.Contains(what))
+                return true;
 
-        public static string EmptyMaterial => "Air";
+            if (what != null && dontList.Contains(what))
+                return false;
 
-        public static Zone CathedralZone => The.ZoneManager?.GetZone(CathedralZoneID);
+            return doDebug;
+        }
+
+        public static Zone CathedralZone => The.ZoneManager?.GetZone(CATHEDRAL_ZONE_ID);
 
         public static Location2D StiltWellLocation => GetStiltWellLocation(CathedralZone); // [38,12]
 
@@ -29,17 +47,35 @@ namespace UD_SacredWellHole
 
         public override void OnAfterBuild(JoppaWorldBuilder Builder)
         {
+            Debug.Header(4, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
             MetricsManager.rngCheckpoint("sacrifice");
             Builder.BuildStep("Sacrificing artifacts", SacrificeArtifacts);
+            Debug.Footer(4, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
         }
 
         public void SacrificeArtifacts(string WorldID)
         {
-            if (!(WorldID == "JoppaWorld"))
+            int indent = Debug.LastIndent;
+            Debug.Entry(4,
+                $"* {nameof(UD_SubStiltWorldBuilderExtension)}."
+                + $"{nameof(SacrificeArtifacts)}("
+                + $"{nameof(WorldID)}: {WorldID})",
+                Indent: indent + 1, Toggle: doDebug);
+
+            if (WorldID != "JoppaWorld")
             {
+                Debug.LastIndent = indent;
                 return;
             }
             WorldCreationProgress.StepProgress("Sacrificing artifacts...");
+
+            Debug.Entry(4,
+                $"x {nameof(UD_SubStiltWorldBuilderExtension)}."
+                + $"{nameof(SacrificeArtifacts)}("
+                + $"{nameof(WorldID)}: {WorldID})"
+                + $" *//",
+                Indent: indent + 1, Toggle: doDebug);
+            Debug.LastIndent = indent;
         }
 
         public static Location2D GetStiltWellLocation(Zone Z)
@@ -75,7 +111,7 @@ namespace UD_SacredWellHole
         [WishCommand(Command = "go stilt")]
         public static void GoStilt()
         {
-            Zone Z = The.ZoneManager.GetZone(CathedralZoneID);
+            Zone Z = The.ZoneManager.GetZone(CATHEDRAL_ZONE_ID);
             The.Player.Physics.CurrentCell.RemoveObject(The.Player.Physics.ParentObject);
             Z.GetEmptyCells().GetRandomElement().AddObject(The.Player);
             The.ZoneManager.SetActiveZone(Z);

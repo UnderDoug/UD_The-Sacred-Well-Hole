@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<options>
+
+  <!-- 
+  Debug Options
+  -->
+  
+  <option
+        ID="Option_UD_SacredWellHole_DebugVerbosity"
+        DisplayText="{{illuminated|The Sacred Well}} {{K|Hole}}: Verbosity of debug entries output to Player.log"
+        Category="Debug"
+        Type="Slider" 
+        Default="0"
+        Min="0"
+        Max="4"
+        Increment="1"
+    >
+		<helptext>
+      {{g|0}}: Only infrequnet entries will be sent to Player.log, and only for reporting on normal function.
+      {{W|1}}: Debug entries will be sent to Player.log when certain functions are perfomed within this mod.
+      {{o|2}}: More frequent Player.log entries for a wider array of functions, often tracing broad program flow.
+      {{r|3}}: Even more Player.log entries including current internal values as they're passed around.
+      {{R|4}}: {{R|Not Recommended}} | Maximum number of entries to Player.log including tracing common or frequent loops.
+
+      The value default is {{g|0}}.
+    </helptext>
+	</option>
+	
+  <option
+        ID="Option_UD_SacredWellHole_DebugIncludeInMessage"
+		    Requires="Option_UD_SacredWellHole_DebugVerbosity!=0"
+        DisplayText="{{illuminated|The Sacred Well}} {{K|Hole}}: Also show debug entries in the Message Queue"
+        Category="Debug"
+        Type="Checkbox"
+        Default="No"
+    >
+    <helptext>
+      When enabled, debug entries will be sent to the Message Queue any time (with few exceptions) they would be sent to Player.log.
+      At higher levels of verbosity, this can be {{r|very}} "loud" and spammy.
+
+      The default is {{w|Disabled}}.
+    </helptext>
+  </option>
+  
+  <!-- 
+  End of Debug Options
+  -->
+  <!-- 
+  Mod Options
+  -->
+
+  <!-- Wrassle Options -->
+  <!--option
+      ID="Option_GigantismPlus_EnableWrasslePlayerStart"
+      DisplayText="Override chance that player characters who start with {{gigantic|Gigantism}} ({{r|D}}) will start with Wrassle Equipment"
+      Category="Mod: Gigantism Plus"
+      Type="Checkbox"
+      Default="No"
+      >
+    <helptext>
+      Creatures have a 15% chance, under most circumstances, to spawn with Wrassle Equipment if they spawn with {{gigantic|Gigantism}} ({{r|D}}).
+      The player has a much smaller chance due to it being a full set of gear and a weapon. When enabled, this option presents a slider to manually select the chance that player characters will spawn with their own unique set.
+
+      The default is {{w|Disabled}}.
+    </helptext>
+  </option>
+  
+  <option
+      ID="Option_GigantismPlus_SlideWrasslePlayerStart"
+      Requires="Option_GigantismPlus_EnableWrasslePlayerStart==Yes"
+      DisplayText="Chane in 1,000 that player characters with {{gigantic|Gigantism}} ({{r|D}}) will start with Wrassle Equipment"
+      Category="Mod: Gigantism Plus"
+      Type="Slider"
+      Default="1"
+      Min="0"
+      Max="1000"
+      Increment="1"
+      >
+    <helptext>
+      This slider represents the chance in 1,000 that when a player character spawns with {{gigantic|Gigantism}} ({{r|D}}), they will start with a full set of their own personal unique Wrassle Equipment with randomly (seeded) selected tiles, colors, and shader.
+      
+      Select 0 to disable this feature.
+      Select 100 to have this occur 10% of the time.
+      Select 1,000 to force this feature.
+
+      The default is {{w|1}}.
+    </helptext>
+  </option-->
+
+  <!-- Advanced Options -->
+
+  <!--option
+		  ID="Option_UD_SacredWellHole_Example"
+	    DisplayText="Exampel of a button that does something when pressed."
+      Requires="OptionShowAdvancedOptions==Yes"
+	    Category="Mod: The Sacred Well Hole"
+      Type="Button"
+      Default="Yes"
+      OnClick="UD_SacredWellHole.Options.OnOptionExampleMethod"
+	    >
+    <helptext>
+      {{K|This option is currently inactive. The "Enabled" behavior is currently forced.}}
+
+      Example body text designed to explain what this does.
+
+      The default is {{w|Enabled}}.
+    </helptext>
+  </option-->
+	
+  <!-- End of Mod Options -->
+  
+</options>

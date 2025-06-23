@@ -2,14 +2,12 @@
 <objects>
 
   <object Name="DaylightCell" Inherits="Widget">
-    <part Name="Render" DisplayName="daylight cell" />
     <part Name="DaylightCell" />
     <tag Name="ExcludeFromDynamicEncounters" />
     <tag Name="NoTwiddle" />
   </object>
 
   <object Name="SmallDaylightCell" Inherits="DaylightCell">
-    <part Name="Render" DisplayName="small daylight cell" />
     <part Name="DaylightCell" MaxRadius="2" />
     <tag Name="NoTwiddle" />
   </object>
@@ -19,13 +17,6 @@
     <part Name="ObliterateSelf" />
     <tag Name="ExcludeFromDynamicEncounters" />
     <tag Name="NoTwiddle" />
-  </object>
-
-  <object Name="JunkWall" Inherits="Widget">
-    <part Name="Render" Visible="true" DisplayName="junk wall" TileColor="&amp;y" DetailColor="C" RenderString="216" Tile="wall_coolant.png" />
-    <part Name="Physics" Weight="10000" Takeable="false" Solid="false" IsReal="false" />
-    <part Name="ReplaceObject" Table="RandomScrapWall" />
-    <tag Name="ExcludeFromDynamicEncounters" />
   </object>
   
 </objects>

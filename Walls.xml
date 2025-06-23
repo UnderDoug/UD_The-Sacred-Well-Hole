@@ -22,7 +22,7 @@
   <object Name="SmallOilPuddle" Inherits="OilPuddle">
     <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="oil-1000" />
   </object>
-  <object Name="SmallGelPuddle" Inherits="GelPuddle">
+  <object Name="SmallGelPuddle" Inherits="OilPuddle">
     <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="gel-1000" />
   </object>
   <object Name="SmallUnctuousOilPuddle" Inherits="SmallOilPuddle">
@@ -37,6 +37,7 @@
   
   <object Name="ScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted scrap" />
+    <part Name="RandomColors" TileColor="w,w,K,K,r" DetailColor="c,g,y" />
     <part Name="Corpse" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" DetailColor="w" />
     <tag Name="PitDetailColor" Value="w" />
@@ -89,6 +90,7 @@
   
   <object Name="ScrapMound" Inherits="BaseScrapMound">
     <part Name="Render" DisplayName="scrap mound" />
+    <part Name="RandomColors" TileColor="w,w,K,K,r" DetailColor="c,g,y" />
     <part Name="Corpse" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" DetailColor="w" />
   </object>
@@ -98,7 +100,7 @@
     <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="c"  DetailColor="K" />
   </object>
   <object Name="MechanicalScrapMound" Inherits="BaseScrapMound">
-    <part Name="Render" DisplayName="mechanical scrap mound" ColorString="&amp;K^w" TileColor="&amp;K" DetailColor="w" />
+    <part Name="Render" DisplayName="mechanical scrap mound" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y" />
     <part Name="Corpse" CorpseBlueprint="SmallGrimePuddle" />
     <removepart Name="DrawInTheDark" />
   </object>

@@ -1,15 +1,32 @@
-﻿using Genkit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
+using Genkit;
+
 using XRL.Rules;
 using XRL.World;
+using XRL.World.Parts;
 using XRL.World.ZoneBuilders;
 
 namespace UD_SacredWellHole
 {
     public static class Extensions
     {
+        private static bool doDebug => Options.doDebug;
+        public static bool getDoDebug(string MethodName)
+        {
+            if (MethodName == nameof(PullInsideFromEdges))
+                return false;
+
+            if (MethodName == nameof(PullInsideFromEdge))
+                return false;
+
+            if (MethodName == nameof(Explode))
+                return true;
+
+            return doDebug;
+        }
         public static string Inner = $"{nameof(Inner)}";
         public static string Outer = $"{nameof(Outer)}";
         public static string Corners = $"{nameof(Corners)}";
@@ -420,14 +437,29 @@ namespace UD_SacredWellHole
 
         public static int Explode(this DieRoll DieRoll, int Start = 0, int Step = 0, int Limit = 0)
         {
+            bool doDebug = getDoDebug(nameof(Explode));
+            int indent = Debug.LastIndent;
+            Debug.Entry(4,
+                $"* {nameof(DieRoll)}."
+                + $"{nameof(Explode)}("
+                + $"\"{DieRoll}\", "
+                + $"{nameof(Start)}: {Start}, "
+                + $"{nameof(Step)}: {Step}, "
+                + $"{nameof(Limit)}: {Limit})",
+                Indent: indent + 1, Toggle: doDebug);
+
             if (DieRoll == null || DieRoll.Max() < 2)
             {
+                Debug.CheckNah(4, $"No {nameof(DieRoll)} or max roll is less than 2", Indent: indent + 2, Toggle: doDebug);
+                Debug.LastIndent = indent;
                 return Start;
             }
 
             if (Limit != 0 && Start > Limit)
             {
                 Start = Limit;
+                Debug.CheckYeh(4, $"{nameof(Limit)} exceeded, returning", Indent: indent + 2, Toggle: doDebug);
+                Debug.LastIndent = indent;
                 return Start;
             }
 
@@ -442,19 +474,42 @@ namespace UD_SacredWellHole
                 {
                     Start += Step;
                 }
+                Debug.CheckYeh(4, $"{nameof(DieRoll)} exploded, we go again!", Indent: indent + 2, Toggle: doDebug);
                 return DieRoll.Explode(Start, Step, Limit);
             }
             if (Step == 0)
             {
                 Start += result;
             }
+            Debug.CheckYeh(4, $"{nameof(DieRoll)} didn't explode, returning", Indent: indent + 2, Toggle: doDebug);
+            Debug.LastIndent = indent;
             return Start;
         }
 
-        public static int ExplodingDie(this string DieRoll, int Start = 0, int Step = 0, int Limit = 0, int Indent = 0)
+        public static int Explode(this string DieRoll, int Start = 0, int Step = 0, int Limit = 0)
         {
             DieRoll dieRoll = new(DieRoll);
             return dieRoll.Explode(Start, Step, Limit);
+        }
+
+        public static bool InheritsFrom(this GameObject Object, string Blueprint)
+        {
+            return Object.Blueprint == Blueprint || Object.GetBlueprint().InheritsFrom(Blueprint);
+        }
+
+        public static bool IsAssignableFrom(this IPart @this, IPart Part)
+        {
+            return @this.GetType().IsAssignableFrom(Part.GetType());
+        }
+
+        public static bool InheritsFrom(this IPart @this, Type Type)
+        {
+            return Type.IsAssignableFrom(@this.GetType());
+        }
+        public static bool InheritsFrom<T>(this IPart @this)
+            where T : IModification
+        {
+            return typeof(T).IsAssignableFrom(@this.GetType());
         }
     }
 }

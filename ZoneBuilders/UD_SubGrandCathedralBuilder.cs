@@ -1,65 +1,77 @@
-﻿using Genkit;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-using UD_SacredWellHole;
+using Genkit;
 
 using XRL.Rules;
 using XRL.World.Parts;
+using XRL.World.WorldBuilders;
+
+using UD_SacredWellHole;
+using static UD_SacredWellHole.Options;
+using static UD_SacredWellHole.Const;
 
 namespace XRL.World.ZoneBuilders
 {
     public class UD_SubGrandCathedralBuilder : ZoneBuilderSandbox
     {
+        private static bool doDebug => getClassDoDebug(nameof(UD_SubGrandCathedralBuilder));
+        private static bool getDoDebug(object what = null)
+        {
+            List<object> doList = new()
+            {
+                'V',    // Vomit
+            };
+            List<object> dontList = new()
+            {
+                'X',    // Trace
+            };
+
+            if (what != null && doList.Contains(what))
+                return true;
+
+            if (what != null && dontList.Contains(what))
+                return false;
+
+            return doDebug;
+        }
+
         public static string Inner = $"{nameof(Inner)}";
         public static string Outer = $"{nameof(Outer)}";
         
-
         public Dictionary<string, Dictionary<string, List<Cell>>> Regions;
 
-        public Location2D StiltWellLocation;
-        public List<Location2D> SolidJunkPileCellsBelow;
-        public bool WantScrappy;
+        public Location2D StiltWellLocation => UD_SubStiltWorldBuilderExtension.StiltWellLocation;
 
-        public string EmptyMaterial => UD_SubStiltBuilderExtension.EmptyMaterial;
+        public static string EmptyMaterial => "Air";
 
         public UD_SubGrandCathedralBuilder()
         {
-            StiltWellLocation = new(38, 12);
-        }
-        public UD_SubGrandCathedralBuilder(Location2D StiltWellLocation = null)
-            : this ()
-        {
-            this.StiltWellLocation = StiltWellLocation ?? new(38, 12);
         }
         public bool BuildZone(Zone Z)
         {
+            Debug.Header(4, $"{nameof(UD_SubGrandCathedralBuilder)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);
+            int indent = Debug.LastIndent;
+
             zone = Z;
 
             ZoneManager zoneManager = The.ZoneManager;
-
-            UnityEngine.Debug.LogError($"{nameof(UD_SubGrandCathedralBuilder)}, {nameof(zone)}: {zone.ZoneID}");
-            
-            zone.GetCell(0, 0).AddObject(GameObjectFactory.Factory.CreateObject("SixDayStiltTile"));
+                        
+            // zone.GetCell(0, 0).AddObject(GameObjectFactory.Factory.CreateObject("SixDayStiltTile"));
 
             Cell stiltWellCell = zone.GetCell(StiltWellLocation);
             int strataFromBottom = 20 - zone.Z;
             int strataFromTop = 10 - strataFromBottom;
             string floorMaterial = strataFromBottom > 0 ? "BlackMarbleWalkway" : null;
 
-            UnityEngine.Debug.LogError($"    " +
-                $"zone.Z: {zone.Z}, " +
-                $"{nameof(strataFromBottom)}: {strataFromBottom}, " +
-                $"{nameof(strataFromTop)}: {strataFromTop}");
-
-            UnityEngine.Debug.LogError($"    {nameof(floorMaterial)}: {floorMaterial}");
+            Debug.LoopItem(4, $"{nameof(strataFromBottom)}: {strataFromBottom}, {nameof(strataFromTop)}: {strataFromTop}", Indent: indent + 1, Toggle: getDoDebug());
+            Debug.LoopItem(4, $"{nameof(floorMaterial)}: {floorMaterial}, {nameof(strataFromTop)}: {strataFromTop}", Indent: indent + 1, Toggle: getDoDebug());
 
             foreach (Cell cell in zone.GetCells())
             {
-                if (!cell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")))
+                if (!cell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")) && cell.ParentZone == zone)
                 {
-                    string TileColor = Stat.RollCached("1d6") switch
+                    string TileColor = cell.HasObjectWithBlueprint("Sandstone") ? null : Stat.RollCached("1d6") switch
                     {
                         5 => "w",
                         4 => "r",
@@ -68,7 +80,7 @@ namespace XRL.World.ZoneBuilders
                         1 => "K",
                         _ => "y",
                     };
-                    string DetailColor = Stat.RollCached("1d6") switch
+                    string DetailColor = cell.HasObjectWithBlueprint("Sandstone") ? null : Stat.RollCached("1d6") switch
                     {
                         5 => "w",
                         4 => "r",
@@ -89,35 +101,40 @@ namespace XRL.World.ZoneBuilders
                 }
             }
 
-            MostlySolidMaterial mostlySolidBuilder = new(Material: "Sandstone");
+            UDSW_MostlySolidMaterial mostlySolidBuilder = new(Material: "Sandstone");
             if (strataFromTop < 6)
             {
-                UnityEngine.Debug.LogError($"    {nameof(mostlySolidBuilder)}: All Cells");
+                Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
                 mostlySolidBuilder.Cells.AddRange(Z.GetCells());
             }
             else
             {
-                UnityEngine.Debug.LogError($"    {nameof(mostlySolidBuilder)}: Filtered Cells");
                 mostlySolidBuilder.Cells.AddRange(
                     zone.GetCells(c => 
                         !c.HasObject(GO => 
                                GO.GetBlueprint().InheritsFrom("BaseScrapWall")
                             || GO.GetBlueprint().InheritsFrom("Widget")
+                            || GO.Blueprint == EmptyMaterial
                             || GO.Blueprint == "Air"
                             || GO.Blueprint == "Timecube"
                             )));
+                Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
             }
             mostlySolidBuilder.Cells.RemoveAll(c => c == stiltWellCell);
             mostlySolidBuilder.BuildZone(zone);
             
             if (strataFromTop < 6)
             {
-                UnityEngine.Debug.LogError($"    {nameof(Cell)}.{nameof(Cell.Clear)}()");
+                Debug.LoopItem(4, $"{nameof(Cell)}.{nameof(Cell.Clear)}()", Indent: indent + 1, Toggle: getDoDebug());
                 stiltWellCell.Clear(Combat: true);
+                if (strataFromTop == 5)
+                {
+                    stiltWellCell.AddObject("SpawnBlocker");
+                }
             }
             if (strataFromTop < 5)
             {
-                UnityEngine.Debug.LogError($"    {nameof(Cell)}.{nameof(Cell.AddObject)}({EmptyMaterial})");
+                Debug.LoopItem(4, $"{nameof(Cell)}.{nameof(Cell.AddObject)}({EmptyMaterial})", Indent: indent + 1, Toggle: getDoDebug());
                 stiltWellCell.AddObject(EmptyMaterial);
             }
             stiltWellCell.AddObject("FlyingWhitelistArea");
@@ -131,7 +148,7 @@ namespace XRL.World.ZoneBuilders
                 }
             }
 
-            int airRadius = strataFromTop < 3 ? 1 : Math.Max(1, (int)((strataFromTop-1) * (strataFromTop * 0.25f)));
+            int airRadius = strataFromTop < 3 ? 1 : Math.Max(1, (int)((strataFromTop-1) * (strataFromTop * 0.2125f)));
 
             Dictionary<string, List<Cell>> openAirRegion = stiltWellCell.GetCircleRegion(airRadius, Filter: c => c != stiltWellCell);
             if (!openAirRegion.IsNullOrEmpty())
@@ -199,46 +216,79 @@ namespace XRL.World.ZoneBuilders
                     List<Cell> scrapWallCells = Event.NewCellList(zone.GetCellsWithObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall")));
                     if (!scrapWallCells.IsNullOrEmpty())
                     {
+                        Debug.LoopItem(4, $"Breaking/Deleting select Scrap Walls and Mounds", Indent: indent + 1, Toggle: getDoDebug());
                         foreach (Cell scrapWallCell in scrapWallCells)
                         {
-                            if (scrapWallCell.IsInnerCell(Basis: c => c.HasObjectWithBlueprintEndsWith("ScrapWall"), false)
+                            Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
+                            Debug.LoopItem(4, $"{nameof(scrapWallCell)}: [{scrapWallCell.Location}]", Indent: indent + 2, Toggle: getDoDebug());
+                            GameObject scrapWall = scrapWallCell.GetFirstObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall"));
+                            if (scrapWall != null && scrapWallCell.IsInnerCell(Basis: c => c.HasObjectWithBlueprintEndsWith("ScrapWall"), false)
                                 || Stat.RollCached("1d10") == 3)
                             {
-                                GameObject scrapWall = scrapWallCell.GetFirstObject("BaseScrapWall");
-                                if (scrapWall != null && Stat.RollCached("1d4") == 1)
+                                Debug.CheckYeh(4, $"{nameof(scrapWallCell)} is Inner (or by 3in10)", Indent: indent + 3, Toggle: getDoDebug());
+                                if (Stat.RollCached("1d3") == 1)
                                 {
+                                    Debug.CheckYeh(4, $"{nameof(scrapWall)} located and 1in3 successful", Indent: indent + 3, Toggle: getDoDebug());
                                     if (Stat.RollCached("1d2") == 1)
                                     {
+                                        Debug.LoopItem(4, $"{scrapWall?.DebugName ?? NULL}", $"Removed", Indent: indent + 4, Toggle: getDoDebug());
                                         scrapWallCell.RemoveObject(scrapWall);
                                     }
                                     else
                                     {
+                                        Debug.LoopItem(4, $"{scrapWall?.DebugName ?? NULL}", $"Kilt", Indent: indent + 4, Toggle: getDoDebug());
                                         scrapWall.Die();
                                     }
                                 }
-                                ;
+                                else
+                                {
+                                    Debug.CheckNah(4, $"{nameof(scrapWall)} not located or 1in3 failed", Indent: indent + 3, Toggle: getDoDebug());
+                                }
+                            }
+                            else
+                            {
+                                if (scrapWall.Blueprint.Contains("Mechanical"))
+                                {
+                                    // do Gearbox/Piping/Wired mod here.
+                                }
                             }
                         }
+                        Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
                     }
                 }
             }
 
             if (zone.Z == 20)
             {
-                int tier = new DieRoll("1d4").Explode(2, 1, 5);
+                Debug.LoopItem(4, $"Rolling Tier 2-5 Relic by way of ExplodingDie and setting {nameof(HolyPlace)}", Indent: indent + 1, Toggle: getDoDebug());
+
+                int tier = new DieRoll("1d3").Explode(2, 1, 5);
                 GameObject stiltWellRelic = RelicGenerator.GenerateRelic(Tier: tier);
                 if (stiltWellRelic != null)
                 {
+                    Debug.CheckYeh(4, $"{nameof(stiltWellRelic)}", $"{stiltWellRelic.DebugName}", Indent: indent + 2, Toggle: getDoDebug());
                     stiltWellCell.Clear(Combat: true).AddObject(stiltWellRelic);
                 }
                 else
                 {
                     stiltWellCell.AddPopulation("Artifact 8R");
+                    Debug.CheckNah(4, $"Relic Failed, Adding from population", $"Artifact 8R", Indent: indent + 2, Toggle: getDoDebug());
                 }
-                Faction mechanimists = Factions.GetIfExists("Mechanimists");
-                The.Game.GetSystem<HolyPlaceSystem>()?.SetHolyZone(zone, mechanimists);
+                GameObject stiltRecoiler = GameObjectFactory.Factory.CreateObject("Six Day Stilt Recoiler");
+                if (stiltRecoiler != null)
+                {
+                    Debug.CheckYeh(4, $"{nameof(stiltRecoiler)}", $"{stiltRecoiler.DebugName}", Indent: indent + 2, Toggle: getDoDebug());
+                    stiltWellCell.AddObject(stiltRecoiler);
+                }
+                if (stiltWellCell.AddObject("HolyPlaceWidget").TryGetPart(out HolyPlace holyPlace))
+                {
+                    holyPlace.Faction = "Mechanimists";
+                }
+                Debug.LoopItem(4, $"{nameof(holyPlace)}{nameof(holyPlace.Faction)}", $"{holyPlace?.Faction ?? NULL}", 
+                    Good: holyPlace?.Faction == "Mechanimists", Indent: indent + 2, Toggle: getDoDebug());
             }
 
+            Debug.Footer(4, $"{nameof(UD_SubGrandCathedralBuilder)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);
             return true;
         }
 

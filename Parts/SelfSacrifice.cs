@@ -25,12 +25,12 @@ namespace XRL.World.Parts
         {
             if (E.Command == "Sacrifice Self"
                 && Popup.ShowYesNo(
-                    $"It looks like a very long way down, " +
+                    $"It looks like an awfully long fall, " +
                     $"are you sure you want to jump into " +
-                    $"{ParentObject.DefiniteArticle()} {ParentObject?.Render?.DisplayName}?"
+                    $"{ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}?"
                     , defaultResult: DialogResult.No
-                    ) == DialogResult.Yes 
-                && E.Actor.Move(!E.Actor.IsFlying ? E.Actor.GetDirectionToward(ParentObject) : "D", DoConfirmations: false))
+                    ) == DialogResult.Yes
+                && E.Actor.Move(!E.Actor.IsFlying ? E.Actor.GetDirectionToward(ParentObject) : "D", System: true, DoConfirmations: false))
             {
                 MemorializeSelfSacrifice(E.Actor);
                 E.RequestInterfaceExit();
@@ -54,14 +54,14 @@ namespace XRL.World.Parts
                 {
                     Sacrifice.SetIntProperty("Jumped In Stilt Well", 1);
                     JournalAPI.AddAccomplishment(
-                    text: $"You proclaimed yourself an artifact and threw yourself into {ParentObject.DefiniteArticle()} {ParentObject?.Render?.DisplayName}",
-                    muralText: $"O! Praise the chrome! On the {Calendar.GetDay()} of {Calendar.GetMonth()}, in the year {Calendar.GetYear()} AR, =name= recognised =subject.reflexive= as the priceless relic =pronoun.subjective= =verb:are:afterpronoun= and made an iconic descent into {ParentObject.DefiniteArticle()} {ParentObject?.Render?.DisplayName}.",
+                    text: $"You proclaimed yourself an artifact and threw yourself into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}",
+                    muralText: $"O! Praise the chrome! On the {Calendar.GetDay()} of {Calendar.GetMonth()}, in the year {Calendar.GetYear()} AR, =name= recognised =subject.reflexive= as the priceless relic =pronoun.subjective= =verb:are:afterpronoun= and made an iconic descent into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}.",
                     gospelText: $"<spice.instancesOf.inYear.!random.capitalize> =year=, " +
                         $"<spice.instancesOf.afterTumultuousYears.!random>, =player.possessive= counselors suggested " +
                         $"=player.subjective= <spice.instancesOf.abdicate.!random> as sultan. " +
                         $"Instead, =player.subjective= recognised =subject.reflexive= as the " +
                         $"priceless relic =pronoun.subjective= =verb:are:afterpronoun= and made " +
-                        $"an iconic descent into {ParentObject.DefiniteArticle()} {ParentObject?.Render?.DisplayName}.",
+                        $"an iconic descent into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}.",
                     muralCategory: MuralCategory.DoesSomethingRad,
                     muralWeight: MuralWeight.VeryHigh);
 
