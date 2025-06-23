@@ -3,36 +3,33 @@
   
   <population Name="ScrapWalls">
     <group Name="Options" Style="pickone">
-      <object Weight="25" Blueprint="ScrapWall" />
+      <object Weight="15" Blueprint="ScrapWall" />
       <object Weight="10" Blueprint="MechanicalScrapWall" />
       <object Weight="5" Blueprint="CyberneticScrapWall" />
-      <object Weight="5" Blueprint="ElectronicScrapWall" />
+      <object Weight="10" Blueprint="ElectronicScrapWall" />
     </group>
   </population>
   
   <population Name="ScrapMounds">
     <group Name="Options" Style="pickone">
-      <object Weight="25" Blueprint="ScrapMound" />
+      <object Weight="15" Blueprint="ScrapMound" />
       <object Weight="10" Blueprint="MechanicalScrapMound" />
       <object Weight="5" Blueprint="CyberneticScrapMound" />
-      <object Weight="5" Blueprint="ElectronicScrapMound" />
+      <object Weight="15" Blueprint="ElectronicScrapMound" />
     </group>
   </population>
   
   <population Name="SacrificialJunk">
     <group Name="Options" Style="pickone">
+      <table Weight="388" Name="MiddleWeightedRandomEnergyCell" />
       <table Weight="32" Name="Cybernetics0" />
       <table Weight="256" Name="Junk 1" />
-      <table Weight="64" Name="DynamicObjectsTable:EnergyCells:Tier1" />
       <table Weight="32" Name="Cybernetics1" />
       <table Weight="512" Name="Junk 2" />
-      <table Weight="128" Name="DynamicObjectsTable:EnergyCells:Tier3" />
       <table Weight="64" Name="Cybernetics2" />
       <table Weight="1024" Name="Junk 3" />
-      <table Weight="128" Name="DynamicObjectsTable:EnergyCells:Tier5" />
       <table Weight="128" Name="Cybernetics3" />
       <table Weight="512" Name="Junk 4" />
-      <table Weight="64" Name="DynamicObjectsTable:EnergyCells:Tier7" />
       <table Weight="64" Name="Cybernetics4" />
       <table Weight="256" Name="Junk 5" />
       <table Weight="32" Name="Cybernetics5" />
@@ -40,9 +37,18 @@
       <table Weight="16" Name="Cybernetics6" />
       <table Weight="8" Name="Junk 7" />
       <table Weight="4" Name="Cybernetics7" />
-      <table Weight="4" Name="DynamicObjectsTable:EnergyCells:Tier8" />
       <table Weight="1" Name="Junk 8" />
       <table Weight="1" Name="Cybernetics8" />
+    </group>
+  </population>
+  
+  <population Name="MiddleWeightedRandomEnergyCell">
+    <group Name="Options" Style="pickone">
+      <table Weight="64" Name="DynamicObjectsTable:EnergyCells:Tier1" />
+      <table Weight="128" Name="DynamicObjectsTable:EnergyCells:Tier3" />
+      <table Weight="128" Name="DynamicObjectsTable:EnergyCells:Tier5" />
+      <table Weight="64" Name="DynamicObjectsTable:EnergyCells:Tier7" />
+      <table Weight="4" Name="DynamicObjectsTable:EnergyCells:Tier8" />
     </group>
   </population>
   

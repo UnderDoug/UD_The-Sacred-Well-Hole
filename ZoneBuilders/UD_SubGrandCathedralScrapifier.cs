@@ -1,5 +1,6 @@
 ﻿using Genkit;
 using HistoryKit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UD_SacredWellHole;
@@ -237,6 +238,63 @@ namespace XRL.World.ZoneBuilders
                     }
                 }
                 Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
+            }
+
+            static bool IsScrapWallMound(GameObject GO)
+            {
+                return GO.InheritsFrom("BaseScrapWall") || GO.InheritsFrom("BaseScrapMound");
+            }
+            List<GameObject> scrapWallMoundList = Event.NewGameObjectList(zone.GetObjects(GO => IsScrapWallMound(GO)));
+            if (!scrapWallMoundList.IsNullOrEmpty())
+            {
+                foreach (GameObject scrapWall in scrapWallMoundList)
+                {
+                    if (!scrapWall.HasPart<ModGearbox>() && 3.in10())
+                    {
+                        scrapWall.ApplyModification(nameof(ModGearbox), Creation: true);
+                    }
+                    if (!scrapWall.HasPart<ModWired>() && 3.in10())
+                    {
+                        scrapWall.ApplyModification(nameof(ModWired), Creation: true);
+                        if (1.in10())
+                        {
+                            EnergyCellSocket energyCellSocket = scrapWall.RequirePart<EnergyCellSocket>();
+                            GameObject energyCellObject = GameObjectFactory.Factory.CreateObject(PopulationManager.GenerateOne("MiddleWeightedRandomEnergyCell")?.Blueprint);
+                            if (energyCellObject != null)
+                            {
+                                EnergyCell energyCell = energyCellObject.GetPart<EnergyCell>();
+                                if (energyCell != null)
+                                {
+                                    energyCell.Charge = Math.Min(energyCell.Charge * Stat.RollCached("1d100"), energyCell.MaxCharge);
+                                    energyCellSocket.Cell = energyCellObject;
+                                }
+                            }
+                        }
+                    }
+                    if (!scrapWall.HasPart<ModPiping>() && 7.in10())
+                    {
+                        string corpseBlueprintString = scrapWall.GetPart<Corpse>().CorpseBlueprint;
+                        GameObjectBlueprint corpseBlueprint = GameObjectFactory.Factory.GetBlueprintIfExists(corpseBlueprintString);
+                        string corpseLiquid = corpseBlueprint.GetPartParameter(nameof(LiquidVolume), "InitialLiquid", "oil-600,gel-300,sludge-100");
+                        ModPiping modPiping = new()
+                        {
+                            Liquid = corpseLiquid
+                        };
+                        scrapWall.ApplyModification(modPiping, Creation: true);
+                        if (15.in100())
+                        {
+                            scrapWall.ApplyEffect(new Broken());
+                        }
+                    }
+                    if (scrapWall.HasPart<ModWired>() && !scrapWall.HasPart<FusionReactor>() && 15.in100())
+                    {
+                        scrapWall.AddPart<FusionReactor>();
+                    }
+                    if (15.in100())
+                    {
+                        scrapWall.ApplyEffect(new Rusted());
+                    }
+                }
             }
 
             Debug.Footer(4, $"{nameof(UD_SubGrandCathedralScrapifier)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);

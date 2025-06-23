@@ -43,7 +43,7 @@ namespace XRL.World.ZoneBuilders
 
         public Location2D StiltWellLocation => UD_SubStiltWorldBuilderExtension.StiltWellLocation;
 
-        public static string EmptyMaterial => "Air";
+        public string EmptyMaterial = "SandstoneQuantumAir";
 
         public UD_SubGrandCathedralBuilder()
         {
@@ -54,6 +54,8 @@ namespace XRL.World.ZoneBuilders
             int indent = Debug.LastIndent;
 
             zone = Z;
+
+            EmptyMaterial = zone.Z < 15 ? EmptyMaterial : "ScrapQuantumAir";
 
             ZoneManager zoneManager = The.ZoneManager;
                         
@@ -94,8 +96,13 @@ namespace XRL.World.ZoneBuilders
                     {
                         cell.RemoveObject(floor);
                     }
-                    
                     Cell cellBelow = cell.GetCellFromDirection("D", BuiltOnly: false);
+                    GameObject wallBelow = cellBelow.GetFirstObject(GO => GO.InheritsFrom("BaseScrapWall"));
+                    if (wallBelow != null && wallBelow.Render != null)
+                    {
+                        TileColor = wallBelow.Render.TileColor;
+                        DetailColor = wallBelow.Render.DetailColor;
+                    }
                     bool doFloorMaterial = cellBelow != null && cellBelow.HasObjectWithBlueprintEndsWith("ScrapWall");
                     PaintCell(cell, (doFloorMaterial ? floorMaterial : null), TileColor, DetailColor, Overwrite: true, OverrideFloorColors: true);
                 }
@@ -245,13 +252,6 @@ namespace XRL.World.ZoneBuilders
                                     Debug.CheckNah(4, $"{nameof(scrapWall)} not located or 1in3 failed", Indent: indent + 3, Toggle: getDoDebug());
                                 }
                             }
-                            else
-                            {
-                                if (scrapWall.Blueprint.Contains("Mechanical"))
-                                {
-                                    // do Gearbox/Piping/Wired mod here.
-                                }
-                            }
                         }
                         Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
                     }
@@ -262,7 +262,7 @@ namespace XRL.World.ZoneBuilders
             {
                 Debug.LoopItem(4, $"Rolling Tier 2-5 Relic by way of ExplodingDie and setting {nameof(HolyPlace)}", Indent: indent + 1, Toggle: getDoDebug());
 
-                int tier = new DieRoll("1d3").Explode(2, 1, 5);
+                int tier = new DieRoll("1d3").Explode(3, 1, 6);
                 GameObject stiltWellRelic = RelicGenerator.GenerateRelic(Tier: tier);
                 if (stiltWellRelic != null)
                 {

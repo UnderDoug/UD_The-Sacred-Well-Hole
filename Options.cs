@@ -75,6 +75,7 @@ namespace UD_SacredWellHole
             { nameof(UD_SubGrandCathedralScrapifier), true },
             { nameof(UDSW_SolidMaterial), true },
             { nameof(UDSW_MostlySolidMaterial), true },
+            { nameof(QuantumAir), true },
         };
 
         public static bool getClassDoDebug(string Class)

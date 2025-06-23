@@ -7,6 +7,7 @@
     <part Name="Metal" />
     <part Name="Corpse" CorpseChance="50" BuildCorpseChance="50" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" BackgroundTileColor="K" ForegroundTileColor="k" DetailColor="w" />
+    <part Name="LeakWhenBroken" />
     <tag Name="PaintWith" Value="MachineWallsTubing" />
     <tag Name="BaseObject" Value="*noinherit" />
     <tag Name="BodyType" Value="MetalWall" />
@@ -42,15 +43,10 @@
     <part Name="DrawInTheDark" DetailColor="w" />
     <tag Name="PitDetailColor" Value="w" />
   </object>
-  <object Name="CyberneticScrapWall" Inherits="BaseScrapWall">
-    <part Name="Render" DisplayName="compacted cybernetics scrap" ColorString="&amp;r^c" TileColor="&amp;r" DetailColor="c" />
-    <part Name="Corpse" CorpseBlueprint="SmallUnctuousOilPuddle" />
-    <part Name="DrawInTheDark" DetailColor="c" />
-    <tag Name="PitDetailColor" Value="r" />
-  </object>
   <object Name="MechanicalScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted mechanical scrap" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y" />
     <part Name="Corpse" CorpseBlueprint="SmallGrimePuddle" />
+    <part Name="ModGearbox" />
     <removepart Name="DrawInTheDark" />
     <tag Name="PitDetailColor" Value="w" />
   </object>
@@ -58,7 +54,16 @@
     <part Name="Render" DisplayName="compacted electronics scrap" ColorString="&amp;K^g" DetailColor="g"/>
     <part Name="Corpse" CorpseBlueprint="SmallToxicGrimePuddle" />
     <part Name="DrawInTheDark" DetailColor="g" />
+    <part Name="ModWired" />
     <tag Name="PitDetailColor" Value="g" />
+  </object>
+  <object Name="CyberneticScrapWall" Inherits="BaseScrapWall">
+    <part Name="Render" DisplayName="compacted cybernetics scrap" ColorString="&amp;r^c" TileColor="&amp;r" DetailColor="c" />
+    <part Name="Corpse" CorpseBlueprint="SmallUnctuousOilPuddle" />
+    <part Name="DrawInTheDark" DetailColor="c" />
+    <part Name="ModWired" />
+    <part Name="ModPiping" Liquid="oil-675,gel-325" />
+    <tag Name="PitDetailColor" Value="r" />
   </object>
   <object Name="RandomScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted random scrap" ColorString="&amp;K^g" DetailColor="Y"/>
@@ -75,6 +80,7 @@
     <part Name="Metal" />
     <part Name="Corpse" CorpseChance="33" BuildCorpseChance="33" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="K" DetailColor="w" />
+    <part Name="LeakWhenBroken" />
     <tag Name="VaporObject" Value="SmallOilyUnctuousLavaPuddle" />
     <tag Name="BaseObject" Value="*noinherit" />
     <tag Name="Mods" Value="TechWallMods" />
@@ -94,20 +100,24 @@
     <part Name="Corpse" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" DetailColor="w" />
   </object>
-  <object Name="CyberneticScrapMound" Inherits="BaseScrapMound">
-    <part Name="Render" DisplayName="cybernetics scrap mound" ColorString="&amp;c^r" TileColor="&amp;c" DetailColor="r" />
-    <part Name="Corpse" CorpseBlueprint="SmallUnctuousOilPuddle" />
-    <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="c"  DetailColor="K" />
-  </object>
   <object Name="MechanicalScrapMound" Inherits="BaseScrapMound">
     <part Name="Render" DisplayName="mechanical scrap mound" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y" />
     <part Name="Corpse" CorpseBlueprint="SmallGrimePuddle" />
+    <part Name="ModGearbox" />
     <removepart Name="DrawInTheDark" />
   </object>
   <object Name="ElectronicScrapMound" Inherits="BaseScrapMound">
     <part Name="Render" DisplayName="electronic scrap mound" ColorString="&amp;w^g" TileColor="&amp;w" DetailColor="g"/>
     <part Name="Corpse" CorpseBlueprint="SmallToxicGrimePuddle" />
+    <part Name="ModWired" />
     <part Name="DrawInTheDark" DetailColor="g" />
+  </object>
+  <object Name="CyberneticScrapMound" Inherits="BaseScrapMound">
+    <part Name="Render" DisplayName="cybernetics scrap mound" ColorString="&amp;c^r" TileColor="&amp;c" DetailColor="r" />
+    <part Name="Corpse" CorpseBlueprint="SmallUnctuousOilPuddle" />
+    <part Name="ModWired" />
+    <part Name="ModPiping" Liquid="oil-675,gel-325" />
+    <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="c"  DetailColor="K" />
   </object>
   <object Name="RandomScrapMound" Inherits="BaseScrapMound">
     <part Name="Render" DisplayName="random scrap mound" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y"/>

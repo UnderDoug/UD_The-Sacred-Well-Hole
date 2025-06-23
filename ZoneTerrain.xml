@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects>
+
+  <object Name="QuantumAir" Inherits="Air">
+    <part Name="QuantumAir" CollapsingBlueprint="Wall" />
+  </object>
+
+  <object Name="ScrapQuantumAir" Inherits="QuantumAir">
+    <part Name="QuantumAir" CollapsingBlueprint="BaseScrapWall" FloorMaterial="BlackMarbleWalkway" />
+  </object>
+
+  <object Name="SandstoneQuantumAir" Inherits="QuantumAir">
+    <part Name="QuantumAir" CollapsingBlueprint="Sandstone" />
+  </object>
+  
+</objects>
