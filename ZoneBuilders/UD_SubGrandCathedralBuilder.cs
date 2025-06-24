@@ -43,7 +43,7 @@ namespace XRL.World.ZoneBuilders
 
         public Location2D StiltWellLocation => UD_SubStiltWorldBuilderExtension.StiltWellLocation;
 
-        public string EmptyMaterial = "SandstoneQuantumAir";
+        public string EmptyMaterial = "Air";
 
         public UD_SubGrandCathedralBuilder()
         {
@@ -192,6 +192,14 @@ namespace XRL.World.ZoneBuilders
                                 {
                                     if (!openAirCells.Contains(adjacentCell))
                                     {
+                                        Cell cellAbove = adjacentCell.GetCellFromDirection("U", BuiltOnly: false);
+                                        if (false && cellAbove != null && strataFromTop > 1 && strataFromBottom > 1 && !cellAbove.HasObjectWithBlueprint("Sandstone"))
+                                        {
+                                            adjacentCell.Clear().AddObject(EmptyMaterial);
+                                            cellsToAddToOuter.Add(adjacentCell);
+                                            cellsAlreadyRolled.Add(adjacentCell);
+                                            continue;
+                                        }
                                         if (!cellsAlreadyRolled.Contains(adjacentCell) && Stat.RollCached("1d3") == 1)
                                         {
                                             adjacentCell.Clear();

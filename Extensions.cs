@@ -511,5 +511,49 @@ namespace UD_SacredWellHole
         {
             return typeof(T).IsAssignableFrom(@this.GetType());
         }
+
+        public static IEnumerable<Cell> GetAdjacentCellsInGeneralDirection(this Cell Cell, string Direction)
+        {
+            List<string> directions = new();
+            List<string> adjacentDirections = new();
+            if (Direction.IsNullOrEmpty() || Cell == null)
+            {
+                yield break;
+            }
+            if (Direction.Length > 1)
+            {
+                foreach (char c in Direction)
+                {
+                    directions.Add(c.ToString());
+                }
+            }
+            else
+            {
+                directions.Add(Direction);
+            }
+            foreach (Cell adjacentCell in Cell.GetAdjacentCells())
+            {
+                string adjacentCellDirection = Cell.GetDirectionFromCell(adjacentCell);
+                if (adjacentCellDirection.Length > 1)
+                {
+                    foreach (char c in adjacentCellDirection)
+                    {
+                        adjacentDirections.Add(c.ToString());
+                    }
+                }
+                else
+                {
+                    adjacentDirections.Add(adjacentCellDirection);
+                }
+                foreach (string adjacentDirection in adjacentDirections)
+                {
+                    if (directions.Contains(adjacentDirection))
+                    {
+                        yield return adjacentCell;
+                    }
+                }
+            }
+            yield break;
+        }
     }
 }

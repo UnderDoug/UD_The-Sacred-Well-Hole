@@ -27,8 +27,8 @@ namespace XRL.World.Parts
                 && Popup.ShowYesNo(
                     $"It looks like an awfully long fall, " +
                     $"are you sure you want to jump into " +
-                    $"{ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}?"
-                    , defaultResult: DialogResult.No
+                    $"{ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}?", 
+                    defaultResult: DialogResult.No
                     ) == DialogResult.Yes
                 && E.Actor.Move(!E.Actor.IsFlying ? E.Actor.GetDirectionToward(ParentObject) : "D", System: true, DoConfirmations: false))
             {

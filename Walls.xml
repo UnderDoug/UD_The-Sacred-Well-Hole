@@ -4,20 +4,28 @@
   <object Name="BaseScrapWall" Inherits="CatacombWall">
     <part Name="Render" DisplayName="[compacted scrap]" ColorString="&amp;k^w" TileColor="&amp;k" DetailColor="w"/>
     <part Name="Description" Short="Jagged metal shapes of the chrome form are disarranged to tessellate properly. Round casings require axel-joints to fill the gaps in their sequences. The boundaries of this world are grime-smeared and absent any presence." />
+    <part Name="Physics" Weight="10000" FlameTemperature="99999" VaporTemperature="6000" Takeable="false" Solid="true" Conductivity="80" />
+    <stat Name="Hitpoints" Value="5000" />
+    <stat Name="ElectricResistance" Value="0" />
     <part Name="Metal" />
     <part Name="Corpse" CorpseChance="50" BuildCorpseChance="50" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" BackgroundTileColor="K" ForegroundTileColor="k" DetailColor="w" />
     <part Name="LeakWhenBroken" />
+    <part Name="ScrambleUp" />
+    <part Name="Graffitied" ChanceOneIn="100" />
+    <builder Name="Animated" ChanceOneIn="100" />
+    <tag Name="VaporObject" Value="SmallOilyUnctuousLavaPuddle" />
     <tag Name="PaintWith" Value="MachineWallsTubing" />
     <tag Name="BaseObject" Value="*noinherit" />
     <tag Name="BodyType" Value="MetalWall" />
     <tag Name="Mods" Value="TechWallMods" />
     <tag Name="Tier" Value="5" />
-    <part Name="Graffitied" ChanceOneIn="100" />
     <tag Name="ImpactSound" Value="Sounds/Throw/sfx_throwing_generic_hitMetal" />
     <tag Name="TakeDamageSound" Value="Sounds/Damage/sfx_damage_tubing"/>
     <tag Name="DeathSounds" Value="Sounds/Damage/sfx_destroy_tubing" />
     <tag Name="PitDetailColor" Value="w" />
+    <removetag Name="NoEffects" />
+    <tag Name="Breakable" />
     <xtagGrammar massNoun="true" />
   </object>
   <object Name="SmallOilPuddle" Inherits="OilPuddle">
@@ -76,11 +84,14 @@
   <object Name="BaseScrapMound" Inherits="Rubble">
     <part Name="Render" DisplayName="[scrap mound]" ColorString="&amp;w" TileColor="&amp;w" DetailColor="K" />
     <part Name="Description" Short="Irregular volumes of scrap are heaped together. Across its surface, points of order poke sporadically through the pile of entropy: a cybernetic finger, the gears of a Barathrum clock, a scratched piece of circuitboard." />
+    <part Name="Physics" Weight="10000" FlameTemperature="99999" VaporTemperature="6000" Takeable="false" Solid="true" Conductivity="80" />
     <stat Name="Hitpoints" Value="3500" />
+    <stat Name="ElectricResistance" Value="0" />
     <part Name="Metal" />
     <part Name="Corpse" CorpseChance="33" BuildCorpseChance="33" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="K" DetailColor="w" />
     <part Name="LeakWhenBroken" />
+    <tag Name="Diggable" />
     <tag Name="VaporObject" Value="SmallOilyUnctuousLavaPuddle" />
     <tag Name="BaseObject" Value="*noinherit" />
     <tag Name="Mods" Value="TechWallMods" />
@@ -89,6 +100,7 @@
     <tag Name="TakeDamageSound" Value="Sounds/Damage/sfx_damage_tubing"/>
     <tag Name="DeathSounds" Value="Sounds/Damage/sfx_destroy_tubing" />
     <tag Name="PitDetailColor" Value="w" />
+    <tag Name="Breakable" />
   </object>
   <object Name="SmallOilyUnctuousLavaPuddle" Inherits="SmallOilPuddle">
     <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="lava-800,oil-150,gel-50" />

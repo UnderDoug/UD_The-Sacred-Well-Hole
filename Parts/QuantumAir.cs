@@ -51,6 +51,8 @@ namespace XRL.World.Parts
         [SerializeField]
         private string OriginalBlueprint = null;
 
+        public bool IsAir = true;
+
         public QuantumAir()
         {
             CollapsingBlueprint = null;
@@ -111,51 +113,66 @@ namespace XRL.World.Parts
             {
                 int indent = Debug.LastIndent;
 
-                Debug.Entry(4,
-                    $"* {nameof(QuantumAir)}."
-                    + $"{nameof(CollapseAir)}("
-                    + $"{nameof(Cell)}: [{ParentObject.CurrentCell.Location}])",
-                    Indent: indent + 1, Toggle: getDoDebug());
-
-                Cell cellBelow = ParentObject.CurrentCell.GetCellFromDirection("D", BuiltOnly: false);
-                if (cellBelow.HasObjectWithBlueprint(CollapsingBlueprint)
-                    || (DerivativeCollapses && cellBelow.HasObject(GO => GO.InheritsFrom(CollapsingBlueprint))))
+                Cell cellBelow = ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
+                if (cellBelow != null 
+                    && (cellBelow.HasObjectWithBlueprint(CollapsingBlueprint)
+                    || (DerivativeCollapses && cellBelow.HasObject(GO => GO.InheritsFrom(CollapsingBlueprint)))))
                 {
-                    Debug.CheckYeh(4, $"Collapsing", Indent: indent + 2, Toggle: getDoDebug());
-                    if (ParentObject.TryGetPart(out StairsDown))
+                    if (IsAir)
                     {
-                        ParentObject.RemovePart(StairsDown);
-                    }
-                    if (ParentObject.Render != null)
-                    {
-                        ParentObject.Render.Visible = false;
-                    }
-                    ParentObject.Blueprint = null;
-                    if (FloorMaterial != null)
-                    {
-                        PaintCell(ParentObject.CurrentCell, cellBelow);
+                        Debug.Entry(4,
+                            $"* {nameof(QuantumAir)}."
+                            + $"{nameof(CollapseAir)}("
+                            + $"{nameof(Cell)}: [{ParentObject?.CurrentCell?.Location}])",
+                            Indent: indent + 1, Toggle: getDoDebug());
+
+                        Debug.CheckYeh(4, $"Collapsing", Indent: indent + 2, Toggle: getDoDebug());
+                        if (ParentObject.TryGetPart(out StairsDown))
+                        {
+                            ParentObject.RemovePart(StairsDown);
+                        }
+                        if (ParentObject.Render != null)
+                        {
+                            ParentObject.Render.Visible = false;
+                        }
+                        ParentObject.Blueprint = null;
+                        if (FloorMaterial != null)
+                        {
+                            PaintCell(ParentObject.CurrentCell, cellBelow);
+                        }
+                        IsAir = false;
                     }
                 }
                 else
                 {
-                    Debug.CheckNah(4, $"Constructing", Indent: indent + 2, Toggle: getDoDebug());
-                    if (StairsDown == null)
+                    if (!IsAir)
                     {
-                        GameObject quantumAir = GameObjectFactory.Factory.CreateUnmodifiedObject(OriginalBlueprint);
-                        if (quantumAir != null && quantumAir.TryGetPart(out StairsDown stairsDown))
+                        Debug.Entry(4,
+                            $"* {nameof(QuantumAir)}."
+                            + $"{nameof(CollapseAir)}("
+                            + $"{nameof(Cell)}: [{ParentObject?.CurrentCell?.Location}])",
+                            Indent: indent + 1, Toggle: getDoDebug());
+
+                        Debug.CheckNah(4, $"Constructing", Indent: indent + 2, Toggle: getDoDebug());
+                        if (StairsDown == null)
                         {
-                            StairsDown = stairsDown.DeepCopy(ParentObject) as StairsDown;
+                            GameObject quantumAir = GameObjectFactory.Factory.CreateUnmodifiedObject(OriginalBlueprint);
+                            if (quantumAir != null && quantumAir.TryGetPart(out StairsDown stairsDown))
+                            {
+                                StairsDown = stairsDown.DeepCopy(ParentObject) as StairsDown;
+                            }
                         }
+                        else
+                        {
+                            ParentObject.AddPart(StairsDown);
+                        }
+                        if (ParentObject.Render != null)
+                        {
+                            ParentObject.Render.Visible = true;
+                        }
+                        ParentObject.Blueprint = OriginalBlueprint;
+                        IsAir = true;
                     }
-                    else
-                    {
-                        ParentObject.AddPart(StairsDown);
-                    }
-                    if (ParentObject.Render != null)
-                    {
-                        ParentObject.Render.Visible = true;
-                    }
-                    ParentObject.Blueprint = OriginalBlueprint;
                 }
                 Debug.LastIndent = indent;
                 return true;

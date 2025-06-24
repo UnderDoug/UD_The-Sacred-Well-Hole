@@ -70,6 +70,7 @@ namespace XRL.World.ZoneBuilders
                 List<Cell> emptyCells = Event.NewCellList(zone.GetEmptyCells(c => !c.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs"))));
                 if (!emptyCells.IsNullOrEmpty())
                 {
+                    Debug.Entry(4, $"Adding Items...", Indent: indent + 1, Toggle: getDoDebug());
                     foreach (Cell emptyCell in emptyCells)
                     {
                         Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
@@ -151,6 +152,7 @@ namespace XRL.World.ZoneBuilders
             List<GameObject> itemsList = Event.NewGameObjectList(zone.GetObjectsThatInheritFrom("Item"));
             if (!itemsList.IsNullOrEmpty())
             {
+                Debug.Entry(4, $"Scrapping Items...", Indent: indent + 1, Toggle: getDoDebug());
                 foreach (GameObject item in itemsList)
                 {
                     Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
@@ -247,31 +249,20 @@ namespace XRL.World.ZoneBuilders
             List<GameObject> scrapWallMoundList = Event.NewGameObjectList(zone.GetObjects(GO => IsScrapWallMound(GO)));
             if (!scrapWallMoundList.IsNullOrEmpty())
             {
+                Debug.Entry(4, $"Cycling {nameof(scrapWallMoundList)} to add mods and make {nameof(Rusted)} or {nameof(Broken)}...", Indent: indent + 1, Toggle: getDoDebug());
                 foreach (GameObject scrapWall in scrapWallMoundList)
                 {
-                    if (!scrapWall.HasPart<ModGearbox>() && 3.in10())
+                    Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
+                    Debug.LoopItem(4, $"{nameof(scrapWall)}", $"{scrapWall?.DebugName ?? NULL}", Indent: indent + 2, Toggle: getDoDebug());
+                    if (!scrapWall.HasPart<ModGearbox>() && 3.in10() && scrapWall.ApplyModification(nameof(ModGearbox), Creation: true))
                     {
-                        scrapWall.ApplyModification(nameof(ModGearbox), Creation: true);
+                        Debug.LoopItem(4, $"Added", $"{nameof(ModGearbox)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
-                    if (!scrapWall.HasPart<ModWired>() && 3.in10())
+                    if (!scrapWall.HasPart<ModWired>() && 4.in10() && scrapWall.ApplyModification(nameof(ModWired), Creation: true))
                     {
-                        scrapWall.ApplyModification(nameof(ModWired), Creation: true);
-                        if (1.in10())
-                        {
-                            EnergyCellSocket energyCellSocket = scrapWall.RequirePart<EnergyCellSocket>();
-                            GameObject energyCellObject = GameObjectFactory.Factory.CreateObject(PopulationManager.GenerateOne("MiddleWeightedRandomEnergyCell")?.Blueprint);
-                            if (energyCellObject != null)
-                            {
-                                EnergyCell energyCell = energyCellObject.GetPart<EnergyCell>();
-                                if (energyCell != null)
-                                {
-                                    energyCell.Charge = Math.Min(energyCell.Charge * Stat.RollCached("1d100"), energyCell.MaxCharge);
-                                    energyCellSocket.Cell = energyCellObject;
-                                }
-                            }
-                        }
+                        Debug.LoopItem(4, $"Added", $"{nameof(ModWired)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
-                    if (!scrapWall.HasPart<ModPiping>() && 7.in10())
+                    if (!scrapWall.HasPart<ModPiping>() && 6.in10())
                     {
                         string corpseBlueprintString = scrapWall.GetPart<Corpse>().CorpseBlueprint;
                         GameObjectBlueprint corpseBlueprint = GameObjectFactory.Factory.GetBlueprintIfExists(corpseBlueprintString);
@@ -280,21 +271,44 @@ namespace XRL.World.ZoneBuilders
                         {
                             Liquid = corpseLiquid
                         };
-                        scrapWall.ApplyModification(modPiping, Creation: true);
-                        if (15.in100())
+                        if (scrapWall.ApplyModification(modPiping, Creation: true))
                         {
-                            scrapWall.ApplyEffect(new Broken());
+                            Debug.LoopItem(4, $"Added", $"{nameof(ModPiping)}", Indent: indent + 3, Toggle: getDoDebug());
                         }
                     }
-                    if (scrapWall.HasPart<ModWired>() && !scrapWall.HasPart<FusionReactor>() && 15.in100())
+                    if (scrapWall.HasPart<ModWired>() && 4.in10())
                     {
-                        scrapWall.AddPart<FusionReactor>();
+                        EnergyCellSocket energyCellSocket = scrapWall.RequirePart<EnergyCellSocket>();
+                        GameObject energyCellObject = GameObjectFactory.Factory.CreateObject(PopulationManager.GenerateOne("MiddleWeightedRandomEnergyCell")?.Blueprint);
+                        if (energyCellSocket != null && energyCellObject != null)
+                        {
+                            EnergyCell energyCell = energyCellObject.GetPart<EnergyCell>();
+                            if (energyCell != null)
+                            {
+                                energyCell.Charge = Math.Min(energyCell.Charge * Stat.RollCached("1d100"), energyCell.MaxCharge);
+                                energyCellSocket.Cell = energyCellObject;
+                            }
+                            Debug.LoopItem(4, $"Added", $"{nameof(EnergyCellSocket)}", Indent: indent + 3, Toggle: getDoDebug());
+                        }
                     }
-                    if (15.in100())
+                    if (scrapWall.HasPart<ModWired>() && !scrapWall.HasPart<FusionReactor>() && 15.in100() && scrapWall.RequirePart<FusionReactor>() != null)
                     {
-                        scrapWall.ApplyEffect(new Rusted());
+                        Debug.LoopItem(4, $"Added", $"{nameof(FusionReactor)}", Indent: indent + 3, Toggle: getDoDebug());
+                    }
+                    if (6.in100() && scrapWall.ApplyEffect(new Rusted()))
+                    {
+                        Debug.LoopItem(4, $"Applied", $"{nameof(Rusted)}", Indent: indent + 3, Toggle: getDoDebug());
+                    }
+                    else if (6.in10() && scrapWall.ApplyEffect(new Broken()))
+                    {
+                        Debug.LoopItem(4, $"Applied", $"{nameof(Broken)}", Indent: indent + 3, Toggle: getDoDebug());
+                    }
+                    if (!scrapWall.HasPart<ModGigantic>() && 2.in10() && scrapWall.ApplyModification(nameof(ModGigantic), Creation: true))
+                    {
+                        Debug.LoopItem(4, $"Added", $"{nameof(ModGigantic)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
                 }
+                Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
             }
 
             Debug.Footer(4, $"{nameof(UD_SubGrandCathedralScrapifier)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);
