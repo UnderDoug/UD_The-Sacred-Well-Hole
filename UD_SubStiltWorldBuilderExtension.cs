@@ -113,7 +113,8 @@ namespace XRL.World.WorldBuilders
         {
             Zone Z = The.ZoneManager.GetZone(CATHEDRAL_ZONE_ID);
             The.Player.Physics.CurrentCell.RemoveObject(The.Player.Physics.ParentObject);
-            Z.GetEmptyCells().GetRandomElement().AddObject(The.Player);
+            Cell landingCell = Z.GetCell(StiltWellLocation).GetCellFromDirection("S") ?? Z.GetEmptyCells().GetRandomElement();
+            landingCell.AddObject(The.Player);
             The.ZoneManager.SetActiveZone(Z);
             The.ZoneManager.ProcessGoToPartyLeader();
         }

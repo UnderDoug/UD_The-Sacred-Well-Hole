@@ -307,11 +307,11 @@ namespace XRL.World.ZoneBuilders
                         scrapWall.RequirePart<DisplayNameAdjectives>().AddAdjective("powered");
                         Debug.LoopItem(4, $"Added", $"{nameof(FusionReactor)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
-                    if (6.in100() && scrapWall.ApplyEffect(new Rusted()))
+                    if (6.in100() && scrapWall.ForceApplyEffect(new Rusted()))
                     {
                         Debug.LoopItem(4, $"Applied", $"{nameof(Rusted)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
-                    else if (6.in10() && scrapWall.ApplyEffect(new Broken()))
+                    else if (6.in10() && scrapWall.ForceApplyEffect(new Broken()))
                     {
                         Debug.LoopItem(4, $"Applied", $"{nameof(Broken)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
