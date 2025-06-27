@@ -836,18 +836,25 @@
   <cell X="33" Y="10"></cell>
   <cell X="34" Y="10"></cell>
   <cell X="35" Y="10"></cell>
-  <cell X="36" Y="10"></cell>
+  <cell X="36" Y="10">
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
+  </cell>
   <cell X="37" Y="10">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="10">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="10">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="40" Y="10">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="41" Y="10"></cell>
   <cell X="42" Y="10"></cell>
@@ -925,23 +932,26 @@
   <cell X="34" Y="11"></cell>
   <cell X="35" Y="11"></cell>
   <cell X="36" Y="11">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="37" Y="11">
-    <object Name="ScrapQuantumAir"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="11">
     <object Name="DaylightCell"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="11">
     <object Name="DaylightCell"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="40" Y="11">
-    <object Name="ScrapQuantumAir"></object>
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="41" Y="11"></cell>
   <cell X="42" Y="11"></cell>
@@ -1019,21 +1029,26 @@
   <cell X="34" Y="12"></cell>
   <cell X="35" Y="12"></cell>
   <cell X="36" Y="12">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="37" Y="12">
     <object Name="DaylightCell"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="12">
-    <object Name="RandomScrapWall"></object>
+    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="12">
     <object Name="DaylightCell"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="40" Y="12">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="41" Y="12"></cell>
   <cell X="42" Y="12"></cell>
@@ -1111,22 +1126,25 @@
   <cell X="34" Y="13"></cell>
   <cell X="35" Y="13"></cell>
   <cell X="36" Y="13">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="37" Y="13">
-    <object Name="ScrapQuantumAir"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="13">
     <object Name="DaylightCell"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="13">
-    <object Name="ScrapQuantumAir"></object>
     <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="40" Y="13">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="41" Y="13"></cell>
   <cell X="42" Y="13"></cell>
@@ -1203,17 +1221,26 @@
   <cell X="33" Y="14"></cell>
   <cell X="34" Y="14"></cell>
   <cell X="35" Y="14"></cell>
-  <cell X="36" Y="14"></cell>
+  <cell X="36" Y="14">
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
+  </cell>
   <cell X="37" Y="14">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="14">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="14">
-    <object Name="ScrapQuantumAir"></object>
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
   </cell>
-  <cell X="40" Y="14"></cell>
+  <cell X="40" Y="14">
+    <object Name="FlyingWhitelistArea"></object>
+    <object Name="CompactedScrapFloor"></object>
+  </cell>
   <cell X="41" Y="14"></cell>
   <cell X="42" Y="14"></cell>
   <cell X="43" Y="14"></cell>

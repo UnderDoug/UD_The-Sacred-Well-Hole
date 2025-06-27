@@ -9,11 +9,13 @@ using XRL.World;
 using XRL.World.Parts;
 using XRL.World.ZoneBuilders;
 
+using static UD_SacredWellHole.Options;
+
 namespace UD_SacredWellHole
 {
     public static class Extensions
     {
-        private static bool doDebug => Options.doDebug;
+        private static bool doDebug => getClassDoDebug(nameof(Extensions));
         public static bool getDoDebug(string MethodName)
         {
             if (MethodName == nameof(PullInsideFromEdges))
@@ -67,11 +69,11 @@ namespace UD_SacredWellHole
             {
                 for (int y = Cell.Y - yradius; y <= Cell.Y + yradius; y++)
                 {
-                    float num = Math.Abs(x - Cell.X);
-                    float num2 = (float)Math.Abs(y - Cell.Y) * 1.3333f;
-                    float num3 = num * num + num2 * num2;
-                    if (!Silent) UnityEngine.Debug.Log("xd: " + num + " yd:" + num2 + " d=" + num3);
-                    if (num3 <= radius_squared && Cell.ParentZone.GetCell(x, y) != null)
+                    float xd = Math.Abs(x - Cell.X);
+                    float yd = (float)Math.Abs(y - Cell.Y) * 1.3333f;
+                    float d = xd * xd + yd * yd;
+                    if (!Silent) UnityEngine.Debug.Log("xd: " + xd + " yd:" + yd + " d=" + d);
+                    if (d <= radius_squared && Cell.ParentZone.GetCell(x, y) != null)
                     {
                         Cell cellOut = Cell.ParentZone.GetCell(x, y);
                         if (ExcludeCells == null || !ExcludeCells.Contains(cellOut) && Filter == null || Filter(cellOut))
@@ -475,13 +477,16 @@ namespace UD_SacredWellHole
                     Start += Step;
                 }
                 Debug.CheckYeh(4, $"{nameof(DieRoll)} exploded, we go again!", Indent: indent + 2, Toggle: doDebug);
-                return DieRoll.Explode(Start, Step, Limit);
+                int explode = DieRoll.Explode(Start, Step, Limit);
+                Debug.LoopItem(4, $"<] returning {explode}...", Indent: indent + 2, Toggle: doDebug);
+                Debug.LastIndent = indent;
+                return explode;
             }
             if (Step == 0)
             {
                 Start += result;
             }
-            Debug.CheckYeh(4, $"{nameof(DieRoll)} didn't explode, returning", Indent: indent + 2, Toggle: doDebug);
+            Debug.CheckYeh(4, $"{nameof(DieRoll)} didn't explode, returning {Start}", Indent: indent + 2, Toggle: doDebug);
             Debug.LastIndent = indent;
             return Start;
         }
@@ -554,6 +559,26 @@ namespace UD_SacredWellHole
                 }
             }
             yield break;
+        }
+
+        public static bool HasObjectInheritsFrom(this Cell Cell, string Blueprint)
+        {
+            if (!Blueprint.IsNullOrEmpty())
+            {
+                foreach (GameObject objectInCell in Cell.GetObjectsInCell())
+                {
+                    if (objectInCell.InheritsFrom(Blueprint))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool HasObjectInDirectionInheritsFrom(this Cell Cell, string Direction, string Blueprint, bool BuiltOnly = true)
+        {
+            return Cell.GetCellFromDirection(Direction, BuiltOnly).HasObjectInheritsFrom(Blueprint);
         }
     }
 }

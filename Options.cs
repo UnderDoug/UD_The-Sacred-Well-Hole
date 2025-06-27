@@ -69,6 +69,9 @@ namespace UD_SacredWellHole
         public static bool doDebug = true;
         public static Dictionary<string, bool> classDoDebug = new()
         {
+            // Helper
+            { nameof(Extensions), true },
+
             // General
             { nameof(UD_SubStiltWorldBuilderExtension), true },
             { nameof(UD_SubGrandCathedralBuilder), true },
@@ -76,6 +79,7 @@ namespace UD_SacredWellHole
             { nameof(UDSW_SolidMaterial), true },
             { nameof(UDSW_MostlySolidMaterial), true },
             { nameof(QuantumAir), true },
+            { nameof(SolidAir), true },
         };
 
         public static bool getClassDoDebug(string Class)

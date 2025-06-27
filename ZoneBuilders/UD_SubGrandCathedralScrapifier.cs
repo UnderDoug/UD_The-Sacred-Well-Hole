@@ -1,5 +1,6 @@
 ﻿using Genkit;
 using HistoryKit;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,83 +68,89 @@ namespace XRL.World.ZoneBuilders
 
             if (WantScrappy)
             {
-                List<Cell> emptyCells = Event.NewCellList(zone.GetEmptyCells(c => !c.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs"))));
-                if (!emptyCells.IsNullOrEmpty())
+                List<Cell> itemCells = Event.NewCellList(zone.GetCells());
+                itemCells.RemoveAll(
+                    c => c.HasObjectInheritsFrom("Wall")
+                      || c.HasCombatObject()
+                      || c.HasObject(GO => GO.Physics != null && GO.Physics.Solid)
+                      || c.Location == stiltWellCell.Location
+                      || (c.HasObjectWithPart(nameof(StairsDown))
+                        && c.TryGetFirstObjectPart(out Parts.StairsDown stairsDown)
+                        && stairsDown.PullDown
+                        && !c.HasObjectInheritsFrom("QuantumAir")
+                        && !c.HasObjectInDirectionInheritsFrom("D", "Wall", BuiltOnly: false)
+                        ));
+
+                if (!itemCells.IsNullOrEmpty())
                 {
                     Debug.Entry(4, $"Adding Items...", Indent: indent + 1, Toggle: getDoDebug());
-                    foreach (Cell emptyCell in emptyCells)
+                    foreach (Cell itemCell in itemCells)
                     {
                         Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
-                        Debug.LoopItem(4, $"{nameof(emptyCell)}", $"{emptyCell.Location}", Indent: indent + 2, Toggle: getDoDebug());
-                        if (emptyCell.Location == stiltWellCell.Location)
+                        Debug.LoopItem(4, $"{nameof(itemCell)}", $"{itemCell.Location}", Indent: indent + 2, Toggle: getDoDebug());
+                        
+                        GameObject placedObject = null;
+                        // Debug.CheckYeh(4, $"{nameof(itemCell)} is acceptable to place items in", Indent: indent + 3, Toggle: getDoDebug());
+                        if (zone.Z > 17 && itemCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall"))
+                            && 3.in10())
                         {
-                            Debug.CheckYeh(4, $"{nameof(emptyCell)} is {nameof(stiltWellCell)}", Indent: indent + 3, Toggle: getDoDebug());
-                            continue;
-                        }
-                        if (!emptyCell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")))
-                        {
-                            Debug.CheckYeh(4, $"{nameof(emptyCell)} has no Stairs derivative", Indent: indent + 3, Toggle: getDoDebug());
-                            if (zone.Z > 17 && emptyCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall"))
-                                && 3.in10())
+                            if (8.in10())
                             {
-                                if (8.in10())
-                                {
-                                    Debug.LoopItem(4, $"Placing", "RandomScrapMound", Indent: indent + 4, Toggle: getDoDebug());
-                                    emptyCell.AddObject("RandomScrapMound");
-                                }
-                                else
-                                {
-                                    Debug.LoopItem(4, $"Placing", "RandomScrapWall", Indent: indent + 4, Toggle: getDoDebug());
-                                    emptyCell.AddObject("RandomScrapWall");
-                                }
+                                Debug.LoopItem(4, $"Placing", "RandomScrapMound", Indent: indent + 4, Toggle: getDoDebug());
+                                placedObject = itemCell.AddObject("RandomScrapMound");
                             }
                             else
                             {
-                                if (Stat.RollCached("1d25") == 1)
-                                {
-                                    Debug.LoopItem(4, $"Placing", "RandomScrapMound", Indent: indent + 4, Toggle: getDoDebug());
-                                    emptyCell.AddObject("RandomScrapMound");
-                                }
-                                else
-                                {
-                                    Debug.LoopItem(4, $"Placing", "JunkOrProbablyGarbageOrNothing", Indent: indent + 4, Toggle: getDoDebug());
-                                    string populationBlueprint = PopulationManager.GenerateOne("JunkOrProbablyGarbageOrNothing")?.Blueprint;
-                                    GameObject populationObject = null;
-                                    if (populationBlueprint != null)
-                                    {
-                                        populationObject = emptyCell.AddObject(populationBlueprint);
-                                    }
-                                    else
-                                    {
-                                        Debug.LoopItem(4, $"{nameof(populationObject)} rolled \"nothing\"", Indent: indent + 5, Toggle: getDoDebug());
-                                    }
-                                    if (populationObject != null)
-                                    {
-                                        Debug.LoopItem(4, $"{populationObject?.DebugName ?? NULL}", Indent: indent + 5, Toggle: getDoDebug());
-                                        if (!populationObject.GetBlueprint().InheritsFrom("TradeGood") || Stat.RollCached("1d4") == 1)
-                                        {
-                                            int setModNumber = (Stat.RollCached("1d4") == 1 ? 2 : 1);
-                                            Debug.LoopItem(4, $"Modding {populationObject?.DebugName ?? NULL}", $"{nameof(setModNumber)} ({setModNumber})", 
-                                                Indent: indent + 6, Toggle: getDoDebug());
-                                            int appliedMods = ModificationFactory.ApplyModifications(
-                                                GO: populationObject,
-                                                Blueprint: populationObject.GetBlueprint(),
-                                                BonusModChance: 100,
-                                                SetModNumber: setModNumber,
-                                                Context: "Creation");
-                                            Debug.LoopItem(4, $"{nameof(appliedMods)}", $"{appliedMods}", Indent: indent + 6, Toggle: getDoDebug());
-                                        }
-                                        else
-                                        {
-                                            Debug.LoopItem(4, $"Modding {nameof(populationObject)}", $"Skipped", Indent: indent + 6, Toggle: getDoDebug());
-                                        }
-                                    }
-                                }
+                                Debug.LoopItem(4, $"Placing", "RandomScrapWallSometimesGigantic", Indent: indent + 4, Toggle: getDoDebug());
+                                placedObject = itemCell.AddObject("RandomScrapWallSometimesGigantic");
                             }
                         }
                         else
                         {
-                            Debug.CheckNah(4, $"{nameof(emptyCell)} contains Stairs derivative", Indent: indent + 3, Toggle: getDoDebug());
+                            if (Stat.RollCached("1d25") == 1)
+                            {
+                                Debug.LoopItem(4, $"Placing", "RandomScrapMound", Indent: indent + 4, Toggle: getDoDebug());
+                                placedObject = placedObject = itemCell.AddObject("RandomScrapMound");
+                            }
+                            else
+                            {
+                                Debug.LoopItem(4, $"Placing", "JunkOrProbablyGarbageOrNothing", Indent: indent + 4, Toggle: getDoDebug());
+                                string populationBlueprint = PopulationManager.GenerateOne("JunkOrProbablyGarbageOrNothing")?.Blueprint;
+                                GameObject populationObject = null;
+                                if (populationBlueprint != null)
+                                {
+                                    placedObject = populationObject = itemCell.AddObject(populationBlueprint);
+                                }
+                                else
+                                {
+                                    Debug.LoopItem(4, $"{nameof(populationObject)} rolled \"nothing\"", Indent: indent + 5, Toggle: getDoDebug());
+                                }
+                                if (populationObject != null)
+                                {
+                                    Debug.LoopItem(4, $"{populationObject?.DebugName ?? NULL}", Indent: indent + 5, Toggle: getDoDebug());
+                                    if (!populationObject.GetBlueprint().InheritsFrom("TradeGood") || Stat.RollCached("1d4") == 1)
+                                    {
+                                        int setModNumber = (Stat.RollCached("1d4") == 1 ? 2 : 1);
+                                        Debug.LoopItem(4, $"Modding {populationObject?.DebugName ?? NULL}", $"{nameof(setModNumber)} ({setModNumber})", 
+                                            Indent: indent + 6, Toggle: getDoDebug());
+                                        int appliedMods = ModificationFactory.ApplyModifications(
+                                            GO: populationObject,
+                                            Blueprint: populationObject.GetBlueprint(),
+                                            BonusModChance: 100,
+                                            SetModNumber: setModNumber,
+                                            Context: "Creation");
+                                        Debug.LoopItem(4, $"{nameof(appliedMods)}", $"{appliedMods}", Indent: indent + 6, Toggle: getDoDebug());
+                                    }
+                                    else
+                                    {
+                                        Debug.LoopItem(4, $"Modding {nameof(populationObject)}", $"Skipped", Indent: indent + 6, Toggle: getDoDebug());
+                                    }
+                                }
+                            }
+                        }
+                        if (placedObject != null && itemCell != placedObject.CurrentCell)
+                        {
+                            // placedObject.CurrentCell.RemoveObject(placedObject, System: true);
                         }
                     }
                     Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
@@ -157,9 +164,13 @@ namespace XRL.World.ZoneBuilders
                 {
                     Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
                     Debug.LoopItem(4, $"{nameof(item)}", $"{item?.DebugName ?? NULL}", Indent: indent + 2, Toggle: getDoDebug());
-                    if (item != null && item.Blueprint != "Garbage" && !item.GetBlueprint().InheritsFrom("BaseDataDisk") && !item.GetBlueprint().InheritsFrom("Scrap") && !item.GetBlueprint().InheritsFrom("TradeGood"))
+                    if (item != null 
+                        && item.Blueprint != "Garbage" 
+                        && !item.InheritsFrom("BaseDataDisk") 
+                        && !item.InheritsFrom("Scrap") 
+                        && !item.InheritsFrom("TradeGood"))
                     {
-                        bool itemIsFood = item.GetBlueprint().InheritsFrom("Food") || item.Blueprint == "PersistentPapaya";
+                        bool itemIsFood = item.InheritsFrom("Food") || item.Blueprint == "PersistentPapaya";
                         Debug.LoopItem(4, $"{nameof(itemIsFood)}", $"{itemIsFood}", 
                             Good: itemIsFood, Indent: indent + 3, Toggle: getDoDebug());
 
@@ -285,7 +296,7 @@ namespace XRL.World.ZoneBuilders
                             EnergyCell energyCell = energyCellObject.GetPart<EnergyCell>();
                             if (energyCell != null)
                             {
-                                energyCell.Charge = Math.Min(energyCell.Charge * Stat.RollCached("1d100"), energyCell.MaxCharge);
+                                energyCell.Charge = (int)Math.Min(energyCell.Charge * (float)(Stat.RollCached("1d100")/100), energyCell.MaxCharge);
                                 energyCellSocket.Cell = energyCellObject;
                             }
                             Debug.LoopItem(4, $"Added", $"{nameof(EnergyCellSocket)}", Indent: indent + 3, Toggle: getDoDebug());
@@ -293,6 +304,7 @@ namespace XRL.World.ZoneBuilders
                     }
                     if (scrapWall.HasPart<ModWired>() && !scrapWall.HasPart<FusionReactor>() && 15.in100() && scrapWall.RequirePart<FusionReactor>() != null)
                     {
+                        scrapWall.RequirePart<DisplayNameAdjectives>().AddAdjective("powered");
                         Debug.LoopItem(4, $"Added", $"{nameof(FusionReactor)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
                     if (6.in100() && scrapWall.ApplyEffect(new Rusted()))
@@ -303,9 +315,19 @@ namespace XRL.World.ZoneBuilders
                     {
                         Debug.LoopItem(4, $"Applied", $"{nameof(Broken)}", Indent: indent + 3, Toggle: getDoDebug());
                     }
-                    if (!scrapWall.HasPart<ModGigantic>() && 2.in10() && scrapWall.ApplyModification(nameof(ModGigantic), Creation: true))
+                    if (scrapWall.HasPart<AnimatedObject>() && scrapWall.TryGetPart(out Leveler leveler))
                     {
-                        Debug.LoopItem(4, $"Added", $"{nameof(ModGigantic)}", Indent: indent + 3, Toggle: getDoDebug());
+                        Debug.LoopItem(4, $"Found", $"{nameof(AnimatedObject)}", Indent: indent + 3, Toggle: getDoDebug());
+                        int scrapWallLevels = Stat.RollCached("2d6+3");
+                        Debug.LoopItem(4, $"Leveling up {scrapWallLevels} times...", Indent: indent + 4, Toggle: getDoDebug());
+                        Debug.LoopItem(4, $"-] {nameof(scrapWall)}.{nameof(scrapWall.Level)}", $"{scrapWall.Level}", Indent: indent + 5, Toggle: getDoDebug());
+                        for (int i = 0; i < scrapWallLevels;  i++)
+                        {
+                            leveler.LevelUp();
+                            Debug.LoopItem(4, $"{i}] {nameof(scrapWall)}.{nameof(scrapWall.Level)}", $"{scrapWall.Level}", Indent: indent + 5, Toggle: getDoDebug());
+                        }
+                        scrapWall.RandomlySpendPoints();
+                        scrapWall.ReceivePopulation("HumanoidEquipment 3");
                     }
                 }
                 Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());

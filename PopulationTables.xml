@@ -9,6 +9,21 @@
       <object Weight="10" Blueprint="ElectronicScrapWall" />
     </group>
   </population>
+  <population Name="Gigantic ScrapWalls">
+    <group Name="Options" Style="pickone">
+      <object Weight="15" Blueprint="Gigantic ScrapWall" />
+      <object Weight="10" Blueprint="Gigantic MechanicalScrapWall" />
+      <object Weight="5" Blueprint="Gigantic CyberneticScrapWall" />
+      <object Weight="10" Blueprint="Gigantic ElectronicScrapWall" />
+    </group>
+  </population>
+  <population Name="ScrapWallsSometimesGigantic">
+    <group Name="Options" Style="pickone">
+      <table Weight="8" Name="ScrapWalls" />
+      <table Weight="2" Name="Gigantic ScrapWalls" />
+    </group>
+  </population>
+  
   
   <population Name="ScrapMounds">
     <group Name="Options" Style="pickone">

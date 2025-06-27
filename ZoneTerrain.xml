@@ -2,15 +2,32 @@
 <objects>
 
   <object Name="QuantumAir" Inherits="Air">
-    <part Name="QuantumAir" CollapsingBlueprint="Wall" />
+    <part Name="QuantumAir" SolidifyingBlueprint="Wall" DerivativeSolidifies="true" />
   </object>
 
   <object Name="ScrapQuantumAir" Inherits="QuantumAir">
-    <part Name="QuantumAir" CollapsingBlueprint="BaseScrapWall" FloorMaterial="BlackMarbleWalkway" />
+    <part Name="QuantumAir" SolidifyingBlueprint="BaseScrapWall" FloorMaterial="CompactedScrapFloor" />
   </object>
 
   <object Name="SandstoneQuantumAir" Inherits="QuantumAir">
-    <part Name="QuantumAir" CollapsingBlueprint="Sandstone" />
+    <part Name="QuantumAir" SolidifyingBlueprint="Sandstone" />
+  </object>
+
+  <object Name="SolidAir" Inherits="DirtFloor">
+    <part Name="Render" DisplayName="dirt" Tile="Tiles/sw_floor_dirty4.bmp" ColorString="&amp;K" TileColor="&amp;K" DetailColor="y" />
+    <part Name="SolidAir" SolidifyingBlueprint="Wall" DerivativeSolidifies="true" AirMaterial="QuantumAir" />
+    <removepart Name="RandomTileOnMove" />
+    <part Name="PickRandomTile" Tile="Terrain/sw_ground_dots~#1-4~.png,Tiles/sw_floor_dirty~#1-4~.bmp" />
+    <tag Name="NoTwiddle" />
+    <tag Name="NoPassByMessage" />
+    <tag Name="IgnoreOccupationChecks" />
+    <tag Name="HideInNearbyItemsList" />
+  </object>
+
+  <object Name="CompactedScrapFloor" Inherits="SolidAir">
+    <part Name="Render" DisplayName="compacted scrap" Tile="Tiles/sw_floor_brickb4.bmp" ColorString="&amp;K" TileColor="&amp;K" DetailColor="y" />
+    <part Name="RandomColors" TileColor="w,w,K,K,r" DetailColor="c,g,y" />
+    <part Name="PickRandomTile" Tile="Tiles/sw_floor_brickb~#1-4~.bmp" />
   </object>
   
 </objects>

@@ -55,12 +55,12 @@ namespace XRL.World.Parts
                     Sacrifice.SetIntProperty("Jumped In Stilt Well", 1);
                     JournalAPI.AddAccomplishment(
                     text: $"You proclaimed yourself an artifact and threw yourself into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}",
-                    muralText: $"O! Praise the chrome! On the {Calendar.GetDay()} of {Calendar.GetMonth()}, in the year {Calendar.GetYear()} AR, =name= recognised =subject.reflexive= as the priceless relic =pronoun.subjective= =verb:are:afterpronoun= and made an iconic descent into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}.",
+                    muralText: $"O! Praise the chrome! On the {Calendar.GetDay()} of {Calendar.GetMonth()}, in the year {Calendar.GetYear()} AR, =name= recognised =player.reflexive= as the priceless relic =player.subjective= =verb:are:afterpronoun= and made an iconic descent into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}.",
                     gospelText: $"<spice.instancesOf.inYear.!random.capitalize> =year=, " +
                         $"<spice.instancesOf.afterTumultuousYears.!random>, =player.possessive= counselors suggested " +
                         $"=player.subjective= <spice.instancesOf.abdicate.!random> as sultan. " +
-                        $"Instead, =player.subjective= recognised =subject.reflexive= as the " +
-                        $"priceless relic =pronoun.subjective= =verb:are:afterpronoun= and made " +
+                        $"Instead, =player.subjective= recognised =player.reflexive= as the " +
+                        $"priceless relic =player.subjective= =verb:are:afterpronoun= and made " +
                         $"an iconic descent into {ParentObject.DefiniteArticle()}{ParentObject?.Render?.DisplayName}.",
                     muralCategory: MuralCategory.DoesSomethingRad,
                     muralWeight: MuralWeight.VeryHigh);

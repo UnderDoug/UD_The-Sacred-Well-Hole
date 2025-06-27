@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using UD_SacredWellHole;
 using XRL.Rules;
 using XRL.UI;
 using XRL.World.Effects;
+
+using UD_SacredWellHole;
 
 namespace XRL.World.Parts
 {
     [Serializable]
     public class ScrambleUp : IPart
     {
-
         public static bool CanScramble(GameObject Scramblee, GameObject Scrambler, bool Silent = false)
         {
             if (Scramblee == null || Scrambler == null)
@@ -57,7 +57,7 @@ namespace XRL.World.Parts
                 }
                 return false;
             }
-            if (cellAbove.IsSolidFor(Scrambler))
+            if (cellAbove.IsSolidFor(Scrambler) || !cellAbove.HasObjectWithPart(nameof(StairsDown)))
             {
                 if (!Silent)
                 {
@@ -92,12 +92,11 @@ namespace XRL.World.Parts
         {
             if (CanScramble(Scramblee, Scrambler, Silent))
             {
-                
                 Cell scrambleeCell = Scramblee.CurrentCell;
                 Cell scramblerCell = Scrambler.CurrentCell;
                 Cell cellAboveScramblee = scrambleeCell.GetCellFromDirection("U", BuiltOnly: false);
                 List<Cell> destinationCells = GetScrableDestinations(scrambleeCell, scramblerCell);
-                destinationCells.RemoveAll(c => c.IsSolidFor(Scrambler));
+                destinationCells.RemoveAll(c => c.IsSolidFor(Scrambler) || c.HasObjectWithPart(nameof(StairsDown)));
                 Cell destinationCell = cellAboveScramblee;
                 if (!destinationCells.IsNullOrEmpty())
                 {
@@ -111,7 +110,7 @@ namespace XRL.World.Parts
                             && (Scramblee.HasEffect<Rusted>() || Scramblee.HasEffect<Broken>()) 
                             && Popup.ShowYesNo(
                                 $"That {Scramblee?.Render?.DisplayName ?? Scramblee?.GetBlueprint()?.DisplayName()} looks like a jagged mess, " +
-                                $"there's a good chance you'll hurt yourself scrambling up it. " +
+                                $"there's a good chance you'll hurt yourself scrambling up {Scramblee.it}. " +
                                 $"Do you want to try anyway?", 
                                 defaultResult: DialogResult.No
                                 ) != DialogResult.Yes)
@@ -122,22 +121,23 @@ namespace XRL.World.Parts
                         Scramblee.MovementModeChanged("Scrambling");
                         if (Scrambler.DirectMoveTo(destinationCell, 1000))
                         {
-                            DidXToY("scramble", Scrambler, "up " + Scramblee.DefiniteArticle() + "=subject.t=", "!");
+                            Scrambler.EmitMessage(GameText.VariableReplace($"=subject.T= =verb:scramble:afterpronoun= up =object.t=!", Subject: Scrambler, Object: Scramblee));
+                            
                             if (Scramblee.HasEffect<Rusted>() || Scramblee.HasEffect<Broken>() && Stat.RollCached("1d4") > 1)
                             {
                                 int damageAmount = Stat.RollCached("1d4+1");
                                 if (Scrambler.TakeDamage(
                                     ref damageAmount, 
-                                    Attributes: "bleed",
-                                    DeathReason: "shredded", 
-                                    ThirdPersonDeathReason: "shredded", 
+                                    Attributes: "Bleed Unavoidable",
+                                    DeathReason: "You were shredded to ribbons on %t jagged edges", 
+                                    ThirdPersonDeathReason: Scrambler.It + Scrambler.GetVerb("were") + " shredded to ribbons on %t jagged edges", 
                                     Attacker: Scramblee, 
                                     Message: "from %t jagged edges", 
                                     Accidental: true, 
                                     Environmental: true, 
-                                    IgnoreVisibility: true))
+                                    IgnoreVisibility: true) && Stat.RollCached("1d3") > 1)
                                 {
-                                    Scrambler.ApplyEffect(new Bleeding("1d3", 22, Scramblee));
+                                    Scrambler.ApplyEffect(new Bleeding("1d3", 20, Scramblee));
                                 }
                             }
                             return true;
@@ -174,6 +174,8 @@ namespace XRL.World.Parts
             bool canSmartUse =
                 E.Item == ParentObject
              && !E.Item.IsCreature
+             && !E.Item.HasPart<AnimatedObject>()
+             && !E.Item.IsHostileTowards(E.Actor)
              && CanScramble(E.Item, E.Actor, Silent: true);
 
             if (canSmartUse)

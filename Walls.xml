@@ -18,12 +18,13 @@
     <tag Name="PaintWith" Value="MachineWallsTubing" />
     <tag Name="BaseObject" Value="*noinherit" />
     <tag Name="BodyType" Value="MetalWall" />
-    <tag Name="Mods" Value="TechWallMods" />
+    <tag Name="Mods" Value="TechWallMods,Gigantify" />
     <tag Name="Tier" Value="5" />
     <tag Name="ImpactSound" Value="Sounds/Throw/sfx_throwing_generic_hitMetal" />
     <tag Name="TakeDamageSound" Value="Sounds/Damage/sfx_damage_tubing"/>
     <tag Name="DeathSounds" Value="Sounds/Damage/sfx_destroy_tubing" />
     <tag Name="PitDetailColor" Value="w" />
+    <tag Name="QuantumAirFloorMaterial" Value="CompactedScrapFloor" />
     <removetag Name="NoEffects" />
     <tag Name="Breakable" />
     <xtagGrammar massNoun="true" />
@@ -51,6 +52,9 @@
     <part Name="DrawInTheDark" DetailColor="w" />
     <tag Name="PitDetailColor" Value="w" />
   </object>
+  <object Name="Gigantic ScrapWall" Inherits="ScrapWall">
+    <part Name="ModGigantic" />
+  </object>
   <object Name="MechanicalScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted mechanical scrap" ColorString="&amp;w^y" TileColor="&amp;w" DetailColor="y" />
     <part Name="Corpse" CorpseBlueprint="SmallGrimePuddle" />
@@ -58,12 +62,18 @@
     <removepart Name="DrawInTheDark" />
     <tag Name="PitDetailColor" Value="w" />
   </object>
+  <object Name="Gigantic MechanicalScrapWall" Inherits="MechanicalScrapWall">
+    <part Name="ModGigantic" />
+  </object>
   <object Name="ElectronicScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted electronics scrap" ColorString="&amp;K^g" DetailColor="g"/>
     <part Name="Corpse" CorpseBlueprint="SmallToxicGrimePuddle" />
     <part Name="DrawInTheDark" DetailColor="g" />
     <part Name="ModWired" />
     <tag Name="PitDetailColor" Value="g" />
+  </object>
+  <object Name="Gigantic ElectronicScrapWall" Inherits="ElectronicScrapWall">
+    <part Name="ModGigantic" />
   </object>
   <object Name="CyberneticScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted cybernetics scrap" ColorString="&amp;r^c" TileColor="&amp;r" DetailColor="c" />
@@ -73,12 +83,21 @@
     <part Name="ModPiping" Liquid="oil-675,gel-325" />
     <tag Name="PitDetailColor" Value="r" />
   </object>
+  <object Name="Gigantic CyberneticScrapWall" Inherits="CyberneticScrapWall">
+    <part Name="ModGigantic" />
+  </object>
   <object Name="RandomScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted random scrap" ColorString="&amp;K^g" DetailColor="Y"/>
     <part Name="Corpse" CorpseBlueprint="SmallGelPuddle" />
     <part Name="DrawInTheDark" DetailColor="Y" />
     <tag Name="PitDetailColor" Value="Y" />
     <part Name="ReplaceObject" Table="ScrapWalls" SeedWithZoneID="false" />
+  </object>
+  <object Name="Gigantic RandomScrapWall" Inherits="RandomScrapWall">
+    <part Name="ReplaceObject" Table="Gigantic ScrapWalls" SeedWithZoneID="false" />
+  </object>
+  <object Name="RandomScrapWallSometimesGigantic" Inherits="RandomScrapWall">
+    <part Name="ReplaceObject" Table="ScrapWallsSometimesGigantic" SeedWithZoneID="false" />
   </object>
 
   <object Name="BaseScrapMound" Inherits="Rubble">

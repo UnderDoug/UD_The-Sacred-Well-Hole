@@ -55,7 +55,7 @@ namespace XRL.World.ZoneBuilders
 
             zone = Z;
 
-            EmptyMaterial = zone.Z < 15 ? EmptyMaterial : "ScrapQuantumAir";
+            EmptyMaterial = zone.Z < 15 ? EmptyMaterial : "QuantumAir";
 
             ZoneManager zoneManager = The.ZoneManager;
                         
@@ -69,9 +69,10 @@ namespace XRL.World.ZoneBuilders
             Debug.LoopItem(4, $"{nameof(strataFromBottom)}: {strataFromBottom}, {nameof(strataFromTop)}: {strataFromTop}", Indent: indent + 1, Toggle: getDoDebug());
             Debug.LoopItem(4, $"{nameof(floorMaterial)}: {floorMaterial}, {nameof(strataFromTop)}: {strataFromTop}", Indent: indent + 1, Toggle: getDoDebug());
 
-            foreach (Cell cell in zone.GetCells())
+            List<Cell> allCells = Event.NewCellList(zone.GetCells());
+            foreach (Cell cell in allCells)
             {
-                if (!cell.HasObject(GO => GO.GetBlueprint().InheritsFrom("Stairs")) && cell.ParentZone == zone)
+                if (!cell.HasObject(GO => GO.InheritsFrom("Stairs") || GO.HasPart<QuantumAir>() || GO.HasPart<SolidAir>()) && cell.ParentZone == zone)
                 {
                     string TileColor = cell.HasObjectWithBlueprint("Sandstone") ? null : Stat.RollCached("1d6") switch
                     {
@@ -92,9 +93,13 @@ namespace XRL.World.ZoneBuilders
                         _ => "y",
                     };
                     List<GameObject> floors = Event.NewGameObjectList(cell.GetObjectsThatInheritFrom("Floor"));
-                    foreach (GameObject floor in floors)
+                    floors.RemoveAll(GO => GO.HasPart<SolidAir>() || GO.HasPart<QuantumAir>());
+                    if (!floors.IsNullOrEmpty())
                     {
-                        cell.RemoveObject(floor);
+                        foreach (GameObject floor in floors)
+                        {
+                            cell.RemoveObject(floor);
+                        }
                     }
                     Cell cellBelow = cell.GetCellFromDirection("D", BuiltOnly: false);
                     GameObject wallBelow = cellBelow.GetFirstObject(GO => GO.InheritsFrom("BaseScrapWall"));
@@ -108,23 +113,20 @@ namespace XRL.World.ZoneBuilders
                 }
             }
 
-            UDSW_MostlySolidMaterial mostlySolidBuilder = new(Material: "Sandstone");
+            UDSW_MostlySolidMaterial mostlySolidBuilder = new (Material: null, Materials: new() { "SolidAir", "Sandstone" }, ClearFirst: true);
             if (strataFromTop < 6)
             {
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
-                mostlySolidBuilder.Cells.AddRange(Z.GetCells());
+                mostlySolidBuilder.Cells.AddRange(zone.GetCells());
             }
             else
             {
-                mostlySolidBuilder.Cells.AddRange(
-                    zone.GetCells(c => 
-                        !c.HasObject(GO => 
-                               GO.GetBlueprint().InheritsFrom("BaseScrapWall")
-                            || GO.GetBlueprint().InheritsFrom("Widget")
-                            || GO.Blueprint == EmptyMaterial
-                            || GO.Blueprint == "Air"
-                            || GO.Blueprint == "Timecube"
-                            )));
+                List<Cell> solidCells = Event.NewCellList(zone.GetCells());
+                solidCells.RemoveAll(c => c.HasObjectInheritsFrom("BaseScrapWall"));
+                solidCells.RemoveAll(c => c.HasObjectWithBlueprint(EmptyMaterial));
+                solidCells.RemoveAll(c => c.HasObjectWithBlueprint("Air"));
+                solidCells.RemoveAll(c => c.HasObjectWithBlueprint("SolidAir"));
+                mostlySolidBuilder.Cells.AddRange(solidCells);
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
             }
             mostlySolidBuilder.Cells.RemoveAll(c => c == stiltWellCell);
@@ -182,11 +184,36 @@ namespace XRL.World.ZoneBuilders
                             {
                                 cell.AddObject(EmptyMaterial);
                             }
+                            if (strataFromBottom == 0 && subregionLabel == Inner)
+                            {
+                                if (cell.IsOuterCell(c => subregionCells.Contains(c)) && !cell.AnyAdjacentCell(c => c.HasObject(GO => GO.GetBlueprint().InheritsFrom("Widget"))) && 3.in10())
+                                {
+                                    if (2.in10())
+                                    {
+                                        cell.AddObject("RandomScrapMound");
+                                    }
+                                    else
+                                    {
+                                        cell.AddObject("RandomScrapWallSometimesGigantic");
+                                    }
+                                }
+                            }
                             if (subregionLabel == Outer)
                             {
                                 if (strataFromBottom > 0)
                                 {
                                     cell.AddObject(EmptyMaterial);
+                                }
+                                else if (strataFromBottom == 0)
+                                {
+                                    if (2.in10())
+                                    {
+                                        cell.AddObject("RandomScrapMound");
+                                    }
+                                    else
+                                    {
+                                        cell.AddObject("RandomScrapWallSometimesGigantic");
+                                    }
                                 }
                                 foreach (Cell adjacentCell in cell.GetAdjacentCells())
                                 {
@@ -206,6 +233,17 @@ namespace XRL.World.ZoneBuilders
                                             if (strataFromBottom > 0)
                                             {
                                                 adjacentCell.AddObject(EmptyMaterial);
+                                            }
+                                            else if (strataFromBottom == 0)
+                                            {
+                                                if (2.in10())
+                                                {
+                                                    adjacentCell.AddObject("RandomScrapMound");
+                                                }
+                                                else
+                                                {
+                                                    adjacentCell.AddObject("RandomScrapWallSometimesGigantic");
+                                                }
                                             }
                                             if (!cellsToAddToOuter.Contains(adjacentCell))
                                             {
@@ -302,8 +340,29 @@ namespace XRL.World.ZoneBuilders
 
         public static void PaintCell(Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true, bool OverrideFloorColors = false)
         {
+            List<string> tilesList = new()
+            {
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Tiles/Tile-Dirt1.png",
+                "Terrain/sw_ground_dots1.png",
+                "Terrain/sw_ground_dots2.png",
+                "Terrain/sw_ground_dots3.png",
+                "Terrain/sw_ground_dots4.png",
+                "Tiles/sw_floor_dirty1.bmp",
+                "Tiles/sw_floor_dirty2.bmp",
+                "Tiles/sw_floor_dirty3.bmp",
+                "Tiles/sw_floor_dirty4.bmp",
+            };
             string paintColorString = TileColor ?? "y";
-            string paintTile = Tile ?? "Tiles/tile-dirt1.png";
+            string paintTile = Tile ?? tilesList.GetRandomElementCosmetic();
             string paintDetailColor = DetailtColor ?? "k";
             string paintTileColor = paintColorString;
             string paintRenderString = "ú";
