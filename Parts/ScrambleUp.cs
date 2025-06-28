@@ -32,11 +32,19 @@ namespace XRL.World.Parts
                 }
                 return false;
             }
-            if (!Scrambler.CanChangeBodyPosition() || !Scrambler.CanChangeMovementMode())
+            if (Scrambler.CurrentCell.HasObject(GO => GO.IsWadingDepthLiquid()))
             {
                 if (!Silent)
                 {
-                    Scrambler.Fail("You cannot scramble up something if you're unable to move!");
+                    Scrambler.Fail("You cannot scramble up while wading!");
+                }
+                return false;
+            }
+            if (!Scrambler.CanChangeBodyPosition("Scramble", !Silent) || !Scrambler.CanChangeMovementMode("Scramble", !Silent))
+            {
+                if (!Silent)
+                {
+                    // Scrambler.Fail("You cannot scramble up something if you're unable to move!");
                 }
                 return false;
             }
