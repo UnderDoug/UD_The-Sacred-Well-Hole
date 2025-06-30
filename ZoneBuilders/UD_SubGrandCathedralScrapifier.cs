@@ -164,12 +164,7 @@ namespace XRL.World.ZoneBuilders
                 {
                     Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
                     Debug.LoopItem(4, $"{nameof(item)}", $"{item?.DebugName ?? NULL}", Indent: indent + 2, Toggle: getDoDebug());
-                    if (item != null 
-                        && item.Blueprint != "Garbage" 
-                        && !item.InheritsFrom("BaseDataDisk") 
-                        && !item.InheritsFrom("Scrap") 
-                        && !item.InheritsFrom("TradeGood")
-                        && !item.InheritsFrom("BaseCyberneticsCreditWedge"))
+                    if (item != null && item.Blueprint != "Garbage" )
                     {
                         bool itemIsFood = item.InheritsFrom("Food") || item.Blueprint == "PersistentPapaya";
                         Debug.LoopItem(4, $"{nameof(itemIsFood)}", $"{itemIsFood}", 
@@ -185,7 +180,11 @@ namespace XRL.World.ZoneBuilders
                         Debug.LoopItem(4, $"{nameof(itemIsNotWorthySacrifice)}", $"{itemIsNotWorthySacrifice}", 
                             Good: itemIsNotWorthySacrifice, Indent: indent + 3, Toggle: getDoDebug());
 
-                        if (itemIsNotWorthySacrifice)
+                        if (itemIsNotWorthySacrifice
+                            && !item.InheritsFrom("BaseDataDisk")
+                            && !item.InheritsFrom("Scrap")
+                            && !item.InheritsFrom("TradeGood")
+                            && !item.InheritsFrom("BaseCyberneticsCreditWedge"))
                         {
                             if (item.CurrentCell.Location == stiltWellCell.Location)
                             {
