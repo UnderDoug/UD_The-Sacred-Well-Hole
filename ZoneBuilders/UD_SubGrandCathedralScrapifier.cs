@@ -168,7 +168,8 @@ namespace XRL.World.ZoneBuilders
                         && item.Blueprint != "Garbage" 
                         && !item.InheritsFrom("BaseDataDisk") 
                         && !item.InheritsFrom("Scrap") 
-                        && !item.InheritsFrom("TradeGood"))
+                        && !item.InheritsFrom("TradeGood")
+                        && !item.InheritsFrom("BaseCyberneticsCreditWedge"))
                     {
                         bool itemIsFood = item.InheritsFrom("Food") || item.Blueprint == "PersistentPapaya";
                         Debug.LoopItem(4, $"{nameof(itemIsFood)}", $"{itemIsFood}", 

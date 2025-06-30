@@ -326,6 +326,17 @@ namespace XRL.World.ZoneBuilders
                     Debug.CheckYeh(4, $"{nameof(stiltRecoiler)}", $"{stiltRecoiler.DebugName}", Indent: indent + 2, Toggle: getDoDebug());
                     stiltWellCell.AddObject(stiltRecoiler);
                 }
+                for (int i = 0; i < Stat.RandomCosmetic(1,3); i++)
+                {
+                    int wedgeValue = Math.Max(1, Stat.RandomCosmetic(2, 3) - i);
+                    string creditWedgeBlueprint = $"CyberneticsCreditWedge" + (wedgeValue == 1 ? "" : wedgeValue);
+                    GameObject creditWedge = GameObjectFactory.Factory.CreateObject(creditWedgeBlueprint);
+                    if (creditWedge != null)
+                    {
+                        Debug.CheckYeh(4, $"{nameof(creditWedge)}", $"{creditWedge.DebugName}", Indent: indent + 2, Toggle: getDoDebug());
+                        stiltWellCell.AddObject(creditWedge);
+                    }
+                }
                 if (stiltWellCell.AddObject("HolyPlaceWidget").TryGetPart(out HolyPlace holyPlace))
                 {
                     holyPlace.Faction = "Mechanimists";
