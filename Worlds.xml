@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <worlds>
   <world Name="JoppaWorld" Load="Merge">
-    <cell Name="The Sacred Well Hole" Inherits="SixDayStilt" ApplyTo="TerrainSixDayStilt" Mutable="false">
+    <cell Name="The Sacred Well Hole" Inherits="SixDayStilt" ApplyTo="TerrainSixDayStilt" LandingZone="1,2" Mutable="false">
       <zone Level="11-20" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
         <!--removebuilder Class="Strata" />
         <removebuilder Class="ZoneTemplate:SaltDuneCaves" /-->
