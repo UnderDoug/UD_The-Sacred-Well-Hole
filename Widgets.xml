@@ -1,6 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects>
 
+  <!-- 
+      
+      "Fixes"
+      
+   -->
+  <object Name="Widget" Load="Merge">
+    <tag Name="HideInNearbyItemsList" />
+    <tag Name="HideCon" />
+  </object>
+  
+  <!-- 
+      
+      Zone mutators, Tile mutators, Multi-tile presets, Quest triggers, UI widgets
+      
+   -->
   <object Name="DaylightCell" Inherits="Widget">
     <part Name="DaylightCell" />
     <tag Name="ExcludeFromDynamicEncounters" />
