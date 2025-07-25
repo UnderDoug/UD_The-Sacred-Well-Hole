@@ -137,8 +137,8 @@ namespace XRL.World.Parts
                                 if (Scrambler.TakeDamage(
                                     ref damageAmount, 
                                     Attributes: "Bleed Unavoidable",
-                                    DeathReason: "You were shredded to ribbons on %t jagged edges", 
-                                    ThirdPersonDeathReason: Scrambler.It + Scrambler.GetVerb("were") + " shredded to ribbons on %t jagged edges", 
+                                    DeathReason: $"You were shredded to ribbons on {Scramblee.poss("jagged edges")}", 
+                                    ThirdPersonDeathReason: $"{Scrambler.It}{Scrambler.GetVerb("were")} shredded to ribbons on {Scramblee.poss("jagged edges")}", 
                                     Attacker: Scramblee, 
                                     Message: "from %t jagged edges", 
                                     Accidental: true, 

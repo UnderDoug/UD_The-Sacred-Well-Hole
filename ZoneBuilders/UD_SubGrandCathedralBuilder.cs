@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Genkit;
+using System;
 using System.Collections.Generic;
-
-using Genkit;
+using UD_SacredWellHole;
 
 using XRL.Rules;
 using XRL.World.Parts;
 using XRL.World.WorldBuilders;
-
-using UD_SacredWellHole;
-using static UD_SacredWellHole.Options;
 using static UD_SacredWellHole.Const;
+using static UD_SacredWellHole.Options;
 
 namespace XRL.World.ZoneBuilders
 {
@@ -119,7 +117,7 @@ namespace XRL.World.ZoneBuilders
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
                 mostlySolidBuilder.Cells.AddRange(zone.GetCells());
             }
-            else
+            else if (strataFromBottom > 0)
             {
                 List<Cell> solidCells = Event.NewCellList(zone.GetCells());
                 solidCells.RemoveAll(c => c.HasObjectInheritsFrom("BaseScrapWall"));
@@ -128,6 +126,12 @@ namespace XRL.World.ZoneBuilders
                 solidCells.RemoveAll(c => c.HasObjectWithBlueprint("SolidAir"));
                 mostlySolidBuilder.Cells.AddRange(solidCells);
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
+            }
+            else
+            {
+                mostlySolidBuilder.Material = "Sandstone";
+                mostlySolidBuilder.Materials = new();
+
             }
             mostlySolidBuilder.Cells.RemoveAll(c => c == stiltWellCell);
             mostlySolidBuilder.BuildZone(zone);
