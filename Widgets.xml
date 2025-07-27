@@ -9,6 +9,8 @@
   <object Name="Widget" Load="Merge">
     <tag Name="HideInNearbyItemsList" />
     <tag Name="HideCon" />
+    <tag Name="NoTwiddle" />
+    <tag Name="NoPassByMessage" />
   </object>
   
   <!-- 
@@ -19,29 +21,18 @@
   <object Name="DaylightCell" Inherits="Widget">
     <part Name="DaylightCell" />
     <tag Name="ExcludeFromDynamicEncounters" />
-    <tag Name="NoTwiddle" />
-    <tag Name="NoPassByMessage" />
-    <tag Name="ExcludeFromDynamicEncounters" Value="*noinherit" />
     <tag Name="IgnoreOccupationChecks" />
-    <tag Name="HideInNearbyItemsList" />
   </object>
 
   <object Name="SmallDaylightCell" Inherits="DaylightCell">
     <part Name="DaylightCell" MaxRadius="2" />
-    <tag Name="NoTwiddle" />
-    <tag Name="NoPassByMessage" />
-    <tag Name="IgnoreOccupationChecks" />
-    <tag Name="HideInNearbyItemsList" />
   </object>
 
-  <object Name="SelfObliterator" Inherits="Widget">
-    <part Name="Render" DisplayName="self obliterator" RenderString="x" ColorString="&amp;K" />
-    <part Name="ObliterateSelf" />
+  <object Name="SelfSacrificeHelper" Inherits="Widget">
+    <part Name="Render" DisplayName="[self sacrifice helper]" RenderString="x" ColorString="&amp;K" />
+    <part Name="SelfSacrificeHelper" />
     <tag Name="ExcludeFromDynamicEncounters" />
-    <tag Name="NoTwiddle" />
-    <tag Name="NoPassByMessage" />
     <tag Name="IgnoreOccupationChecks" />
-    <tag Name="HideInNearbyItemsList" />
   </object>
   
 </objects>

@@ -91,14 +91,14 @@
   <population Name="JunkOrMachineWallOrNothing">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrMachineWall" />
-      <table Weight="5" Name="Nothing" />
+      <table Weight="5" Chance="0" Name="Nothing" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallOrNothingButProbablyNothing">
     <group Name="Options" Style="pickone">
       <table Weight="5" Name="JunkOrMachineWall" />
-      <table Weight="5" Name="Nothing" />
+      <table Weight="5" Chance="0" Name="Nothing" />
     </group>
   </population>
   
@@ -129,14 +129,14 @@
   <population Name="JunkOrGarbageOrNothing">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrGarbage" />
-      <table Weight="5" Name="Nothing" />
+      <table Weight="5" Chance="0" Name="Nothing" />
     </group>
   </population>
   
   <population Name="JunkOrProbablyGarbageOrNothing">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrGarbageButProbablyGarbage" />
-      <table Weight="5" Name="Nothing" />
+      <table Weight="5" Chance="0" Name="Nothing" />
     </group>
   </population>
   

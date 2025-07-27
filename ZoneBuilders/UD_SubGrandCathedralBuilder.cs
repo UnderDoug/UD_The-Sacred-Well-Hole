@@ -117,7 +117,7 @@ namespace XRL.World.ZoneBuilders
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
                 mostlySolidBuilder.Cells.AddRange(zone.GetCells());
             }
-            else if (strataFromBottom > 0)
+            else
             {
                 List<Cell> solidCells = Event.NewCellList(zone.GetCells());
                 solidCells.RemoveAll(c => c.HasObjectInheritsFrom("BaseScrapWall"));
@@ -127,11 +127,10 @@ namespace XRL.World.ZoneBuilders
                 mostlySolidBuilder.Cells.AddRange(solidCells);
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
             }
-            else
+            if (strataFromBottom == 0)
             {
-                mostlySolidBuilder.Material = "Sandstone";
-                mostlySolidBuilder.Materials = new();
-
+                mostlySolidBuilder.Materials.Remove("SolidAir");
+                Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"Removed Solid Air from {nameof(mostlySolidBuilder.Materials)}", Indent: indent + 1, Toggle: getDoDebug());
             }
             mostlySolidBuilder.Cells.RemoveAll(c => c == stiltWellCell);
             mostlySolidBuilder.BuildZone(zone);
@@ -142,6 +141,7 @@ namespace XRL.World.ZoneBuilders
                 stiltWellCell.Clear(Combat: true);
                 if (strataFromTop == 5)
                 {
+                    stiltWellCell.AddObject("SelfSacrificeHelper");
                     stiltWellCell.AddObject("SpawnBlocker");
                 }
             }
