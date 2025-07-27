@@ -355,29 +355,20 @@ namespace XRL.World.ZoneBuilders
 
         public static void PaintCell(Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true, bool OverrideFloorColors = false)
         {
-            List<string> tilesList = new()
+            Dictionary<string, int> weightedTiles = new()
             {
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Tiles/Tile-Dirt1.png",
-                "Terrain/sw_ground_dots1.png",
-                "Terrain/sw_ground_dots2.png",
-                "Terrain/sw_ground_dots3.png",
-                "Terrain/sw_ground_dots4.png",
-                "Tiles/sw_floor_dirty1.bmp",
-                "Tiles/sw_floor_dirty2.bmp",
-                "Tiles/sw_floor_dirty3.bmp",
-                "Tiles/sw_floor_dirty4.bmp",
+                { "Tiles/Tile-Dirt1.png", 10 },
+                { "Terrain/sw_ground_dots1.png", 1 },
+                { "Terrain/sw_ground_dots2.png", 1 },
+                { "Terrain/sw_ground_dots3.png", 1 },
+                { "Terrain/sw_ground_dots4.png", 1 },
+                { "Tiles/sw_floor_dirty1.bmp", 1 },
+                { "Tiles/sw_floor_dirty2.bmp", 1 },
+                { "Tiles/sw_floor_dirty3.bmp", 1 },
+                { "Tiles/sw_floor_dirty4.bmp", 1 },
             };
             string paintColorString = TileColor ?? "y";
-            string paintTile = Tile ?? tilesList.GetRandomElementCosmetic();
+            string paintTile = Tile ?? weightedTiles.Sample();
             string paintDetailColor = DetailtColor ?? "k";
             string paintTileColor = paintColorString;
             string paintRenderString = "ú";
