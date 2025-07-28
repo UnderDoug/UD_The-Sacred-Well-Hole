@@ -38,6 +38,51 @@ namespace UD_SacredWellHole
         public static string WestEdge = $"{nameof(WestEdge)}";
         public static string Door = $"{nameof(Door)}";
 
+        public static T Sample<T>(this Dictionary<T, int> WeightedList)
+            where T : class
+        {
+            T Output = default;
+            int weightMax = 0;
+            foreach ((_, int entryWeight) in WeightedList)
+            {
+                weightMax += entryWeight;
+            }
+            int ticket = Stat.Roll(1, weightMax);
+            int weightCurrent = 0;
+            foreach ((T entryT, int entryWeight) in WeightedList)
+            {
+                weightCurrent += entryWeight;
+                if (ticket <= weightCurrent)
+                {
+                    Output = entryT;
+                    break;
+                }
+            }
+            return Output;
+        }
+        public static T Draw<T>(this Dictionary<T, int> WeightedList)
+            where T : class
+        {
+            T ticket = WeightedList.Sample();
+            if (--WeightedList[ticket] == 0)
+            {
+                WeightedList.Remove(ticket);
+            }
+            return ticket;
+        }
+        public static void AddTicket<T>(this Dictionary<T, int> WeightedList, T Ticket)
+            where T : class
+        {
+            if (WeightedList.ContainsKey(Ticket))
+            {
+                WeightedList[Ticket]++;
+            }
+            else
+            {
+                WeightedList.Add(Ticket, 1);
+            }
+        }
+
         public static Dictionary<string, List<Cell>> GetCircleRegion(this Cell FromCell, int Radius = 3, bool IncludePerimerter = true, List<Cell> ExcludeCells = null, Predicate<Cell> Filter = null)
         {
             Dictionary<string, List<Cell>> Region = new()
