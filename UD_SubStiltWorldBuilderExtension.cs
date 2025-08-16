@@ -1,14 +1,12 @@
-﻿using Genkit;
-using System.Collections.Generic;
-using UD_SacredWellHole;
-using XRL;
-using XRL.Rules;
+﻿using System.Collections.Generic;
+
+using Genkit;
+
 using XRL.UI;
 using XRL.Wish;
-using XRL.World;
-using XRL.World.AI.GoalHandlers;
-using XRL.World.Parts;
-using XRL.World.ZoneBuilders;
+
+using UD_SacredWellHole;
+
 using static UD_SacredWellHole.Const;
 using static UD_SacredWellHole.Options;
 
