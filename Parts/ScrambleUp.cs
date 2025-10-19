@@ -179,14 +179,11 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(CanSmartUseEvent E)
         {
-            bool canSmartUse =
-                E.Item == ParentObject
-             && !E.Item.IsCreature
-             && !E.Item.HasPart<AnimatedObject>()
-             && !E.Item.IsHostileTowards(E.Actor)
-             && CanScramble(E.Item, E.Actor, Silent: true);
-
-            if (canSmartUse)
+            if (E.Item == ParentObject
+                && !E.Item.IsCreature
+                && !E.Item.HasPart<AnimatedObject>()
+                && !E.Item.IsHostileTowards(E.Actor)
+                && CanScramble(E.Item, E.Actor, Silent: true))
             {
                 return false; // not sure the logic, but this one is a "false means yes"
             }
