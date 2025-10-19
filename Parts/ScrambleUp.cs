@@ -156,6 +156,20 @@ namespace XRL.World.Parts
             return false;
         }
 
+        public static bool CanScrambleIntelligently(GameObject Scramblee, GameObject Scrambler)
+        {
+            return Scramblee != null
+                && Scrambler != null
+                && !Scramblee.IsCreature
+                && !Scramblee.HasPart<AnimatedObject>()
+                && !Scramblee.IsHostileTowards(Scrambler)
+                && CanScramble(Scramblee, Scrambler, Silent: true);
+        }
+        public bool CanScrambleIntelligently(GameObject Scrambler)
+        {
+            return CanScrambleIntelligently(ParentObject, Scrambler);
+        }
+
         public override bool WantEvent(int ID, int cascade)
         {
             return base.WantEvent(ID, cascade)
@@ -180,10 +194,7 @@ namespace XRL.World.Parts
         public override bool HandleEvent(CanSmartUseEvent E)
         {
             if (E.Item == ParentObject
-                && !E.Item.IsCreature
-                && !E.Item.HasPart<AnimatedObject>()
-                && !E.Item.IsHostileTowards(E.Actor)
-                && CanScramble(E.Item, E.Actor, Silent: true))
+                && CanScrambleIntelligently(E.Actor))
             {
                 return false; // not sure the logic, but this one is a "false means yes"
             }
@@ -191,7 +202,9 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(CommandSmartUseEvent E)
         {
-            if (!E.Item.HasTagOrProperty("ForceSmartUse") && PerformScramble(E.Item, E.Actor))
+            if (!E.Item.HasTagOrProperty("ForceSmartUse")
+                && CanScrambleIntelligently(E.Actor)
+                && PerformScramble(E.Item, E.Actor))
             {
                 // return false;
             }
