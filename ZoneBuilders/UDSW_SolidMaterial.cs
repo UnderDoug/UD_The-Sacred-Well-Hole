@@ -33,13 +33,13 @@ namespace XRL.World.ZoneBuilders
         public List<string> Materials;
         public bool ClearFirst;
 
-        public UDSW_SolidMaterial() 
+        public UDSW_SolidMaterial()
         {
             Material = null;
             ClearFirst = true;
             Materials = new();
         }
-        public UDSW_SolidMaterial(string Material = null, List<string> Materials = null, bool ClearFirst = true) 
+        public UDSW_SolidMaterial(string Material = null, List<string> Materials = null, bool ClearFirst = true)
             : this()
         {
             this.Material = Material;

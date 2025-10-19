@@ -87,7 +87,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(EnteringCellEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && !ShouldBeAir())
             {
                 SolidifyAir(E);
@@ -96,7 +96,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ObjectEnteringCellEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && !ShouldBeAir())
             {
                 SolidifyAir(E);
@@ -105,7 +105,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ZoneActivatedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
                 && !ShouldBeAir())
             {
                 SolidifyAir(E);
@@ -114,7 +114,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ZoneThawedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
                 && !ShouldBeAir())
             {
                 SolidifyAir(E);
@@ -123,7 +123,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(BeforeZoneBuiltEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
                 && !ShouldBeAir())
             {
                 SolidifyAir(E);
@@ -168,8 +168,8 @@ namespace XRL.World.Parts
 
             GameObject solidifyingObject = cellBelow.GetFirstObjectThatInheritsFrom(SolidifyingBlueprint);
 
-            if (DerivativeSolidifies 
-                && cellBelow.HasObjectInheritsFrom(SolidifyingBlueprint) 
+            if (DerivativeSolidifies
+                && cellBelow.HasObjectInheritsFrom(SolidifyingBlueprint)
                 && ObjectCanSolidify(solidifyingObject))
             {
                 Debug.CheckNah(4, $"{nameof(DerivativeSolidifies)} and {nameof(cellBelow)} contains derivative of {nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}",

@@ -84,7 +84,7 @@ namespace UD_SacredWellHole
 
         public static bool getClassDoDebug(string Class)
         {
-            if (classDoDebug.ContainsKey(Class)) 
+            if (classDoDebug.ContainsKey(Class))
                 return classDoDebug[Class];
 
             return doDebug;

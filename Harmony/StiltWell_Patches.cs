@@ -11,7 +11,7 @@ namespace UD_SacredWellHole.Harmony
     public static class StiltWell_Patches
     {
         [HarmonyPatch(
-            declaringType: typeof(StiltWell), 
+            declaringType: typeof(StiltWell),
             methodName: nameof(StiltWell.GetArtifactReputationValue),
             argumentTypes: new Type[] { typeof(GameObject) },
             argumentVariations: new ArgumentType[] { ArgumentType.Normal })]

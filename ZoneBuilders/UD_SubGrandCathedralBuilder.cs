@@ -38,7 +38,7 @@ namespace XRL.World.ZoneBuilders
 
         public static string Inner = $"{nameof(Inner)}";
         public static string Outer = $"{nameof(Outer)}";
-        
+
         public Dictionary<string, Dictionary<string, List<Cell>>> Regions;
 
         public Location2D StiltWellLocation => UD_SubStiltWorldBuilderExtension.StiltWellLocation;
@@ -58,7 +58,7 @@ namespace XRL.World.ZoneBuilders
             EmptyMaterial = zone.Z < 15 ? EmptyMaterial : "QuantumAir";
 
             ZoneManager zoneManager = The.ZoneManager;
-                        
+
             // zone.GetCell(0, 0).AddObject(GameObjectFactory.Factory.CreateObject("SixDayStiltTile"));
 
             Cell stiltWellCell = zone.GetCell(StiltWellLocation);
@@ -113,7 +113,7 @@ namespace XRL.World.ZoneBuilders
                 }
             }
 
-            UDSW_MostlySolidMaterial mostlySolidBuilder = new (Material: null, Materials: new() { "SolidAir", "Sandstone" }, ClearFirst: true);
+            UDSW_MostlySolidMaterial mostlySolidBuilder = new(Material: null, Materials: new() { "SolidAir", "Sandstone" }, ClearFirst: true);
             if (strataFromTop < 6)
             {
                 Debug.LoopItem(4, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
@@ -136,7 +136,7 @@ namespace XRL.World.ZoneBuilders
             }
             mostlySolidBuilder.Cells.RemoveAll(c => c == stiltWellCell);
             mostlySolidBuilder.BuildZone(zone);
-            
+
             if (strataFromTop < 6)
             {
                 Debug.LoopItem(4, $"{nameof(Cell)}.{nameof(Cell.Clear)}()", Indent: indent + 1, Toggle: getDoDebug());
@@ -163,7 +163,7 @@ namespace XRL.World.ZoneBuilders
                 }
             }
 
-            int airRadius = strataFromTop < 3 ? 1 : Math.Max(1, (int)((strataFromTop-1) * (strataFromTop * 0.2125f)));
+            int airRadius = strataFromTop < 3 ? 1 : Math.Max(1, (int)((strataFromTop - 1) * (strataFromTop * 0.2125f)));
 
             Dictionary<string, List<Cell>> openAirRegion = stiltWellCell.GetCircleRegion(airRadius, Filter: c => c != stiltWellCell);
             if (!openAirRegion.IsNullOrEmpty())
@@ -332,7 +332,7 @@ namespace XRL.World.ZoneBuilders
                     Debug.CheckYeh(4, $"{nameof(stiltRecoiler)}", $"{stiltRecoiler.DebugName}", Indent: indent + 2, Toggle: getDoDebug());
                     stiltWellCell.AddObject(stiltRecoiler);
                 }
-                for (int i = 0; i < Stat.RandomCosmetic(1,3); i++)
+                for (int i = 0; i < Stat.RandomCosmetic(1, 3); i++)
                 {
                     int wedgeValue = Math.Max(1, Stat.RandomCosmetic(2, 3) - i);
                     string creditWedgeBlueprint = $"CyberneticsCreditWedge" + (wedgeValue == 1 ? "" : wedgeValue);
@@ -347,7 +347,7 @@ namespace XRL.World.ZoneBuilders
                 {
                     holyPlace.Faction = "Mechanimists";
                 }
-                Debug.LoopItem(4, $"{nameof(holyPlace)}{nameof(holyPlace.Faction)}", $"{holyPlace?.Faction ?? NULL}", 
+                Debug.LoopItem(4, $"{nameof(holyPlace)}{nameof(holyPlace.Faction)}", $"{holyPlace?.Faction ?? NULL}",
                     Good: holyPlace?.Faction == "Mechanimists", Indent: indent + 2, Toggle: getDoDebug());
             }
 

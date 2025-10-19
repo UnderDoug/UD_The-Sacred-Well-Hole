@@ -89,7 +89,7 @@ namespace XRL.World.ZoneBuilders
                     {
                         Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
                         Debug.LoopItem(4, $"{nameof(itemCell)}", $"{itemCell.Location}", Indent: indent + 2, Toggle: getDoDebug());
-                        
+
                         GameObject placedObject = null;
                         // Debug.CheckYeh(4, $"{nameof(itemCell)} is acceptable to place items in", Indent: indent + 3, Toggle: getDoDebug());
                         if (zone.Z > 17 && itemCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall"))
@@ -132,7 +132,7 @@ namespace XRL.World.ZoneBuilders
                                     if (!populationObject.GetBlueprint().InheritsFrom("TradeGood") || Stat.RollCached("1d4") == 1)
                                     {
                                         int setModNumber = (Stat.RollCached("1d4") == 1 ? 2 : 1);
-                                        Debug.LoopItem(4, $"Modding {populationObject?.DebugName ?? NULL}", $"{nameof(setModNumber)} ({setModNumber})", 
+                                        Debug.LoopItem(4, $"Modding {populationObject?.DebugName ?? NULL}", $"{nameof(setModNumber)} ({setModNumber})",
                                             Indent: indent + 6, Toggle: getDoDebug());
                                         int appliedMods = ModificationFactory.ApplyModifications(
                                             GO: populationObject,
@@ -165,10 +165,10 @@ namespace XRL.World.ZoneBuilders
                 {
                     Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
                     Debug.LoopItem(4, $"{nameof(item)}", $"{item?.DebugName ?? NULL}", Indent: indent + 2, Toggle: getDoDebug());
-                    if (item != null && item.Blueprint != "Garbage" )
+                    if (item != null && item.Blueprint != "Garbage")
                     {
                         bool itemIsFood = item.InheritsFrom("Food") || item.Blueprint == "PersistentPapaya";
-                        Debug.LoopItem(4, $"{nameof(itemIsFood)}", $"{itemIsFood}", 
+                        Debug.LoopItem(4, $"{nameof(itemIsFood)}", $"{itemIsFood}",
                             Good: itemIsFood, Indent: indent + 3, Toggle: getDoDebug());
 
                         if (itemIsFood)
@@ -178,7 +178,7 @@ namespace XRL.World.ZoneBuilders
                         }
 
                         bool itemIsNotWorthySacrifice = StiltWell.GetArtifactReputationValue(item) < 1;
-                        Debug.LoopItem(4, $"{nameof(itemIsNotWorthySacrifice)}", $"{itemIsNotWorthySacrifice}", 
+                        Debug.LoopItem(4, $"{nameof(itemIsNotWorthySacrifice)}", $"{itemIsNotWorthySacrifice}",
                             Good: itemIsNotWorthySacrifice, Indent: indent + 3, Toggle: getDoDebug());
 
                         if (itemIsNotWorthySacrifice
@@ -297,7 +297,7 @@ namespace XRL.World.ZoneBuilders
                             EnergyCell energyCell = energyCellObject.GetPart<EnergyCell>();
                             if (energyCell != null)
                             {
-                                energyCell.Charge = (int)Math.Min(energyCell.Charge * (float)(Stat.RollCached("1d100")/100), energyCell.MaxCharge);
+                                energyCell.Charge = (int)Math.Min(energyCell.Charge * (float)(Stat.RollCached("1d100") / 100), energyCell.MaxCharge);
                                 energyCellSocket.Cell = energyCellObject;
                             }
                             Debug.LoopItem(4, $"Added", $"{nameof(EnergyCellSocket)}", Indent: indent + 3, Toggle: getDoDebug());
@@ -322,7 +322,7 @@ namespace XRL.World.ZoneBuilders
                         int scrapWallLevels = Stat.RollCached("2d6+3");
                         Debug.LoopItem(4, $"Leveling up {scrapWallLevels} times...", Indent: indent + 4, Toggle: getDoDebug());
                         Debug.LoopItem(4, $"-] {nameof(scrapWall)}.{nameof(scrapWall.Level)}", $"{scrapWall.Level}", Indent: indent + 5, Toggle: getDoDebug());
-                        for (int i = 0; i < scrapWallLevels;  i++)
+                        for (int i = 0; i < scrapWallLevels; i++)
                         {
                             leveler.LevelUp();
                             Debug.LoopItem(4, $"{i}] {nameof(scrapWall)}.{nameof(scrapWall.Level)}", $"{scrapWall.Level}", Indent: indent + 5, Toggle: getDoDebug());

@@ -427,7 +427,7 @@ namespace UD_SacredWellHole
                 int adjacentBasisCells = 0;
                 if (!adjacentCells.IsNullOrEmpty())
                 {
-                    foreach (Cell adjacentCell  in adjacentCells)
+                    foreach (Cell adjacentCell in adjacentCells)
                     {
                         if (Basis(adjacentCell))
                         {

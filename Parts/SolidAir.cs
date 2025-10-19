@@ -83,7 +83,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(EnteringCellEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
@@ -92,7 +92,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ObjectEnteringCellEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
@@ -101,7 +101,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ZoneActivatedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
                 && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
@@ -110,7 +110,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ZoneThawedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
                 && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
@@ -119,7 +119,7 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(BeforeZoneBuiltEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone 
+            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
                 && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
@@ -145,7 +145,7 @@ namespace XRL.World.Parts
                     AirMaterial = "QuantumAir";
                 }
                 Debug.LoopItem(4, $"{nameof(AirMaterial)}", $"{AirMaterial}", Indent: indent + 2, Toggle: getDoDebug());
-                AirObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(AirMaterial); 
+                AirObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(AirMaterial);
                 if (!AirObject.TryGetPart(out QuantumAir quantumAir))
                 {
                     quantumAir = AirObject.AddPart(new QuantumAir(this));

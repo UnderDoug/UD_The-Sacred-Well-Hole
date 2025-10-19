@@ -59,8 +59,8 @@ namespace XRL.World.Parts
             {
                 string stiltWellWithDefiniteArticle = Sacrifice.GetStringProperty("Might Self-Sacrifice");
                 Sacrifice.SetStringProperty("Might Self-Sacrifice", null, true);
-                return !Sacrifice.HasStringProperty("Jumped In Stilt Well") 
-                    && !stiltWellWithDefiniteArticle.IsNullOrEmpty() 
+                return !Sacrifice.HasStringProperty("Jumped In Stilt Well")
+                    && !stiltWellWithDefiniteArticle.IsNullOrEmpty()
                     && SelfSacrifice.MemorializeSelfSacrifice(Sacrifice, stiltWellWithDefiniteArticle);
             }
             return false;

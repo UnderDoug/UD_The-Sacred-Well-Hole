@@ -36,12 +36,12 @@ namespace XRL.World.ZoneBuilders
         {
             Cells ??= Event.NewCellList();
         }
-        public UDSW_MostlySolidMaterial(string Material = null, List<string> Materials = null, bool ClearFirst = true) 
+        public UDSW_MostlySolidMaterial(string Material = null, List<string> Materials = null, bool ClearFirst = true)
             : base(Material, Materials, ClearFirst)
         {
             Cells ??= Event.NewCellList();
         }
-        public UDSW_MostlySolidMaterial(List<Cell> Cells) 
+        public UDSW_MostlySolidMaterial(List<Cell> Cells)
             : base()
         {
             if (Cells != null)
@@ -49,7 +49,7 @@ namespace XRL.World.ZoneBuilders
                 this.Cells ??= Event.NewCellList(Cells);
             }
         }
-        public UDSW_MostlySolidMaterial(string Material = null, List<string> Materials = null, bool ClearFirst = true, List<Cell> Cells = null) 
+        public UDSW_MostlySolidMaterial(string Material = null, List<string> Materials = null, bool ClearFirst = true, List<Cell> Cells = null)
             : base(Material, Materials, ClearFirst)
         {
             if (Cells != null)

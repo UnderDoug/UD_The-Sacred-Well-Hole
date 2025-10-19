@@ -114,12 +114,12 @@ namespace XRL.World.Parts
                     }
                     if (destinationCell != null)
                     {
-                        if (Scrambler.IsPlayerControlled() 
-                            && (Scramblee.HasEffect<Rusted>() || Scramblee.HasEffect<Broken>()) 
+                        if (Scrambler.IsPlayerControlled()
+                            && (Scramblee.HasEffect<Rusted>() || Scramblee.HasEffect<Broken>())
                             && Popup.ShowYesNo(
                                 $"That {Scramblee?.Render?.DisplayName ?? Scramblee?.GetBlueprint()?.DisplayName()} looks like a jagged mess, " +
                                 $"there's a good chance you'll hurt yourself scrambling up {Scramblee.it}. " +
-                                $"Do you want to try anyway?", 
+                                $"Do you want to try anyway?",
                                 defaultResult: DialogResult.No
                                 ) != DialogResult.Yes)
                         {
@@ -130,19 +130,19 @@ namespace XRL.World.Parts
                         if (Scrambler.DirectMoveTo(destinationCell, 1000))
                         {
                             Scrambler.EmitMessage(GameText.VariableReplace($"=subject.T= =verb:scramble:afterpronoun= up =object.t=!", Subject: Scrambler, Object: Scramblee));
-                            
+
                             if (Scramblee.HasEffect<Rusted>() || Scramblee.HasEffect<Broken>() && Stat.RollCached("1d4") > 1)
                             {
                                 int damageAmount = Stat.RollCached("1d4+1");
                                 if (Scrambler.TakeDamage(
-                                    ref damageAmount, 
+                                    ref damageAmount,
                                     Attributes: "Bleed Unavoidable",
-                                    DeathReason: $"You were shredded to ribbons on {Scramblee.poss("jagged edges")}", 
-                                    ThirdPersonDeathReason: $"{Scrambler.It}{Scrambler.GetVerb("were")} shredded to ribbons on {Scramblee.poss("jagged edges")}", 
-                                    Attacker: Scramblee, 
-                                    Message: "from %t jagged edges", 
-                                    Accidental: true, 
-                                    Environmental: true, 
+                                    DeathReason: $"You were shredded to ribbons on {Scramblee.poss("jagged edges")}",
+                                    ThirdPersonDeathReason: $"{Scrambler.It}{Scrambler.GetVerb("were")} shredded to ribbons on {Scramblee.poss("jagged edges")}",
+                                    Attacker: Scramblee,
+                                    Message: "from %t jagged edges",
+                                    Accidental: true,
+                                    Environmental: true,
                                     IgnoreVisibility: true) && Stat.RollCached("1d3") > 1)
                                 {
                                     Scrambler.ApplyEffect(new Bleeding("1d3", 20, Scramblee));
