@@ -9,14 +9,14 @@
       <zone Level="11-15" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
         <builder Class="PossibleCryotube" />
         <postbuilder Class="UD_SubGrandCathedralBuilder" />
-        <postbuilder Class="FactionEncounters" Population="GenericFactionPopulation" />
+        <removepostbuilder Class="FactionEncounters" />
       </zone>
       <zone Level="16" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
         <builder Class="PossibleCryotube" />
         <map FileName="Maps/GrandCathedralWell_16.rpm" />
         <postbuilder Class="UD_SubGrandCathedralBuilder" />
         <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
-        <postbuilder Class="FactionEncounters" Population="GenericFactionPopulation" />
+        <removepostbuilder Class="FactionEncounters" />
         <music Track="Music/Golgotha" />
       </zone>
       <zone Level="17" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
@@ -24,7 +24,7 @@
         <map FileName="Maps/GrandCathedralWell_17.rpm" />
         <postbuilder Class="UD_SubGrandCathedralBuilder" />
         <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
-        <postbuilder Class="FactionEncounters" Population="GenericFactionPopulation" />
+        <removepostbuilder Class="FactionEncounters" />
         <music Track="Music/Golgotha" />
       </zone>
       <zone Level="18" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
@@ -32,7 +32,7 @@
         <map FileName="Maps/GrandCathedralWell_18.rpm" />
         <postbuilder Class="UD_SubGrandCathedralBuilder" />
         <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
-        <postbuilder Class="FactionEncounters" Population="GenericFactionPopulation" />
+        <removepostbuilder Class="FactionEncounters" />
         <music Track="Music/Golgotha" />
       </zone>
       <zone Level="19" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
@@ -40,7 +40,7 @@
         <map FileName="Maps/GrandCathedralWell_19.rpm" />
         <postbuilder Class="UD_SubGrandCathedralBuilder" />
         <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
-        <postbuilder Class="FactionEncounters" Population="GenericFactionPopulation" />
+        <removepostbuilder Class="FactionEncounters" />
         <music Track="Music/Golgotha" />
       </zone>
       <zone Level="20" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
@@ -48,7 +48,47 @@
         <map FileName="Maps/GrandCathedralWell_20.rpm" />
         <postbuilder Class="UD_SubGrandCathedralBuilder" />
         <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
-        <postbuilder Class="FactionEncounters" Population="GenericFactionPopulation" />
+        <postbuilder Class="FactionEncounters" Population="SubGrandCathedralGenericFactionPopulation" />
+        <music Track="Music/Golgotha" />
+      </zone>
+      <zone Level="21" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
+        <builder Class="PossibleCryotube" />
+        <map FileName="Maps/GrandCathedralWell_21.rpm" />
+        <postbuilder Class="UD_SubGrandCathedralBuilder" />
+        <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
+        <postbuilder Class="FactionEncounters" Population="SubGrandCathedralGenericFactionPopulation" />
+        <music Track="Music/Golgotha" />
+      </zone>
+      <zone Level="22" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
+        <builder Class="PossibleCryotube" />
+        <map FileName="Maps/GrandCathedralWell_22.rpm" />
+        <postbuilder Class="UD_SubGrandCathedralBuilder" />
+        <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
+        <postbuilder Class="FactionEncounters" Population="SubGrandCathedralGenericFactionPopulation" />
+        <music Track="Music/Golgotha" />
+      </zone>
+      <zone Level="23" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
+        <builder Class="PossibleCryotube" />
+        <map FileName="Maps/GrandCathedralWell_23.rpm" />
+        <postbuilder Class="UD_SubGrandCathedralBuilder" />
+        <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
+        <removepostbuilder Class="FactionEncounters" />
+        <music Track="Music/Golgotha" />
+      </zone>
+      <zone Level="24" x="1" y="1" Name="beneath the sacred well" NameContext="The Six Day Stilt" ProperName="true">
+        <builder Class="PossibleCryotube" />
+        <map FileName="Maps/GrandCathedralWell_24.rpm" />
+        <postbuilder Class="UD_SubGrandCathedralBuilder" />
+        <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
+        <removepostbuilder Class="FactionEncounters" />
+        <music Track="Music/Golgotha" />
+      </zone>
+      <zone Level="25" x="1" y="1" Name="the bottom of the sacred well" NameContext="The Six Day Stilt" ProperName="true">
+        <builder Class="PossibleCryotube" />
+        <map FileName="Maps/GrandCathedralWell_25.rpm" />
+        <postbuilder Class="UD_SubGrandCathedralBuilder" />
+        <postbuilder Class="UD_SubGrandCathedralScrapifier" WantScrappy="true" />
+        <removepostbuilder Class="FactionEncounters" />
         <music Track="Music/Golgotha" />
       </zone>
     </cell>

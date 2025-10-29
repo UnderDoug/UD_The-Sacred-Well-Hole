@@ -1,5 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <populations>
+
+  <population Name="SubGrandCathedralGenericFactionPopulation">
+    <group Name="Options" Style="pickone">
+      <table Weight="1" Name="GenericFactionPopulation" />
+    </group>
+  </population>
+
+  <population Name="SubGrandCathedralNothingEncounters">
+    <group Name="Options" Style="pickone">
+      <table Chance="0" Name="SubGrandCathedralGenericFactionPopulation" />
+    </group>
+  </population>
   
   <population Name="ScrapWalls">
     <group Name="Options" Style="pickone">

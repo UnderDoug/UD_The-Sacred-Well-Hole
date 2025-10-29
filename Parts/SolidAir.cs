@@ -28,6 +28,7 @@ namespace XRL.World.Parts
             };
             List<object> dontList = new()
             {
+                nameof(CollapseAir),
                 'X',    // Trace
             };
 
@@ -47,6 +48,7 @@ namespace XRL.World.Parts
         public string SolidifyingBlueprint;
 
         public bool DerivativeSolidifies;
+        public Cell CellBelow => ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
 
         public SolidAir()
         {
@@ -55,7 +57,11 @@ namespace XRL.World.Parts
             SolidifyingBlueprint = null;
             DerivativeSolidifies = true;
         }
-        public SolidAir(GameObject AirObject, string AirMaterial = null, string SolidifyingBlueprint = null, bool DerivativeSolidifies = true)
+        public SolidAir(
+            GameObject AirObject,
+            string AirMaterial = null,
+            string SolidifyingBlueprint = null,
+            bool DerivativeSolidifies = true)
             : this()
         {
             this.AirMaterial = AirMaterial;
@@ -64,8 +70,55 @@ namespace XRL.World.Parts
             this.DerivativeSolidifies = DerivativeSolidifies;
         }
         public SolidAir(QuantumAir QuantumAir)
-            : this(QuantumAir.ParentObject, QuantumAir.ParentObject.Blueprint, QuantumAir.SolidifyingBlueprint, QuantumAir.DerivativeSolidifies)
+            : this(
+                  AirObject: QuantumAir.ParentObject,
+                  AirMaterial: QuantumAir.ParentObject.Blueprint,
+                  SolidifyingBlueprint: QuantumAir.SolidifyingBlueprint,
+                  DerivativeSolidifies: QuantumAir.DerivativeSolidifies)
         {
+        }
+
+        public bool CollapseAir(MinEvent FromEvent = null)
+        {
+            int indent = Debug.LastIndent;
+            bool doDebug = getDoDebug(nameof(CollapseAir));
+            if (ParentObject is GameObject solidAirObject)
+            {
+                Cell solidAirCell = solidAirObject.CurrentCell;
+                Debug.Entry(4,
+                    $"* {nameof(SolidAir)}."
+                    + $"{nameof(CollapseAir)}("
+                    + $"{nameof(Zone.Z)}: {solidAirCell?.ParentZone?.Z}, "
+                    + $"{nameof(Cell)}: [{solidAirCell?.Location}], "
+                    + $"{nameof(FromEvent)}: {FromEvent?.GetType()?.Name})",
+                    Indent: indent + 1, Toggle: doDebug);
+
+                if (AirMaterial.IsNullOrEmpty())
+                {
+                    AirMaterial = "QuantumAir";
+                }
+                Debug.LoopItem(4, $"{nameof(AirMaterial)}", $"{AirMaterial}", Indent: indent + 2, Toggle: doDebug);
+                AirObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(AirMaterial);
+                if (!AirObject.TryGetPart(out QuantumAir quantumAir))
+                {
+                    quantumAir = AirObject.AddPart(new QuantumAir(this));
+                }
+                if (AirObject != null)
+                {
+                    Debug.CheckYeh(4, $"Collapsing...", Indent: indent + 2, Toggle: doDebug);
+                    solidAirCell.RemoveObject(solidAirObject, System: true, Silent: true, ParentEvent: FromEvent);
+                    solidAirCell.AddObject(AirObject, System: true, Silent: true, ParentEvent: FromEvent);
+
+                    Debug.LastIndent = indent;
+                    return true;
+                }
+                else
+                {
+                    Debug.CheckNah(4, $"Collapse failed...", Indent: indent + 2, Toggle: doDebug);
+                }
+            }
+            Debug.LastIndent = indent;
+            return false;
         }
 
         public override void Register(GameObject Object, IEventRegistrar Registrar)
@@ -84,7 +137,12 @@ namespace XRL.World.Parts
         public override bool HandleEvent(EnteringCellEvent E)
         {
             if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
-                && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
+                && QuantumAir.ShouldBeAir(
+                    QuantumAirObject: ParentObject,
+                    SolidifyingBlueprint: SolidifyingBlueprint,
+                    CellBelow: CellBelow,
+                    DerivativeSolidifies: DerivativeSolidifies,
+                    Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
             }
@@ -93,7 +151,12 @@ namespace XRL.World.Parts
         public override bool HandleEvent(ObjectEnteringCellEvent E)
         {
             if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
-                && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
+                && QuantumAir.ShouldBeAir(
+                    QuantumAirObject: ParentObject,
+                    SolidifyingBlueprint: SolidifyingBlueprint,
+                    CellBelow: CellBelow,
+                    DerivativeSolidifies: DerivativeSolidifies,
+                    Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
             }
@@ -102,7 +165,12 @@ namespace XRL.World.Parts
         public override bool HandleEvent(ZoneActivatedEvent E)
         {
             if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
+                && QuantumAir.ShouldBeAir(
+                    QuantumAirObject: ParentObject,
+                    SolidifyingBlueprint: SolidifyingBlueprint,
+                    CellBelow: CellBelow,
+                    DerivativeSolidifies: DerivativeSolidifies,
+                    Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
             }
@@ -111,7 +179,12 @@ namespace XRL.World.Parts
         public override bool HandleEvent(ZoneThawedEvent E)
         {
             if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
+                && QuantumAir.ShouldBeAir(
+                    QuantumAirObject: ParentObject,
+                    SolidifyingBlueprint: SolidifyingBlueprint,
+                    CellBelow: CellBelow,
+                    DerivativeSolidifies: DerivativeSolidifies,
+                    Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
             }
@@ -120,53 +193,16 @@ namespace XRL.World.Parts
         public override bool HandleEvent(BeforeZoneBuiltEvent E)
         {
             if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && QuantumAir.ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, Source: nameof(SolidAir)))
+                && QuantumAir.ShouldBeAir(
+                    QuantumAirObject: ParentObject,
+                    SolidifyingBlueprint: SolidifyingBlueprint,
+                    CellBelow: CellBelow,
+                    DerivativeSolidifies: DerivativeSolidifies,
+                    Source: nameof(SolidAir)))
             {
                 CollapseAir(E);
             }
             return base.HandleEvent(E);
-        }
-
-        public bool CollapseAir(MinEvent FromEvent = null)
-        {
-            int indent = Debug.LastIndent;
-            if (ParentObject != null)
-            {
-                Debug.Entry(4,
-                    $"* {nameof(SolidAir)}."
-                    + $"{nameof(CollapseAir)}("
-                    + $"{nameof(Zone.Z)}: {ParentObject?.CurrentCell?.ParentZone?.Z}, "
-                    + $"{nameof(Cell)}: [{ParentObject?.CurrentCell?.Location}], "
-                    + $"{nameof(FromEvent)}: {FromEvent?.GetType()?.Name})",
-                    Indent: indent + 1, Toggle: getDoDebug());
-
-                if (AirMaterial.IsNullOrEmpty())
-                {
-                    AirMaterial = "QuantumAir";
-                }
-                Debug.LoopItem(4, $"{nameof(AirMaterial)}", $"{AirMaterial}", Indent: indent + 2, Toggle: getDoDebug());
-                AirObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(AirMaterial);
-                if (!AirObject.TryGetPart(out QuantumAir quantumAir))
-                {
-                    quantumAir = AirObject.AddPart(new QuantumAir(this));
-                }
-                if (AirObject != null)
-                {
-                    Debug.CheckYeh(4, $"Collapsing...", Indent: indent + 2, Toggle: getDoDebug());
-                    Cell currentCell = ParentObject.CurrentCell;
-                    currentCell.RemoveObject(ParentObject, System: true, Silent: true, ParentEvent: FromEvent);
-                    currentCell.AddObject(AirObject, System: true, Silent: true, ParentEvent: FromEvent);
-
-                    Debug.LastIndent = indent;
-                    return true;
-                }
-                else
-                {
-                    Debug.CheckNah(4, $"Collapse failed...", Indent: indent + 2, Toggle: getDoDebug());
-                }
-            }
-            Debug.LastIndent = indent;
-            return false;
         }
     }
 }

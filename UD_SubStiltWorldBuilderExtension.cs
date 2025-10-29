@@ -42,6 +42,7 @@ namespace XRL.World.WorldBuilders
         public static Location2D StiltWellLocation => GetStiltWellLocation(CathedralZone); // [38,12]
 
         public static Dictionary<int, string> CathedralSubStrata => GetCathedralStrataSubStrataZoneIDs(CathedralZone);
+        public static int LowestWellStratum => 25;
 
         public override void OnAfterBuild(JoppaWorldBuilder Builder)
         {

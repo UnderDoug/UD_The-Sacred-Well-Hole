@@ -6,6 +6,7 @@ using XRL.Core;
 using XRL.Rules;
 using XRL.World;
 using XRL.World.ZoneBuilders;
+using static XRL.World.ZoneBuilders.UD_SubGrandCathedralBuilder;
 
 using UD_SacredWellHole;
 
@@ -28,6 +29,7 @@ namespace XRL.World.Parts
             };
             List<object> dontList = new()
             {
+                nameof(SolidifyAir),
                 'X',    // Trace
             };
 
@@ -47,6 +49,7 @@ namespace XRL.World.Parts
         public string SolidifyingBlueprint;
 
         public bool DerivativeSolidifies;
+        public Cell CellBelow => ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
 
         public QuantumAir()
         {
@@ -54,22 +57,191 @@ namespace XRL.World.Parts
             SolidifyingBlueprint = null;
             DerivativeSolidifies = true;
         }
-        public QuantumAir(GameObject FloorObject, string FloorMaterial = null, string SolidifyingBlueprint = null, bool DerivativeCollapses = true)
+        public QuantumAir(
+            GameObject FloorObject, 
+            string FloorMaterial = null, 
+            string SolidifyingBlueprint = null, 
+            bool DerivativeSolidifies = true)
             : this()
         {
             this.FloorMaterial = FloorMaterial;
             this.FloorObject = FloorObject;
             this.SolidifyingBlueprint = SolidifyingBlueprint;
-            this.DerivativeSolidifies = DerivativeCollapses;
+            this.DerivativeSolidifies = DerivativeSolidifies;
         }
         public QuantumAir(SolidAir SolidAir)
-            : this(SolidAir.ParentObject, SolidAir.ParentObject.Blueprint, SolidAir.SolidifyingBlueprint, SolidAir.DerivativeSolidifies)
+            : this(
+                  FloorObject: SolidAir.ParentObject,
+                  FloorMaterial: SolidAir.ParentObject.Blueprint,
+                  SolidifyingBlueprint: SolidAir.SolidifyingBlueprint,
+                  DerivativeSolidifies: SolidAir.DerivativeSolidifies)
         {
         }
 
         public override void Attach()
         {
             base.Attach();
+        }
+
+        static bool HasSolidConnection(Cell Cell)
+        {
+            return Cell.HasObjectInheritsFrom("Wall")
+                || !Cell.HasObjectInheritsFrom("OpenAir")
+                || Cell.GetFirstObjectPart<StairsDown>() is not StairsDown stairsdown
+                || !stairsdown.PullDown;
+        }
+
+        public static bool ShouldBeAir(
+            GameObject QuantumAirObject,
+            string SolidifyingBlueprint,
+            Cell CellBelow,
+            bool DerivativeSolidifies = true,
+            string Source = null)
+        {
+            int indent = Debug.LastIndent;
+            bool doDebug = getDoDebug('X');
+
+            Cell quantumAirCell = QuantumAirObject?.CurrentCell;
+
+            Debug.Entry(4,
+                $"* {nameof(QuantumAir)}."
+                + $"{nameof(ShouldBeAir)}("
+                + $"{nameof(QuantumAirObject)}: [{QuantumAirObject?.DebugName ?? NULL}], "
+                + $"{nameof(Source)}: {Source ?? NULL}) "
+                + $"{nameof(Zone.Z)}: {quantumAirCell?.ParentZone?.Z}, "
+                + $"{nameof(quantumAirCell)}: [{quantumAirCell?.Location}]",
+                Indent: indent + 1, Toggle: doDebug);
+
+            if (quantumAirCell != null)
+            {
+                Debug.CheckNah(4, $"{nameof(quantumAirCell)} not null", Indent: indent + 2, Toggle: doDebug);
+                if (quantumAirCell.HasObject(GO => GO.InheritsFrom("Wall")))
+                {
+                    if (quantumAirCell.GetCardinalAdjacentCellsWhere(HasSolidConnection).Count > 0)
+                    {
+                        string wallName = quantumAirCell.GetFirstObjectThatInheritsFrom("Wall")?.DebugName ?? NULL;
+                        Debug.CheckNah(4,
+                            $"{nameof(quantumAirCell)} Has wall " + wallName + " and at least one connected cardinal direction cell",
+                            Indent: indent + 2, Toggle: doDebug);
+                        Debug.LastIndent = indent;
+                        return false;
+                    }
+                }
+            }
+
+            if (CellBelow == null)
+            {
+                Debug.CheckNah(4, $"{nameof(CellBelow)} is null", Indent: indent + 2, Toggle: doDebug);
+                Debug.LastIndent = indent;
+                return false;
+            }
+
+            GameObject solidifyingObject = CellBelow?.GetFirstObjectThatInheritsFrom(SolidifyingBlueprint);
+
+            if (DerivativeSolidifies
+                && CellBelow.HasObjectInheritsFrom(SolidifyingBlueprint)
+                && ObjectCanSolidify(solidifyingObject))
+            {
+                Debug.CheckNah(4,
+                    $"{nameof(DerivativeSolidifies)} and {nameof(CellBelow)} contains derivative of " +
+                    $"{nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}",
+                    solidifyingObject?.DebugName ?? NULL,
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.LastIndent = indent;
+                return false;
+            }
+
+            if (CellBelow.HasObjectWithBlueprint(SolidifyingBlueprint)
+                && ObjectCanSolidify(solidifyingObject))
+            {
+                Debug.CheckNah(4,
+                    $"{nameof(CellBelow)} contains {nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}",
+                    solidifyingObject?.DebugName ?? NULL,
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.LastIndent = indent;
+                return false;
+            }
+
+            Debug.CheckYeh(4,
+                $"{nameof(CellBelow)} doesn't contain {nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}",
+                Indent: indent + 2, Toggle: doDebug);
+            Debug.LastIndent = indent;
+            return true;
+        }
+        public bool ShouldBeAir()
+        {
+            return ShouldBeAir(
+                QuantumAirObject: ParentObject,
+                SolidifyingBlueprint: SolidifyingBlueprint,
+                CellBelow: CellBelow,
+                DerivativeSolidifies: DerivativeSolidifies,
+                Source: nameof(QuantumAir));
+        }
+
+        public static bool ObjectCanSolidify(GameObject SolidifyingObject)
+        {
+            return SolidifyingObject != null
+                && !SolidifyingObject.HasTag("PaintedFence")
+                && !SolidifyingObject.HasTagOrProperty("Flyover");
+                // && !SolidifyingObject.IsCreature
+                // && !SolidifyingObject.HasPart<AnimatedObject>();
+        }
+
+        public bool SolidifyAir(MinEvent FromEvent = null)
+        {
+            int indent = Debug.LastIndent;
+            bool doDebug = getDoDebug(nameof(SolidifyAir));
+            if (ParentObject is GameObject quantumAirObject)
+            {
+                Cell quantumAirCell = quantumAirObject?.CurrentCell;
+                Debug.Entry(4,
+                    $"* {nameof(QuantumAir)}."
+                    + $"{nameof(SolidifyAir)}("
+                    + $"{nameof(Zone.Z)}: {quantumAirCell?.ParentZone?.Z}, "
+                    + $"{nameof(Cell)}: [{quantumAirCell?.Location}], "
+                    + $"{nameof(FromEvent)}: {FromEvent?.GetType()?.Name})",
+                    Indent: indent + 1, Toggle: doDebug);
+
+                GameObject wallBelow = CellBelow?.GetFirstObject(GO => GO.InheritsFrom("Wall"));
+
+                if (FloorMaterial.IsNullOrEmpty())
+                {
+                    FloorMaterial = wallBelow?.GetPropertyOrTag("QuantumAirFloorMaterial", null) ?? "SolidAir";
+                }
+                Debug.LoopItem(4, $"{nameof(FloorMaterial)}", $"{FloorMaterial}", Indent: indent + 2, Toggle: doDebug);
+                FloorObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(FloorMaterial);
+
+                if (FloorObject != null)
+                {
+                    Debug.CheckYeh(4, $"Solidifying", Indent: indent + 2, Toggle: doDebug);
+                    if (!FloorObject.TryGetPart(out SolidAir solidAir))
+                    {
+                        solidAir = FloorObject.AddPart(new SolidAir(this));
+                    }
+                    if (solidAir != null)
+                    {
+                        quantumAirCell.RemoveObject(quantumAirObject, System: true, Silent: true, ParentEvent: FromEvent);
+                        quantumAirCell.AddObject(FloorObject, System: true, Silent: true, ParentEvent: FromEvent);
+                        if (wallBelow != null && wallBelow.Render != null)
+                        {
+                            if (FloorObject.TryGetPart(out RandomColors randomColors))
+                            {
+                                FloorObject.RemovePart(randomColors);
+                            }
+                            FloorObject.Render.TileColor = wallBelow.Render.TileColor;
+                            FloorObject.Render.DetailColor = wallBelow.Render.DetailColor;
+                        }
+                        Debug.LastIndent = indent;
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.CheckNah(4, $"Solidification failed...", Indent: indent + 2, Toggle: doDebug);
+                    }
+                }
+            }
+            Debug.LastIndent = indent;
+            return false;
         }
 
         public override void Register(GameObject Object, IEventRegistrar Registrar)
@@ -129,167 +301,6 @@ namespace XRL.World.Parts
                 SolidifyAir(E);
             }
             return base.HandleEvent(E);
-        }
-
-        public static bool ShouldBeAir(GameObject QuantumAirObject, string SolidifyingBlueprint, bool DerivativeSolidifies = true, string Source = null)
-        {
-            int indent = Debug.LastIndent;
-
-            Cell quantumAirCell = QuantumAirObject?.CurrentCell;
-
-            Debug.Entry(4,
-                $"* {nameof(QuantumAir)}."
-                + $"{nameof(ShouldBeAir)}("
-                + $"{nameof(QuantumAirObject)}: [{QuantumAirObject?.DebugName ?? NULL}], "
-                + $"{nameof(Source)}: {Source ?? NULL}) "
-                + $"{nameof(Zone.Z)}: {quantumAirCell?.ParentZone?.Z}, "
-                + $"{nameof(quantumAirCell)}: [{quantumAirCell?.Location}]",
-                Indent: indent + 1, Toggle: getDoDebug('X'));
-
-            if (quantumAirCell != null)
-            {
-                Debug.CheckNah(4, $"{nameof(quantumAirCell)} not null", Indent: indent + 2, Toggle: getDoDebug('X'));
-                if (quantumAirCell.HasObject(GO => GO.InheritsFrom("Wall")))
-                {
-                    Debug.CheckNah(4, $"{nameof(quantumAirCell)} Has Wall", Indent: indent + 2, Toggle: getDoDebug('X'));
-                    Debug.LastIndent = indent;
-                    return false;
-                }
-            }
-            Cell cellBelow = quantumAirCell?.GetCellFromDirection("D", BuiltOnly: false);
-
-            Debug.LastIndent = indent;
-            if (cellBelow == null)
-            {
-                Debug.CheckNah(4, $"{nameof(cellBelow)} is null", Indent: indent + 2, Toggle: getDoDebug('X'));
-                Debug.LastIndent = indent;
-                return false;
-            }
-
-            GameObject solidifyingObject = cellBelow.GetFirstObjectThatInheritsFrom(SolidifyingBlueprint);
-
-            if (DerivativeSolidifies
-                && cellBelow.HasObjectInheritsFrom(SolidifyingBlueprint)
-                && ObjectCanSolidify(solidifyingObject))
-            {
-                Debug.CheckNah(4, $"{nameof(DerivativeSolidifies)} and {nameof(cellBelow)} contains derivative of {nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}",
-                    Indent: indent + 2, Toggle: getDoDebug('X'));
-                Debug.LastIndent = indent;
-                return false;
-            }
-
-            if (cellBelow.HasObjectWithBlueprint(SolidifyingBlueprint)
-                && ObjectCanSolidify(solidifyingObject))
-            {
-                Debug.CheckNah(4, $"{nameof(cellBelow)} contains {nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}",
-                    Indent: indent + 2, Toggle: getDoDebug('X'));
-                Debug.LastIndent = indent;
-                return false;
-            }
-
-            Debug.CheckYeh(4, $"{nameof(cellBelow)} doesn't contain {nameof(SolidifyingBlueprint)}, {SolidifyingBlueprint}", Indent: indent + 2, Toggle: getDoDebug('X'));
-            Debug.LastIndent = indent;
-            return true;
-        }
-        public bool ShouldBeAir()
-        {
-            return ShouldBeAir(ParentObject, SolidifyingBlueprint, DerivativeSolidifies, nameof(QuantumAir));
-        }
-
-        public static bool ObjectCanSolidify(GameObject SolidifyingObject)
-        {
-            return SolidifyingObject != null
-                && !SolidifyingObject.HasTag("PaintedFence")
-                && !SolidifyingObject.HasTagOrProperty("Flyover")
-                && !SolidifyingObject.IsCreature
-                && !SolidifyingObject.HasPart<AnimatedObject>();
-        }
-
-        public bool SolidifyAir(MinEvent FromEvent = null)
-        {
-            int indent = Debug.LastIndent;
-            if (ParentObject != null)
-            {
-                Debug.Entry(4,
-                    $"* {nameof(QuantumAir)}."
-                    + $"{nameof(SolidifyAir)}("
-                    + $"{nameof(Zone.Z)}: {ParentObject?.CurrentCell?.ParentZone?.Z}, "
-                    + $"{nameof(Cell)}: [{ParentObject?.CurrentCell?.Location}], "
-                    + $"{nameof(FromEvent)}: {FromEvent?.GetType()?.Name})",
-                    Indent: indent + 1, Toggle: getDoDebug());
-
-                Cell cellBelow = ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
-                GameObject wallBelow = cellBelow?.GetFirstObject(GO => GO.InheritsFrom("Wall"));
-
-                if (FloorMaterial.IsNullOrEmpty())
-                {
-                    FloorMaterial = wallBelow?.GetPropertyOrTag("QuantumAirFloorMaterial", null) ?? "SolidAir";
-                }
-                Debug.LoopItem(4, $"{nameof(FloorMaterial)}", $"{FloorMaterial}", Indent: indent + 2, Toggle: getDoDebug());
-                FloorObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(FloorMaterial);
-
-                if (FloorObject != null)
-                {
-                    Debug.CheckYeh(4, $"Solidifying", Indent: indent + 2, Toggle: getDoDebug());
-                    if (!FloorObject.TryGetPart(out SolidAir solidAir))
-                    {
-                        solidAir = FloorObject.AddPart(new SolidAir(this));
-                    }
-                    if (solidAir != null)
-                    {
-                        Cell currentCell = ParentObject.CurrentCell;
-                        currentCell.RemoveObject(ParentObject, System: true, Silent: true, ParentEvent: FromEvent);
-                        currentCell.AddObject(FloorObject, System: true, Silent: true, ParentEvent: FromEvent);
-                        if (wallBelow != null && wallBelow.Render != null)
-                        {
-                            if (FloorObject.TryGetPart(out RandomColors randomColors))
-                            {
-                                FloorObject.RemovePart(randomColors);
-                            }
-                            FloorObject.Render.TileColor = wallBelow.Render.TileColor;
-                            FloorObject.Render.DetailColor = wallBelow.Render.DetailColor;
-                        }
-                        Debug.LastIndent = indent;
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.CheckNah(4, $"Solidification failed...", Indent: indent + 2, Toggle: getDoDebug());
-                    }
-                }
-            }
-            Debug.LastIndent = indent;
-            return false;
-        }
-
-        public void PaintCell(Cell CurrentCell, Cell CellBelow)
-        {
-            GameObject wallBelow = CellBelow.GetFirstObject(GO => GO.InheritsFrom(SolidifyingBlueprint));
-
-            string TileColor = Stat.RollCached("1d6") switch
-            {
-                5 => "w",
-                4 => "r",
-                3 => "c",
-                2 => "g",
-                1 => "K",
-                _ => "y",
-            };
-            string DetailColor = Stat.RollCached("1d6") switch
-            {
-                5 => "w",
-                4 => "r",
-                3 => "c",
-                2 => "g",
-                1 => "K",
-                _ => "y",
-            };
-            if (wallBelow != null && wallBelow.Render != null)
-            {
-                TileColor = wallBelow.Render.TileColor;
-                DetailColor = wallBelow.Render.DetailColor;
-            }
-            UD_SubGrandCathedralBuilder.PaintCell(CurrentCell, FloorMaterial, TileColor, DetailColor, Overwrite: true, OverrideFloorColors: true);
         }
     }
 }
