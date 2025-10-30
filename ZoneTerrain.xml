@@ -17,7 +17,8 @@
     <part Name="Render" DisplayName="dirt" Tile="Tiles/sw_floor_dirty4.bmp" ColorString="&amp;K" TileColor="&amp;K" DetailColor="y" />
     <part Name="SolidAir" SolidifyingBlueprint="Wall" DerivativeSolidifies="true" AirMaterial="QuantumAir" />
     <removepart Name="RandomTileOnMove" />
-    <part Name="PickRandomTile" Tile="Terrain/sw_ground_dots~#1-4~.png,Tiles/sw_floor_dirty~#1-4~.bmp" />
+    <part Name="PickRandomTile" Tile="Tiles/sw_floor_dirty~#1-4~.bmp" />
+    <!-- Terrain/sw_ground_dots~#1-4~.png -->
     <tag Name="NoTwiddle" />
     <tag Name="NoPassByMessage" />
     <tag Name="IgnoreOccupationChecks" />

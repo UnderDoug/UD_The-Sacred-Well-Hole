@@ -1,8 +1,13 @@
 ﻿using System.Collections.Generic;
 
+using UD_Modding_Toolbox;
+
 using UD_SacredWellHole;
-using static UD_SacredWellHole.Options;
+
 using static UD_SacredWellHole.Const;
+using static UD_SacredWellHole.Options;
+
+using Debug = UD_SacredWellHole.Debug;
 
 namespace XRL.World.ZoneBuilders
 {

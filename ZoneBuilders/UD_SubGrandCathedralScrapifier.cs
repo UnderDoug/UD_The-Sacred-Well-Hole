@@ -8,10 +8,16 @@ using XRL.World.Effects;
 using XRL.World.Parts;
 using XRL.World.WorldBuilders;
 
+using Verbosity = UD_Modding_Toolbox.UD_Logger.Verbosity;
+
+using UD_Modding_Toolbox;
+
 using UD_SacredWellHole;
 
 using static UD_SacredWellHole.Const;
 using static UD_SacredWellHole.Options;
+
+using Debug = UD_SacredWellHole.Debug;
 
 namespace XRL.World.ZoneBuilders
 {
@@ -39,6 +45,8 @@ namespace XRL.World.ZoneBuilders
         }
 
         public Location2D StiltWellLocation => UD_SubStiltWorldBuilderExtension.StiltWellLocation;
+        public static int LowestWellStratum => UD_SubStiltWorldBuilderExtension.LowestWellStratum;
+
         public bool WantScrappy;
 
         public UD_SubGrandCathedralScrapifier()
@@ -258,9 +266,14 @@ namespace XRL.World.ZoneBuilders
             foreach (GameObject scrapWall in zone.GetObjects(IsScrapWallMound))
             {
                 Debug.Divider(4, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
-                Debug.LoopItem(4, $"(Z: {currentStratum}) {nameof(scrapWall)}", $"{scrapWall?.DebugName ?? NULL}",
+                Debug.LoopItem(4, $"(Z:{currentStratum}) {nameof(scrapWall)}", $"{scrapWall?.DebugName ?? NULL}",
                     Indent: indent + 2, Toggle: getDoDebug());
-
+                if (zone.Z == LowestWellStratum && scrapWall.CurrentCell == stiltWellCell)
+                {
+                    Debug.Logger.CheckNah(Verbosity.Max, $"{nameof(scrapWall)}.{nameof(scrapWall.CurrentCell)} is {nameof(stiltWellCell)}");
+                    scrapWall.Obliterate();
+                    continue;
+                }
                 if (!scrapWall.HasPart<ModGearbox>() && 3.in10() && scrapWall.ApplyModification(nameof(ModGearbox), Creation: true))
                 {
                     Debug.LoopItem(4, $"Added", $"{nameof(ModGearbox)}", Indent: indent + 3, Toggle: getDoDebug());

@@ -9,6 +9,8 @@ using XRL.World;
 using XRL.World.Parts;
 using XRL.World.ZoneBuilders;
 
+using UD_Modding_Toolbox;
+
 using static UD_SacredWellHole.Options;
 
 namespace UD_SacredWellHole
@@ -83,17 +85,22 @@ namespace UD_SacredWellHole
             }
         }
 
-        public static Dictionary<string, List<Cell>> GetCircleRegion(this Cell FromCell, int Radius = 3, bool IncludePerimerter = true, List<Cell> ExcludeCells = null, Predicate<Cell> Filter = null)
+        public static Dictionary<string, List<Cell>> GetCircleRegion(
+            this Cell FromCell,
+            int Radius = 3,
+            bool IncludePerimeter = true,
+            List<Cell> ExcludeCells = null,
+            Predicate<Cell> Filter = null)
         {
             Dictionary<string, List<Cell>> Region = new()
             {
                 { Inner, Event.NewCellList() },
             };
-            Region[Inner] = new(FromCell.GetCellsInACosmeticCircle(IncludePerimerter ? Radius - 1 : Radius, true, ExcludeCells, Filter))
+            Region[Inner] = new(FromCell.GetCellsInACosmeticCircle(IncludePerimeter ? Radius - 1 : Radius, true, ExcludeCells, Filter))
             {
                 FromCell,
             };
-            if (IncludePerimerter)
+            if (IncludePerimeter)
             {
                 Region.Add(Outer, Event.NewCellList());
                 foreach (Cell outerCell in FromCell.GetCellsInACosmeticCircle(Radius, true, ExcludeCells, Filter))
@@ -106,7 +113,12 @@ namespace UD_SacredWellHole
             }
             return Region;
         }
-        public static IEnumerable<Cell> GetCellsInACosmeticCircle(this Cell Cell, int Radius, bool Silent = true, List<Cell> ExcludeCells = null, Predicate<Cell> Filter = null)
+        public static IEnumerable<Cell> GetCellsInACosmeticCircle(
+            this Cell Cell,
+            int Radius,
+            bool Silent = true,
+            List<Cell> ExcludeCells = null,
+            Predicate<Cell> Filter = null)
         {
             int yradius = (int)Math.Max(1.0, (double)Radius * 0.66);
             float radius_squared = Radius * Radius;
@@ -121,7 +133,8 @@ namespace UD_SacredWellHole
                     if (d <= radius_squared && Cell.ParentZone.GetCell(x, y) != null)
                     {
                         Cell cellOut = Cell.ParentZone.GetCell(x, y);
-                        if (ExcludeCells == null || !ExcludeCells.Contains(cellOut) && Filter == null || Filter(cellOut))
+                        if ((ExcludeCells == null || !ExcludeCells.Contains(cellOut))
+                            && (Filter == null || Filter(cellOut)))
                         {
                             yield return cellOut;
                         }
@@ -540,11 +553,6 @@ namespace UD_SacredWellHole
         {
             DieRoll dieRoll = new(DieRoll);
             return dieRoll.Explode(Start, Step, Limit);
-        }
-
-        public static bool InheritsFrom(this GameObject Object, string Blueprint)
-        {
-            return Object.Blueprint == Blueprint || Object.GetBlueprint().InheritsFrom(Blueprint);
         }
 
         public static bool IsAssignableFrom(this IPart @this, IPart Part)
