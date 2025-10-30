@@ -48,32 +48,35 @@
   
   <population Name="SacrificialJunk">
     <group Name="Options" Style="pickone">
-      <table Weight="388" Name="MiddleWeightedRandomEnergyCell" />
+      <table Weight="388" Name="Middle Weighted Random EnergyCell" />
       <table Weight="32" Name="Cybernetics0" />
-      <table Weight="256" Name="Junk 1" />
+      <table Weight="256" Name="Well Junk 1" />
       <table Weight="32" Name="Cybernetics1" />
-      <table Weight="512" Name="Junk 2" />
+      <table Weight="512" Name="Well Junk 2" />
       <table Weight="64" Name="Cybernetics2" />
-      <table Weight="1024" Name="Junk 3" />
+      <table Weight="1024" Name="Well Junk 3" />
       <table Weight="128" Name="Cybernetics3" />
-      <table Weight="512" Name="Junk 4" />
+      <table Weight="512" Name="Well Junk 4" />
       <table Weight="64" Name="Cybernetics4" />
-      <table Weight="256" Name="Junk 5" />
+      <table Weight="256" Name="Well Junk 5" />
       <table Weight="32" Name="Cybernetics5" />
-      <table Weight="64" Name="Junk 6" />
+      <table Weight="64" Name="Well Junk 6" />
       <table Weight="16" Name="Cybernetics6" />
-      <table Weight="8" Name="Junk 7" />
+      <table Weight="8" Name="Well Junk 7" />
       <table Weight="4" Name="Cybernetics7" />
-      <table Weight="1" Name="Junk 8" />
+      <table Weight="1" Name="Well Junk 8" />
       <table Weight="1" Name="Cybernetics8" />
     </group>
   </population>
   
-  <population Name="MiddleWeightedRandomEnergyCell">
+  <population Name="Middle Weighted Random EnergyCell">
     <group Name="Options" Style="pickone">
       <table Weight="64" Name="DynamicObjectsTable:EnergyCells:Tier1" />
+      <table Weight="96" Name="DynamicObjectsTable:EnergyCells:Tier2" />
       <table Weight="128" Name="DynamicObjectsTable:EnergyCells:Tier3" />
+      <table Weight="256" Name="DynamicObjectsTable:EnergyCells:Tier4" />
       <table Weight="128" Name="DynamicObjectsTable:EnergyCells:Tier5" />
+      <table Weight="96" Name="DynamicObjectsTable:EnergyCells:Tier6" />
       <table Weight="64" Name="DynamicObjectsTable:EnergyCells:Tier7" />
       <table Weight="4" Name="DynamicObjectsTable:EnergyCells:Tier8" />
     </group>
@@ -149,6 +152,400 @@
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="JunkOrGarbageButProbablyGarbage" />
       <table Weight="5" Chance="0" Name="Nothing" />
+    </group>
+  </population>
+  
+  <population Name="Well Junk 0">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 0C" />
+      <table Weight="5" Number="1" Name="Well Junk 0R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 0C">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 1" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier1" />
+      <table Weight="40" Number="1" Name="MeleeWeapons 1C" />
+      <table Weight="40" Number="1" Name="Armor 1C" />
+      <table Weight="20" Number="1" Name="Well Meds 1" />
+      <table Weight="20" Number="1" Name="Missile 1" />
+      <table Weight="40" Number="1" Name="Scrap 1" />
+      <table Weight="45" Number="1" Name="Trinkets 1" />
+      <table Weight="20" Number="1" Name="Artifact 0C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 0R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 2" />
+      <table Weight="40" Number="1" Name="Melee Weapons 1R" />
+      <table Weight="40" Number="1" Name="Armor 1R" />
+      <table Weight="20" Number="1" Name="Missile 1" />
+      <table Weight="40" Number="1" Name="Scrap 1R" />
+      <table Weight="20" Number="1" Name="Artifact 0R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 1">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 1C" />
+      <table Weight="5" Number="1" Name="Well Junk 1R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 1C">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 1" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier1" />
+      <table Weight="40" Number="1" Name="Melee Weapons 1C" />
+      <table Weight="40" Number="1" Name="Armor 1C" />
+      <table Weight="20" Number="1" Name="Well Meds 1" />
+      <table Weight="20" Number="1" Name="Missile 1" />
+      <table Weight="40" Number="1" Name="Scrap 1" />
+      <table Weight="45" Number="1" Name="Trinkets 1" />
+      <table Weight="20" Number="1" Name="Artifact 1C" />
+      <table Weight="1" Number="1" Name="Well Junk 2C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 1R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 2" />
+      <table Weight="40" Number="1" Name="Melee Weapons 1R" />
+      <table Weight="40" Number="1" Name="Armor 1R" />
+      <table Weight="20" Number="1" Name="Missile 1" />
+      <table Weight="40" Number="1" Name="Scrap 1R" />
+      <table Weight="20" Number="1" Name="Artifact 1R" />
+      <table Weight="1" Number="1" Name="Well Junk 2R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 2">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 2C" />
+      <table Weight="5" Number="1" Name="Well Junk 2R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 2C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 2" />
+      <table Weight="5" Number="1" Name="Cash 2" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier2" />
+      <table Weight="40" Number="1" Name="Melee Weapons 2C" />
+      <table Weight="40" Number="1" Name="Armor 2C" />
+      <table Weight="20" Number="1" Name="Missile 2" />
+      <table Weight="50" Number="1" Name="Scrap 2" />
+      <table Weight="45" Number="1" Name="Trinkets 2" />
+      <table Weight="20" Number="1" Name="Artifact 2C" />
+      <table Weight="1" Number="1" Name="Well Junk 1C" />
+      <table Weight="1" Number="1" Name="Well Junk 3C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 2R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 3" />
+      <table Weight="40" Number="1" Name="Melee Weapons 2R" />
+      <table Weight="40" Number="1" Name="Armor 2R" />
+      <table Weight="20" Number="1" Name="Missile 2" />
+      <table Weight="40" Number="1" Name="Scrap 2R" />
+      <table Weight="20" Number="1" Name="Artifact 2R" />
+      <table Weight="1" Number="1" Name="Well Junk 1R" />
+      <table Weight="1" Number="1" Name="Well Junk 3R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 3">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 3C" />
+      <table Weight="5" Number="1" Name="Well Junk 3R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 3C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 3" />
+      <table Weight="5" Number="1" Name="Cash 3" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier3" />
+      <table Weight="50" Number="1" Name="Melee Weapons 3C" />
+      <table Weight="50" Number="1" Name="Armor 3C" />
+      <table Weight="20" Number="1" Name="Missile 3" />
+      <table Weight="40" Number="1" Name="Scrap 3" />
+      <table Weight="45" Number="1" Name="Trinkets 3" />
+      <table Weight="20" Number="1" Name="Artifact 3C" />
+      <table Weight="1" Number="1" Name="Well Junk 2C" />
+      <table Weight="1" Number="1" Name="Well Junk 4C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 3R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 4" />
+      <table Weight="50" Number="1" Name="Melee Weapons 3R" />
+      <table Weight="50" Number="1" Name="Armor 3R" />
+      <table Weight="20" Number="1" Name="Missile 3" />
+      <table Weight="40" Number="1" Name="Scrap 3R" />
+      <table Weight="20" Number="1" Name="Artifact 3R" />
+      <table Weight="1" Number="1" Name="Well Junk 2R" />
+      <table Weight="1" Number="1" Name="Well Junk 4R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 4">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 4C" />
+      <table Weight="5" Number="1" Name="Well Junk 4R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 4C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 4" />
+      <table Weight="5" Number="1" Name="Cash 4" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier4" />
+      <table Weight="50" Number="1" Name="Melee Weapons 4C" />
+      <table Weight="50" Number="1" Name="Armor 4C" />
+      <table Weight="20" Number="1" Name="Missile 4" />
+      <table Weight="40" Number="1" Name="Scrap 4" />
+      <table Weight="45" Number="1" Name="Trinkets 4" />
+      <table Weight="20" Number="1" Name="Artifact 4C" />
+      <table Weight="1" Number="1" Name="Well Junk 3C" />
+      <table Weight="1" Number="1" Name="Well Junk 5C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 4R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 5" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier4" />
+      <table Weight="50" Number="1" Name="Melee Weapons 4R" />
+      <table Weight="50" Number="1" Name="Armor 4R" />
+      <table Weight="20" Number="1" Name="Missile 4" />
+      <table Weight="40" Number="1" Name="Scrap 4R" />
+      <table Weight="20" Number="1" Name="Artifact 4R" />
+      <table Weight="1" Number="1" Name="Well Junk 3R" />
+      <table Weight="1" Number="1" Name="Well Junk 5R" />
+    </group>
+  </population>
+
+  <population Name="Well unk 5">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 5C" />
+      <table Weight="5" Number="1" Name="JWell unk 5R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 5C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 5" />
+      <table Weight="5" Number="1" Name="Cash 5" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier5" />
+      <table Weight="50" Number="1" Name="Melee Weapons 5C" />
+      <table Weight="50" Number="1" Name="Armor 5C" />
+      <table Weight="20" Number="1" Name="Missile 5" />
+      <table Weight="40" Number="1" Name="Scrap 5" />
+      <table Weight="45" Number="1" Name="Trinkets 5" />
+      <table Weight="20" Number="1" Name="Artifact 5C" />
+      <table Weight="1" Number="1" Name="Well Junk 4C" />
+      <table Weight="1" Number="1" Name="Well Junk 6C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 5R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 6" />
+      <table Weight="50" Number="1" Name="Melee Weapons 5R" />
+      <table Weight="50" Number="1" Name="Armor 5R" />
+      <table Weight="20" Number="1" Name="Missile 5" />
+      <table Weight="40" Number="1" Name="Scrap 5R" />
+      <table Weight="20" Number="1" Name="Artifact 5R" />
+      <table Weight="1" Number="1" Name="Well Junk 4R" />
+      <table Weight="1" Number="1" Name="Well Junk 6R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 6">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 6C" />
+      <table Weight="5" Number="1" Name="Well Junk 6R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 6C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 6" />
+      <table Weight="5" Number="1" Name="Cash 6" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier6" />
+      <table Weight="50" Number="1" Name="Melee Weapons 6C" />
+      <table Weight="50" Number="1" Name="Armor 6C" />
+      <table Weight="20" Number="1" Name="Missile 6" />
+      <table Weight="40" Number="1" Name="Scrap 6" />
+      <table Weight="45" Number="1" Name="Trinkets 6" />
+      <table Weight="20" Number="1" Name="Artifact 6C" />
+      <table Weight="1" Number="1" Name="Well Junk 5C" />
+      <table Weight="1" Number="1" Name="Well Junk 7C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 6R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 7" />
+      <table Weight="50" Number="1" Name="Melee Weapons 6R" />
+      <table Weight="50" Number="1" Name="Armor 6R" />
+      <table Weight="20" Number="1" Name="Missile 6" />
+      <table Weight="40" Number="1" Name="Scrap 6R" />
+      <table Weight="20" Number="1" Name="Artifact 6R" />
+      <table Weight="1" Number="1" Name="Well Junk 5R" />
+      <table Weight="1" Number="1" Name="Well Junk 7R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 7">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 7C" />
+      <table Weight="5" Number="1" Name="Well Junk 7R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 7C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 7" />
+      <table Weight="5" Number="1" Name="Cash 7" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier7" />
+      <table Weight="50" Number="1" Name="Melee Weapons 7C" />
+      <table Weight="50" Number="1" Name="Armor 7C" />
+      <table Weight="20" Number="1" Name="Missile 7" />
+      <table Weight="40" Number="1" Name="Scrap 7" />
+      <table Weight="45" Number="1" Name="Trinkets 7" />
+      <table Weight="20" Number="1" Name="Artifact 7C" />
+      <table Weight="1" Number="1" Name="Well Junk 6C" />
+      <table Weight="1" Number="1" Name="Well Junk 8C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 7R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 8" />
+      <table Weight="50" Number="1" Name="Melee Weapons 7R" />
+      <table Weight="50" Number="1" Name="Armor 7R" />
+      <table Weight="20" Number="1" Name="Missile 7" />
+      <table Weight="40" Number="1" Name="Scrap 7R" />
+      <table Weight="20" Number="1" Name="Artifact 7R" />
+      <table Weight="1" Number="1" Name="Well Junk 6R" />
+      <table Weight="1" Number="1" Name="Well Junk 8R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 8">
+    <group Name="Items" Style="pickone">
+      <table Weight="95" Number="1" Name="Well Junk 8C" />
+      <table Weight="5" Number="1" Name="Well Junk 8R" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 8C">
+    <group Name="Items" Style="pickone">
+      <table Weight="20" Number="1" Name="Well Meds 8" />
+      <table Weight="5" Number="1" Name="Cash 8" />
+      <table Weight="40" Number="1" Name="DynamicObjectsTable:WellUtility:Tier8" />
+      <table Weight="50" Number="1" Name="Melee Weapons 8C" />
+      <table Weight="50" Number="1" Name="Armor 8C" />
+      <table Weight="40" Number="1" Name="Scrap 8" />
+      <table Weight="45" Number="1" Name="Trinkets 8" />
+      <table Weight="20" Number="1" Name="Missile 8" />
+      <table Weight="20" Number="1" Name="Artifact 8C" />
+      <table Weight="1" Number="1" Name="Well Junk 7C" />
+    </group>
+  </population>
+
+  <population Name="Well Junk 8R">
+    <group Name="Items" Style="pickone">
+      <table Weight="5" Number="1" Name="Cash 8" />
+      <table Weight="50" Number="1" Name="Melee Weapons 8R" />
+      <table Weight="50" Number="1" Name="Armor 8R" />
+      <table Weight="40" Number="1" Name="Scrap 8R" />
+      <table Weight="20" Number="1" Name="Missile 8" />
+      <table Weight="20" Number="1" Name="Artifact 8R" />
+      <table Weight="1" Number="1" Name="Well Junk 7R" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 1">
+    <group Name="Items" Style="pickone">
+      <object Weight="15" Number="1" Blueprint="SalveTonic" />
+      <object Weight="30" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="1" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="Well Meds 2" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 2">
+    <group Name="Items" Style="pickone">
+      <object Weight="10" Number="1" Blueprint="SalveTonic" />
+      <object Weight="30" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="1" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="Well Meds 3" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 3">
+    <group Name="Items" Style="pickone">
+      <object Weight="10" Number="1" Blueprint="SalveTonic" />
+      <object Weight="35" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="5" Number="1" Blueprint="Fixit Spray" />
+      <object Weight="1" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="Well Meds 4" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 4">
+    <group Name="Items" Style="pickone">
+      <object Weight="100" Number="1" Blueprint="SalveTonic" />
+      <object Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="MegaMeds" />
+      <table Weight="1" Number="1" Name="Well Meds 5" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 5">
+    <group Name="Items" Style="pickone">
+      <object Weight="100" Number="1" Blueprint="SalveTonic" />
+      <object Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="MegaMeds" />
+      <table Weight="1" Number="1" Name="Well Meds 6" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 6">
+    <group Name="Items" Style="pickone">
+      <object Weight="100" Number="1" Blueprint="SalveTonic" />
+      <object Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="MegaMeds" />
+      <table Weight="1" Number="1" Name="Well Meds 7" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 7">
+    <group Name="Items" Style="pickone">
+      <object Weight="100" Number="1" Blueprint="SalveTonic" />
+      <object Weight="400" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="MegaMeds" />
+      <table Weight="1" Number="1" Name="Well Meds 8" />
+    </group>
+  </population>
+
+  <population Name="Well Meds 8">
+    <group Name="Items" Style="pickone">
+      <object Weight="100" Number="1" Blueprint="SalveTonic" />
+      <object Weight="400" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
+      <table Weight="1" Number="1" Name="MegaMeds" />
     </group>
   </population>
   

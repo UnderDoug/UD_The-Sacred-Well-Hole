@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects>
+
+  <object Name="Tool" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="Glowsphere" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="Floating Glowsphere" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="BaseFloat" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="RandomWaterskin" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" Value="*noinherit" />
+  </object>
+
+  <object Name="EmptyWaterskin" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" Value="*noinherit" />
+  </object>
+
+  <object Name="Canteen" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" Value="*noinherit" />
+  </object>
+
+  <object Name="Empty Canteen" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" Value="*noinherit" />
+  </object>
+
+  <object Name="Oilskin" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" Value="*noinherit" />
+  </object>
+
+  <object Name="Camel Bladder" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" Value="*noinherit" />
+  </object>
+
+  <object Name="BaseUtilityBracelet" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="Fixit Spray" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="Metamorphic Polygel" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+
+  <object Name="Spray-a-Brain" Load="Merge">
+    <tag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+  
+  <object Name="TemplarPhylactery" Load="Merge">
+    <removetag Name="DynamicObjectsTable:WellUtility" />
+  </object>
+  
+</objects>

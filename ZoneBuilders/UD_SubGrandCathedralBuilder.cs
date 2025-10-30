@@ -72,6 +72,14 @@ namespace XRL.World.ZoneBuilders
         {
         }
 
+        bool CellShouldBeSolidified(Cell Cell)
+        {
+            return !Cell.HasObjectInheritsFrom("BaseScrapWall")
+                && !Cell.HasObjectWithBlueprint(EmptyMaterial)
+                && !Cell.HasObjectWithBlueprint("Air")
+                && !Cell.HasObjectWithBlueprint("SolidAir");
+        }
+
         public bool BuildZone(Zone Z)
         {
             Debug.Logger.Header(Verbosity.Max, $"{nameof(UD_SubGrandCathedralBuilder)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);
@@ -149,7 +157,7 @@ namespace XRL.World.ZoneBuilders
                         else
                         if (!cellHasScrapWallBelow && floor.Render is Render render)
                         {
-                            render.Tile = WeightedFloorTiles.Sample();
+                            render.Tile = WeightedFloorTiles.SampleCosmetic();
                             render.TileColor = TileColor;
                             render.DetailColor = DetailColor;
                             if (!render.DisplayName.Contains("scrap"))
@@ -171,12 +179,8 @@ namespace XRL.World.ZoneBuilders
             }
             else
             {
-                List<Cell> solidCells = Event.NewCellList(zone.GetCells());
-                solidCells.RemoveAll(c => c.HasObjectInheritsFrom("BaseScrapWall"));
-                solidCells.RemoveAll(c => c.HasObjectWithBlueprint(EmptyMaterial));
-                solidCells.RemoveAll(c => c.HasObjectWithBlueprint("Air"));
-                solidCells.RemoveAll(c => c.HasObjectWithBlueprint("SolidAir"));
-                mostlySolidBuilder.Cells.AddRange(solidCells);
+                List<Cell> cellsToSolidify = Event.NewCellList(zone.GetCells(CellShouldBeSolidified));
+                mostlySolidBuilder.Cells.AddRange(cellsToSolidify);
 
                 Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}",
                     Indent: indent + 1, Toggle: getDoDebug());
@@ -260,13 +264,16 @@ namespace XRL.World.ZoneBuilders
                         {
                             cell.AddObject(EmptyMaterial);
                         }
-                        if (isFinalStratum)
+                        if (strataFromBottom < 5)
                         {
+                            int chanceIfOutter = Math.Max(1, Math.Min(9 - strataFromBottom, 9));
+                            int chanceOtherwise = Math.Max(1, Math.Min(7 - strataFromBottom, 9));
+                            int chanceScrapMound = Math.Max(2, Math.Min(strataFromBottom / 5, 3));
                             if (!cell.AnyAdjacentCell(Utils.HasWidget)
-                                && ((cell.IsOuterCell(c => subregionCells.Contains(c)) && 9.in10())
-                                    || 7.in10()))
+                                && ((cell.IsOuterCell(c => subregionCells.Contains(c)) && chanceIfOutter.in10())
+                                    || chanceOtherwise.in10()))
                             {
-                                if (2.in10())
+                                if (chanceScrapMound.in10())
                                 {
                                     cell.AddObject("RandomScrapMound");
                                 }
@@ -303,7 +310,7 @@ namespace XRL.World.ZoneBuilders
                                         && Stat.RollCached("1d3") < errosionRollSuccess)
                                     {
                                         adjacentCell.Clear();
-                                        if (strataFromBottom > 5)
+                                        if (strataFromTop < 5)
                                         {
                                             adjacentCell.AddObject(EmptyMaterial);
                                         }
@@ -447,11 +454,11 @@ namespace XRL.World.ZoneBuilders
         public static void PaintCell(Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true, bool OverrideFloorColors = false)
         {
             string paintColorString = TileColor ?? "y";
-            string paintTile = Tile ?? WeightedFloorTiles.Sample();
+            string paintTile = Tile ?? WeightedFloorTiles.SampleCosmetic();
             string paintDetailColor = DetailtColor ?? "k";
             string paintTileColor = paintColorString;
             string paintRenderString = "ú";
-            GameObject floorSample = GameObjectFactory.Factory.CreateSampleObject(Floor);
+            GameObject floorSample = GameObject.CreateSample(Floor);
             if (floorSample != null && floorSample.TryGetPart(out Render floorRender))
             {
                 if (!OverrideFloorColors)

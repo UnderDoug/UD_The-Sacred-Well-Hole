@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36408.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UD_SacredWellHole", "UD_SacredWellHole.csproj", "{E28B9147-9757-C977-9318-6CAE117EA3B7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF3E783B-EF08-EEB6-80AB-551E1B8DA2E8} = {DF3E783B-EF08-EEB6-80AB-551E1B8DA2E8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UD_Modding_Toolbox", "..\UD_Modding_Toolbox\UD_Modding_Toolbox.csproj", "{DF3E783B-EF08-EEB6-80AB-551E1B8DA2E8}"
 EndProject
