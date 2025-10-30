@@ -5,7 +5,10 @@ using Genkit;
 using XRL.UI;
 using XRL.Wish;
 
+using Verbosity = UD_Modding_Toolbox.UD_Logger.Verbosity;
+
 using UD_SacredWellHole;
+
 
 using static UD_SacredWellHole.Const;
 using static UD_SacredWellHole.Options;
@@ -46,16 +49,16 @@ namespace XRL.World.WorldBuilders
 
         public override void OnAfterBuild(JoppaWorldBuilder Builder)
         {
-            Debug.Header(4, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
+            Debug.Logger.Header(Verbosity.Max, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
             MetricsManager.rngCheckpoint("sacrifice");
             Builder.BuildStep("Sacrificing artifacts", SacrificeArtifacts);
-            Debug.Footer(4, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
+            Debug.Logger.Footer(Verbosity.Max, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
         }
 
         public void SacrificeArtifacts(string WorldID)
         {
-            int indent = Debug.LastIndent;
-            Debug.Entry(4,
+            Debug.Logger.GetIndent(out int indent);
+            Debug.Logger.Entry(Verbosity.Max,
                 $"* {nameof(UD_SubStiltWorldBuilderExtension)}."
                 + $"{nameof(SacrificeArtifacts)}("
                 + $"{nameof(WorldID)}: {WorldID})",
@@ -63,18 +66,18 @@ namespace XRL.World.WorldBuilders
 
             if (WorldID != "JoppaWorld")
             {
-                Debug.LastIndent = indent;
+                Debug.Logger.SetIndent(indent);
                 return;
             }
             WorldCreationProgress.StepProgress("Sacrificing artifacts...");
 
-            Debug.Entry(4,
+            Debug.Logger.Entry(Verbosity.Max,
                 $"x {nameof(UD_SubStiltWorldBuilderExtension)}."
                 + $"{nameof(SacrificeArtifacts)}("
                 + $"{nameof(WorldID)}: {WorldID})"
                 + $" *//",
                 Indent: indent + 1, Toggle: doDebug);
-            Debug.LastIndent = indent;
+            Debug.Logger.SetIndent(indent);
         }
 
         public static Location2D GetStiltWellLocation(Zone Z)
