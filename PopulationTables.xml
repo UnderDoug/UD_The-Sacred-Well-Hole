@@ -475,7 +475,7 @@
   <population Name="Well Meds 1">
     <group Name="Items" Style="pickone">
       <object Weight="15" Number="1" Blueprint="SalveTonic" />
-      <object Weight="30" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="30" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier1" />
       <object Weight="1" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="Well Meds 2" />
     </group>
@@ -484,7 +484,7 @@
   <population Name="Well Meds 2">
     <group Name="Items" Style="pickone">
       <object Weight="10" Number="1" Blueprint="SalveTonic" />
-      <object Weight="30" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="30" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier2" />
       <object Weight="1" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="Well Meds 3" />
     </group>
@@ -493,7 +493,7 @@
   <population Name="Well Meds 3">
     <group Name="Items" Style="pickone">
       <object Weight="10" Number="1" Blueprint="SalveTonic" />
-      <object Weight="35" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="35" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier3" />
       <object Weight="5" Number="1" Blueprint="Fixit Spray" />
       <object Weight="1" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="Well Meds 4" />
@@ -503,7 +503,7 @@
   <population Name="Well Meds 4">
     <group Name="Items" Style="pickone">
       <object Weight="100" Number="1" Blueprint="SalveTonic" />
-      <object Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier4" />
       <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="MegaMeds" />
       <table Weight="1" Number="1" Name="Well Meds 5" />
@@ -513,7 +513,7 @@
   <population Name="Well Meds 5">
     <group Name="Items" Style="pickone">
       <object Weight="100" Number="1" Blueprint="SalveTonic" />
-      <object Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier5" />
       <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="MegaMeds" />
       <table Weight="1" Number="1" Name="Well Meds 6" />
@@ -523,7 +523,7 @@
   <population Name="Well Meds 6">
     <group Name="Items" Style="pickone">
       <object Weight="100" Number="1" Blueprint="SalveTonic" />
-      <object Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="350" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier6" />
       <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="MegaMeds" />
       <table Weight="1" Number="1" Name="Well Meds 7" />
@@ -533,7 +533,7 @@
   <population Name="Well Meds 7">
     <group Name="Items" Style="pickone">
       <object Weight="100" Number="1" Blueprint="SalveTonic" />
-      <object Weight="400" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="400" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier7" />
       <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="MegaMeds" />
       <table Weight="1" Number="1" Name="Well Meds 8" />
@@ -543,7 +543,7 @@
   <population Name="Well Meds 8">
     <group Name="Items" Style="pickone">
       <object Weight="100" Number="1" Blueprint="SalveTonic" />
-      <object Weight="400" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare" />
+      <table Weight="400" Number="1" Blueprint="DynamicObjectsTable:Tonics_NonRare:Tier8" />
       <object Weight="10" Number="1" Blueprint="UbernostrumTonic" />
       <table Weight="1" Number="1" Name="MegaMeds" />
     </group>
