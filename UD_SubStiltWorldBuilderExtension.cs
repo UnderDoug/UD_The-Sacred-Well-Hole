@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 using Genkit;
 
 using XRL.UI;
 using XRL.Wish;
+using XRL.World.ZoneBuilders;
 
 using Verbosity = UD_Modding_Toolbox.UD_Logger.Verbosity;
 
 using UD_SacredWellHole;
 
-
 using static UD_SacredWellHole.Const;
 using static UD_SacredWellHole.Options;
+using Debug = UD_SacredWellHole.Debug;
+using System;
 
 namespace XRL.World.WorldBuilders
 {
@@ -47,10 +50,13 @@ namespace XRL.World.WorldBuilders
         public static Dictionary<int, string> CathedralSubStrata => GetCathedralStrataSubStrataZoneIDs(CathedralZone);
         public static int LowestWellStratum => 25;
 
+        private JoppaWorldBuilder Builder = null;
+
         public override void OnAfterBuild(JoppaWorldBuilder Builder)
         {
             Debug.Logger.Header(Verbosity.Max, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
             MetricsManager.rngCheckpoint("sacrifice");
+            this.Builder = Builder;
             Builder.BuildStep("Sacrificing artifacts", SacrificeArtifacts);
             Debug.Logger.Footer(Verbosity.Max, $"{nameof(UD_SubStiltWorldBuilderExtension)}", $"{nameof(OnAfterBuild)}", Toggle: doDebug);
         }
@@ -70,6 +76,45 @@ namespace XRL.World.WorldBuilders
                 return;
             }
             WorldCreationProgress.StepProgress("Sacrificing artifacts...");
+
+            if (The.ZoneManager is ZoneManager zoneManager)
+            {
+                UnityEngine.Debug.Log("Adjusting builders...");
+                foreach ((int stratum, string zID) in CathedralSubStrata)
+                {
+                    UnityEngine.Debug.Log("    [" + stratum + "] " + zID);
+                    zoneManager.SetZoneProperty(zID, "NoBiomes", "Yes");
+                    zoneManager.SetZoneProperty(zID, "ZoneTierOverride", 5.ToString());
+                    zoneManager.SetZoneProperty(zID, "DisableForcedConnections", "Yes");
+                    // zoneManager.RemoveZoneBuilders(zID, nameof(FactionEncounters));
+                    zoneManager.RemoveZoneBuilders(zID, nameof(Strata));
+                }
+                Stopwatch sw = new();
+                sw.Start();
+                bool prebuildSuccess = false;
+                try
+                {
+                    if (CathedralSubStrata.ContainsKey(1)
+                        && CathedralSubStrata[1] is string firstStratum)
+                    {
+                        UnityEngine.Debug.Log("Pre-build " + firstStratum + "...");
+                        zoneManager.GenerateZone(firstStratum);
+                        prebuildSuccess = true;
+                    }
+                }
+                catch (Exception x)
+                {
+                    prebuildSuccess = false;
+                    MetricsManager.LogException(nameof(SacrificeArtifacts), x, "game_mod_exception");
+                }
+                finally
+                {
+                    sw.Stop();
+                    UnityEngine.Debug.Log("..." + nameof(SacrificeArtifacts) + " pre-build took " + 
+                        sw.Elapsed.TotalSeconds.Things("second") + " | " + 
+                        (prebuildSuccess ? "success" : "failed"));
+                }
+            }
 
             Debug.Logger.Entry(Verbosity.Max,
                 $"x {nameof(UD_SubStiltWorldBuilderExtension)}."
@@ -97,7 +142,7 @@ namespace XRL.World.WorldBuilders
                 return null;
             }
             Dictionary<int, string> cathedralStrata = new();
-            for (int i = 1; i < 11; i++)
+            for (int i = 1; i < LowestWellStratum - 9; i++)
             {
                 int stratum = Z.Z + i;
 

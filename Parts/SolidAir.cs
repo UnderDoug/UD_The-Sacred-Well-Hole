@@ -55,12 +55,17 @@ namespace XRL.World.Parts
         public bool DerivativeSolidifies;
         public Cell CellBelow => ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
 
+        [SerializeField]
+        private bool CurrentlyLazy;
+
         public SolidAir()
         {
             AirMaterial = null;
             AirObject = null;
             SolidifyingBlueprint = null;
             DerivativeSolidifies = true;
+
+            CurrentlyLazy = false;
         }
         public SolidAir(
             GameObject AirObject,
@@ -126,6 +131,18 @@ namespace XRL.World.Parts
             return false;
         }
 
+        public override bool WantTurnTick()
+        {
+            return true;
+        }
+        public override void TurnTick(long TimeTick, int Amount)
+        {
+            base.TurnTick(TimeTick, Amount);
+            if (The.CurrentTurn % 30L == 0)
+            {
+                CurrentlyLazy = false;
+            }
+        }
         public override void Register(GameObject Object, IEventRegistrar Registrar)
         {
             Registrar.Register(EnteringCellEvent.ID, EventOrder.VERY_EARLY);
@@ -135,17 +152,19 @@ namespace XRL.World.Parts
         public override bool WantEvent(int ID, int Cascade)
         {
             return base.WantEvent(ID, Cascade)
-                || ID == ZoneActivatedEvent.ID
-                || ID == ZoneThawedEvent.ID
-                || ID == BeforeZoneBuiltEvent.ID;
+                || (!CurrentlyLazy && ID == ZoneActivatedEvent.ID)
+                || (!CurrentlyLazy && ID == ZoneThawedEvent.ID)
+                || (!CurrentlyLazy && ID == BeforeZoneBuiltEvent.ID);
         }
         public override bool HandleEvent(EnteringCellEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
+            if (!CurrentlyLazy
+                && ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && QuantumAir.ShouldBeAir(
                     QuantumAirObject: ParentObject,
                     SolidifyingBlueprint: SolidifyingBlueprint,
                     CellBelow: CellBelow,
+                 CurrentlyLazy: ref CurrentlyLazy,
                     DerivativeSolidifies: DerivativeSolidifies,
                     Source: nameof(SolidAir)))
             {
@@ -155,11 +174,13 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ObjectEnteringCellEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
+            if (!CurrentlyLazy
+                && ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && QuantumAir.ShouldBeAir(
                     QuantumAirObject: ParentObject,
                     SolidifyingBlueprint: SolidifyingBlueprint,
                     CellBelow: CellBelow,
+                    CurrentlyLazy: ref CurrentlyLazy,
                     DerivativeSolidifies: DerivativeSolidifies,
                     Source: nameof(SolidAir)))
             {
@@ -174,6 +195,7 @@ namespace XRL.World.Parts
                     QuantumAirObject: ParentObject,
                     SolidifyingBlueprint: SolidifyingBlueprint,
                     CellBelow: CellBelow,
+                    CurrentlyLazy: ref CurrentlyLazy,
                     DerivativeSolidifies: DerivativeSolidifies,
                     Source: nameof(SolidAir)))
             {
@@ -188,6 +210,7 @@ namespace XRL.World.Parts
                     QuantumAirObject: ParentObject,
                     SolidifyingBlueprint: SolidifyingBlueprint,
                     CellBelow: CellBelow,
+                    CurrentlyLazy: ref CurrentlyLazy,
                     DerivativeSolidifies: DerivativeSolidifies,
                     Source: nameof(SolidAir)))
             {
@@ -202,6 +225,7 @@ namespace XRL.World.Parts
                     QuantumAirObject: ParentObject,
                     SolidifyingBlueprint: SolidifyingBlueprint,
                     CellBelow: CellBelow,
+                    CurrentlyLazy: ref CurrentlyLazy,
                     DerivativeSolidifies: DerivativeSolidifies,
                     Source: nameof(SolidAir)))
             {

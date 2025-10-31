@@ -97,62 +97,64 @@ namespace XRL.World.ZoneBuilders
             if (WantScrappy)
             {
                 bool doDebug = getDoDebug(nameof(WantScrappy));
-                List<Cell> itemCells = Event.NewCellList();
                 
                 Debug.Logger.Entry(Verbosity.Max, $"Adding Items...", Indent: indent + 1, Toggle: doDebug);
-                foreach (Cell itemCell in zone.GetCells(c => IsCellEmptyForThePurposeOfHavingScrapPlaced(c, StiltWellLocation)))
+                foreach (Cell emptyCell in zone.GetCells(c => IsCellEmptyForThePurposeOfHavingScrapPlaced(c, StiltWellLocation)))
                 {
                     Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebug);
-                    Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(itemCell)}", $"({currentStratum})[{itemCell.Location}]",
+                    Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(emptyCell)}", $"({currentStratum})[{emptyCell.Location}]",
                         Indent: indent + 2, Toggle: doDebug);
 
-                    if (itemCell == stiltWellCell)
+                    if (emptyCell == stiltWellCell)
                     {
-                        Debug.Logger.CheckNah(Verbosity.Max, $"{nameof(itemCell)} is {nameof(stiltWellCell)}",
+                        Debug.Logger.CheckNah(Verbosity.Max, $"{nameof(emptyCell)} is {nameof(stiltWellCell)}",
                                 Indent: indent + 3, Toggle: doDebug);
                         continue;
                     }
 
+                    string randomScrapMoundBlueprint = "RandomScrapMound";
+                    string randomScrapWallBlueprint = "RandomScrapWallSometimesGigantic";
+                    string sacrificialJunkTable = "JunkOrGarbageButProbablyGarbage";
+
                     GameObject placedObject = null;
 
                     if (currentStratum > 19
-                        && itemCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall"))
+                        && emptyCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall"))
                         && 3.in10())
                     {
                         if (8.in10())
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", "RandomScrapMound",
+                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", randomScrapMoundBlueprint,
                                 Indent: indent + 4, Toggle: doDebug);
 
-                            placedObject = itemCell.AddObject("RandomScrapMound");
+                            placedObject = emptyCell.AddObject(randomScrapMoundBlueprint);
                         }
                         else
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", "RandomScrapWallSometimesGigantic",
+                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", randomScrapWallBlueprint,
                                 Indent: indent + 4, Toggle: doDebug);
 
-                            placedObject = itemCell.AddObject("RandomScrapWallSometimesGigantic");
+                            placedObject = emptyCell.AddObject(randomScrapWallBlueprint);
                         }
                     }
                     else
                     {
                         if (Stat.RollCached("1d25") == 1)
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", "RandomScrapMound",
+                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", randomScrapMoundBlueprint,
                                 Indent: indent + 4, Toggle: doDebug);
 
-                            placedObject = itemCell.AddObject("RandomScrapMound");
+                            placedObject = emptyCell.AddObject(randomScrapMoundBlueprint);
                         }
                         else
                         {
-                            string sacrificialJunkTable = "JunkOrGarbageButProbablyGarbage";
                             Debug.Logger.LoopItem(Verbosity.Max, $"Placing", sacrificialJunkTable,
                                 Indent: indent + 4, Toggle: doDebug);
 
                             GameObject populationObject = null;
                             if (PopulationManager.GenerateOne(sacrificialJunkTable)?.Blueprint is string populationBlueprint)
                             {
-                                placedObject = populationObject = itemCell.AddObject(populationBlueprint);
+                                placedObject = populationObject = emptyCell.AddObject(populationBlueprint);
                             }
                             else
                             {
@@ -202,7 +204,7 @@ namespace XRL.World.ZoneBuilders
                 Debug.Logger.LoopItem(Verbosity.Max, $"(Z:{currentStratum}) {nameof(item)}", $"{item?.DebugName ?? NULL}",
                     Indent: indent + 2, Toggle: doDebugScrapping);
 
-                if (item != null && item.Blueprint != "Garbage")
+                if (item?.Blueprint != "Garbage")
                 {
                     bool itemIsFood = item.InheritsFrom("Food") || item.Blueprint == "PersistentPapaya";
 
@@ -215,12 +217,12 @@ namespace XRL.World.ZoneBuilders
                         continue;
                     }
 
-                    bool itemIsNotWorthySacrifice = StiltWell.GetArtifactReputationValue(item) < 1;
+                    bool isItemWorthySacrifice = StiltWell.GetArtifactReputationValue(item) > 0;
 
-                    Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(itemIsNotWorthySacrifice)}", $"{itemIsNotWorthySacrifice}",
-                        Good: itemIsNotWorthySacrifice, Indent: indent + 3, Toggle: doDebugScrapping);
+                    Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(isItemWorthySacrifice)}", $"{isItemWorthySacrifice}",
+                        Good: isItemWorthySacrifice, Indent: indent + 3, Toggle: doDebugScrapping);
 
-                    if (itemIsNotWorthySacrifice
+                    if (!isItemWorthySacrifice
                         && !item.InheritsFrom("BaseDataDisk")
                         && !item.InheritsFrom("Scrap")
                         && !item.InheritsFrom("TradeGood")
@@ -242,7 +244,10 @@ namespace XRL.World.ZoneBuilders
                         }
                     }
 
-                    item.ModIntProperty("Stilt Well Sacrifice", 1);
+                    if (isItemWorthySacrifice)
+                    {
+                        item.ModIntProperty("Stilt Well Sacrifice", 1);
+                    }
 
                     if (item.Physics != null)
                     {
@@ -255,16 +260,7 @@ namespace XRL.World.ZoneBuilders
 
                     Disrepair disrepairTicket = DisrepairBag.SampleCosmetic();
 
-                    string disrepairString = disrepairTicket switch
-                    {
-                        Disrepair.Fine => nameof(Disrepair.Fine),
-                        Disrepair.Scuff => nameof(Disrepair.Scuff),
-                        Disrepair.Rust => nameof(Disrepair.Rust),
-                        Disrepair.Bust => nameof(Disrepair.Bust),
-                        _ => "Invalid"
-                    };
-
-                    Debug.Logger.LoopItem(Verbosity.Max, nameof(disrepairTicket), disrepairTicket + ":" + disrepairString,
+                    Debug.Logger.LoopItem(Verbosity.Max, nameof(disrepairTicket), (int)disrepairTicket + ":" + disrepairTicket,
                         Indent: indent + 3, Toggle: doDebugScrapping);
 
                     bool rusted = false;
@@ -454,7 +450,7 @@ namespace XRL.World.ZoneBuilders
                 && ScrapWall.RequirePart<EnergyCellSocket>() is EnergyCellSocket energyCellSocket)
             {
                 if (3.in10()
-                    && PopulationManager.GenerateOne("MiddleWeightedRandomEnergyCell")?.Blueprint is string energyCellBlueprint
+                    && PopulationManager.GenerateOne("Middle Weighted Random EnergyCell")?.Blueprint is string energyCellBlueprint
                     && GameObject.Create(energyCellBlueprint) is GameObject energyCellObject)
                 {
                     float rechargePercent = Stat.RollCached("1d100") / 100f;

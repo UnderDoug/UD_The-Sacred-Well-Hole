@@ -436,19 +436,18 @@ namespace UD_SacredWellHole
         {
             if (C != null)
             {
-                List<Cell> adjacentCells = Event.NewCellList(C.GetAdjacentCells());
                 int adjacentBasisCells = 0;
-                if (!adjacentCells.IsNullOrEmpty())
+                int adjacentCells = 0;
+                foreach (Cell adjacentCell in C.GetAdjacentCells())
                 {
-                    foreach (Cell adjacentCell in adjacentCells)
+                    adjacentCells++;
+                    if (Basis(adjacentCell))
                     {
-                        if (Basis(adjacentCell))
-                        {
-                            adjacentBasisCells++;
-                        }
+                        adjacentBasisCells++;
                     }
-                    return adjacentBasisCells < adjacentCells.Count;
                 }
+                return adjacentCells == 0
+                    || adjacentBasisCells < adjacentCells;
             }
             return false;
         }
@@ -457,36 +456,34 @@ namespace UD_SacredWellHole
         {
             if (C != null)
             {
-                List<Cell> adjacentCells = Event.NewCellList(C.GetAdjacentCells());
                 int adjacentCardinalCells = 0;
                 int adjacentOrdinalCells = 0;
                 int adjacentCardinalBasisCells = 0;
                 int adjacentOrdinalBasisCells = 0;
-                if (!adjacentCells.IsNullOrEmpty())
+
+                foreach (Cell adjacentCell in C.GetAdjacentCells())
                 {
-                    foreach (Cell adjacentCell in adjacentCells)
+                    bool isCardinal = C.X == adjacentCell.X || C.Y == adjacentCell.Y;
+                    if (isCardinal)
                     {
-                        bool isCardinal = C.X == adjacentCell.X || C.Y == adjacentCell.Y;
+                        adjacentCardinalCells++;
+                    }
+                    else
+                    {
+                        adjacentOrdinalCells++;
+                    }
+                    if (Basis(adjacentCell))
+                    {
                         if (isCardinal)
                         {
-                            adjacentCardinalCells++;
+                            adjacentCardinalBasisCells++;
                         }
                         else
                         {
-                            adjacentOrdinalCells++;
-                        }
-                        if (Basis(adjacentCell))
-                        {
-                            if (isCardinal)
-                            {
-                                adjacentCardinalBasisCells++;
-                            }
-                            else
-                            {
-                                adjacentOrdinalBasisCells++;
-                            }
+                            adjacentOrdinalBasisCells++;
                         }
                     }
+
                     bool cardinalsMatch = adjacentCardinalCells == adjacentCardinalBasisCells;
                     bool ordinalsMatch = adjacentOrdinalCells == adjacentOrdinalBasisCells;
                     return cardinalsMatch && (ordinalsMatch || (!Strict && adjacentOrdinalCells - 1 == adjacentOrdinalBasisCells));
