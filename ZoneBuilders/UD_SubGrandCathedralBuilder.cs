@@ -27,10 +27,12 @@ namespace XRL.World.ZoneBuilders
             List<object> doList = new()
             {
                 'V',    // Vomit
+                nameof(PlaceRandomScrapWallMoundInCell),
             };
             List<object> dontList = new()
             {
                 'X',    // Trace
+                nameof(PaintCell),
             };
 
             if (what != null && doList.Contains(what))
@@ -49,8 +51,8 @@ namespace XRL.World.ZoneBuilders
 
         public Location2D StiltWellLocation => UD_SubStiltWorldBuilderExtension.StiltWellLocation;
 
-        public string EmptyMaterial = "Air";
-        public string FloorMaterial = "SolidAir";
+        public string EmptyMaterial;
+        public string FloorMaterial;
 
         public static List<string> ZonesPrebuilding = new();
 
@@ -71,409 +73,63 @@ namespace XRL.World.ZoneBuilders
             { "Tiles/sw_floor_dirty4.bmp", 1 },
         };
 
+        public string RandomScrapMoundBlueprint;
+        public string RandomScrapWallBlueprint;
+
+        public Cell StiltWellCell;
+
+        public int CurrentStratum;
+        public int StrataFromBottom;
+        public int StrataFromTop;
+        public bool IsFinalStratum;
+
         public UD_SubGrandCathedralBuilder()
         {
+            EmptyMaterial = "Air";
+            FloorMaterial = "SolidAir";
+
             ZoneBelow = null;
             Regions = new();
+
+            StiltWellCell = null;
+
+            CurrentStratum = -1;
+            StrataFromBottom = -1;
+            StrataFromTop = -1;
+            IsFinalStratum = false;
+
+            RandomScrapMoundBlueprint = "RandomScrapMound";
+            RandomScrapWallBlueprint = "RandomScrapWallOrUnlikelyScrapCorpseSometimesGigantic";
         }
 
-        bool CellShouldBeSolidified(Cell Cell)
+
+
+        public static void PaintCell(
+            Cell C,
+            string Floor = null,
+            string TileColor = null,
+            string DetailColor = null,
+            string Tile = null,
+            bool Overwrite = true,
+            bool OverrideFloorColors = false)
         {
-            return !Cell.HasObjectInheritsFrom("BaseScrapWall")
-                && !Cell.HasObjectWithBlueprint(EmptyMaterial)
-                && !Cell.HasObjectWithBlueprint("Air")
-                && !Cell.HasObjectWithBlueprint("SolidAir");
-        }
-
-        static bool WantToPlaceWallInSubregionCell(
-            Cell Cell,
-            List<Cell> SubregionCells,
-            int ChanceIfOutter,
-            int ChanceOtherwise)
-        {
-            if (Cell.AnyAdjacentCell(Utils.HasWidget))
+            if (C == null)
             {
-                return false;
-            }
-            if (Cell.IsOuterCell(c => SubregionCells.Contains(c)) && ChanceIfOutter.in10())
-            {
-                return true;
-            }
-            if (Cell.AnyAdjacentCell(c => c.HasObjectInheritsFrom("Wall")) && ChanceIfOutter.in10())
-            {
-                return true;
-            }
-            return ChanceOtherwise.in10();
-        }
-
-        static void PlaceRandomScrapWallMoundInCell(Cell Cell, int ChanceScrapMound, string RandomScrapMoundBlueprint, string RandomScrapWallBlueprint)
-        {
-            if (ChanceScrapMound.in10())
-            {
-                Cell.AddObject(RandomScrapMoundBlueprint);
-            }
-            else
-            {
-                Cell.AddObject(RandomScrapWallBlueprint);
-            }
-        }
-
-        static bool DeleteOrDestroyScrapWallInCell(Cell scrapWallCell)
-        {
-            if (scrapWallCell?.GetFirstObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall")) is not GameObject scrapWall)
-            {
-                return false;
+                return;
             }
 
-            bool isInnerCell = scrapWallCell.IsInnerCell(Basis: c => c.HasObjectWithBlueprintEndsWith("ScrapWall"), false);
+            bool doDebug = getDoDebug(nameof(PaintCell));
+            Debug.Logger.GetIndent(out int indent);
+            Debug.Logger.Entry(Verbosity.Max,
+                "(" + C.ParentZone.Z + ")[" + C.DebugName + "] " + nameof(PaintCell),
+                Indent: indent + 1, Toggle: doDebug);
 
-            if ((isInnerCell || 3.in10()) && 1.ChanceIn(3))
-            {
-                if (1.ChanceIn(2))
-                {
-                    scrapWallCell.RemoveObject(scrapWall);
-                }
-                else
-                {
-                    scrapWall.Die();
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public bool BuildZone(Zone Z)
-        {
-            Debug.Logger.Header(Verbosity.Max, $"{nameof(UD_SubGrandCathedralBuilder)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);
-            Debug.Logger.ResetIndent(out int indent);
-
-            zone = Z;
-            int currentStratum = zone.Z;
-
-            ZonesPrebuilding.Add(zone.ZoneID);
-
-            EmptyMaterial = currentStratum < 15 ? EmptyMaterial : "QuantumAir";
-
-            FloorMaterial = currentStratum < 21 ? EmptyMaterial : "CompactedScrapFloor";
-
-            ZoneManager zoneManager = The.ZoneManager;
-
-            string randomScrapMoundBlueprint = "RandomScrapMound";
-            string randomScrapWallBlueprint = "RandomScrapWallSometimesGigantic";
-
-            Cell stiltWellCell = zone.GetCell(StiltWellLocation);
-            int strataFromBottom = LowestWellStratum - currentStratum;
-            int strataFromTop = zone.Z - 10;
-            bool isFinalStratum = strataFromBottom == 0;
-            string floorMaterial = !isFinalStratum ? "BlackMarbleWalkway" : null;
-
-            Dictionary<int, string> cathedralSubStrata = UD_SubStiltWorldBuilderExtension.CathedralSubStrata;
-            string zoneBelowID = null;
-            if (cathedralSubStrata.ContainsKey(strataFromTop + 1))
-            {
-                zoneBelowID = cathedralSubStrata[strataFromTop + 1];
-            }
-            ZoneBelow = !isFinalStratum ? zoneManager.GetZone(zoneBelowID) : null;
-
-            Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(strataFromBottom)}: {strataFromBottom}, {nameof(strataFromTop)}: {strataFromTop}",
-                Indent: indent + 1, Toggle: getDoDebug());
-
-            Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(floorMaterial)}: {floorMaterial}, {nameof(strataFromTop)}: {strataFromTop}",
-                Indent: indent + 1, Toggle: getDoDebug());
-
-            // PaintZoneFloors(zone, ZoneBelow, isFinalStratum, floorMaterial);
-
-            UDSW_MostlySolidMaterial mostlySolidBuilder = new(Material: null, Materials: new() { "SolidAir", "Sandstone" }, ClearFirst: true);
-            if (strataFromTop < 6)
-            {
-                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
-                mostlySolidBuilder.Cells.AddRange(zone.GetCells());
-            }
-            else
-            {
-                List<Cell> cellsToSolidify = Event.NewCellList(zone.GetCells(CellShouldBeSolidified));
-                mostlySolidBuilder.Cells.AddRange(cellsToSolidify);
-
-                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}",
-                    Indent: indent + 1, Toggle: getDoDebug());
-            }
-            if (isFinalStratum)
-            {
-                mostlySolidBuilder.Materials.Remove("SolidAir");
-                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"Removed Solid Air from {nameof(mostlySolidBuilder.Materials)}",
-                    Indent: indent + 1, Toggle: getDoDebug());
-            }
-            mostlySolidBuilder.Cells.RemoveAll(c => c == stiltWellCell);
-            mostlySolidBuilder.BuildZone(zone);
-
-            if (strataFromTop < 6)
-            {
-                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(Cell)}.{nameof(Cell.Clear)}()",
-                    Indent: indent + 1, Toggle: getDoDebug());
-
-                stiltWellCell.Clear(Combat: true);
-                if (strataFromTop == 5)
-                {
-                    stiltWellCell.AddObject("SelfSacrificeHelper");
-                    stiltWellCell.AddObject("SpawnBlocker");
-                }
-            }
-            if (strataFromTop < 5)
-            {
-                stiltWellCell.AddObject(EmptyMaterial);
-
-                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(Cell)}.{nameof(Cell.AddObject)}({EmptyMaterial})",
-                    Indent: indent + 1, Toggle: getDoDebug());
-            }
-            stiltWellCell.AddObject("FlyingWhitelistArea");
-            stiltWellCell.AddObject("DaylightCell");
-
-            foreach (Cell daylightCell in zone.GetCellsWithObject("DaylightCell"))
-            {
-                if (daylightCell != null && !daylightCell.HasObjectWithBlueprint("FlyingWhitelistArea"))
-                {
-                    daylightCell.AddObject("FlyingWhitelistArea");
-                }
-            }
-
-            static int getAirRadiusFromStratum(int StrataFromTop, int StrataFromTopOrBottom)
-            {
-                int stratumOffset = Math.Max(1, StrataFromTop - 1);
-                float stratumMulti = StrataFromTopOrBottom * 0.2125f;
-                return Math.Max(1, (int)(stratumOffset * stratumMulti));
-            }
-            int airRadius = 1;
-            if (strataFromTop > 2 && strataFromTop < 11)
-            {
-                airRadius = getAirRadiusFromStratum(strataFromTop, strataFromTop);
-            }
-            else
-            if (strataFromTop > 10)
-            {
-                airRadius = getAirRadiusFromStratum(strataFromTop, strataFromBottom + 4);
-            }
-
-            Debug.Logger.LoopItem(Verbosity.Max, nameof(airRadius), airRadius.ToString(),
-                Indent: indent + 1, Toggle: getDoDebug());
-
-            Dictionary<string, List<Cell>> openAirRegion = stiltWellCell.GetCircleRegion(airRadius);
-            if (!openAirRegion.IsNullOrEmpty())
-            {
-                if (openAirRegion.ContainsKey(Inner))
-                {
-                    openAirRegion[Inner].RemoveAll(c => c == stiltWellCell);
-                    if (strataFromBottom < 10)
-                    {
-                        openAirRegion[Inner].RemoveAll(c => !c.HasObjectWithBlueprint("Sandstone"));
-                    }
-                }
-
-                List<Cell> openAirCells = Event.NewCellList(openAirRegion.AllCellsInRegion());
-                List<Cell> cellsToAddToOuter = Event.NewCellList();
-
-                int chanceIfOutter = Math.Max(2, Math.Min(12 - strataFromBottom, 9));
-                int chanceOtherwise = Math.Max(0, Math.Min(10 - strataFromBottom, 7));
-                int chanceScrapMound = Math.Max(2, Math.Min(strataFromBottom / 5, 3));
-                if (strataFromBottom < 6)
-                {
-                    bool doDebugScrapWallMoundChances = getDoDebug("ScrapWallMound Chances");
-
-                    Debug.Logger.LoopItem(Verbosity.Max, nameof(openAirRegion) + " ScrapWallMound Chances (" + nameof(strataFromBottom) + ": " + strataFromBottom + ")...",
-                        Indent: indent + 1, Toggle: doDebugScrapWallMoundChances);
-                    Debug.Logger.LoopItem(Verbosity.Max, nameof(chanceIfOutter), chanceIfOutter.ToString(),
-                        Indent: indent + 2, Toggle: doDebugScrapWallMoundChances);
-                    Debug.Logger.LoopItem(Verbosity.Max, nameof(chanceOtherwise), chanceOtherwise.ToString(),
-                        Indent: indent + 2, Toggle: doDebugScrapWallMoundChances);
-                    Debug.Logger.LoopItem(Verbosity.Max, nameof(chanceScrapMound), chanceScrapMound.ToString(),
-                        Indent: indent + 2, Toggle: doDebugScrapWallMoundChances);
-                }
-
-                List<Cell> cellsAlreadyRolled = Event.NewCellList();
-                foreach ((string subregionLabel, List<Cell> subregionCells) in openAirRegion)
-                {
-                    foreach (Cell cell in subregionCells)
-                    {
-                        cell.Clear();
-                        if (!isFinalStratum)
-                        {
-                            if (strataFromBottom < 7)
-                            {
-                                cell.AddObject(FloorMaterial);
-                            }
-                            else
-                            {
-                                cell.AddObject(EmptyMaterial);
-                            }
-                        }
-                        if (strataFromBottom < 7)
-                        {
-                            if (WantToPlaceWallInSubregionCell(cell, subregionCells, chanceIfOutter, chanceOtherwise))
-                            {
-                                PlaceRandomScrapWallMoundInCell(cell, chanceScrapMound, randomScrapMoundBlueprint, randomScrapWallBlueprint);
-                            }
-                            else
-                            if (strataFromBottom > 5 && subregionLabel == Outer && chanceIfOutter.in10())
-                            {
-                                PlaceRandomScrapWallMoundInCell(cell, chanceScrapMound, randomScrapMoundBlueprint, randomScrapWallBlueprint);
-                            }
-                        }
-                        if (subregionLabel == Outer)
-                        {
-                            foreach (Cell adjacentCell in cell.GetAdjacentCells())
-                            {
-                                if (!openAirCells.Contains(adjacentCell))
-                                {
-                                    int errosionRollSuccess = 3;
-                                    if (strataFromBottom < 3)
-                                    {
-                                        errosionRollSuccess = 5;
-                                    }
-                                    if (!cellsAlreadyRolled.Contains(adjacentCell)
-                                        && Stat.RollCached("1d8") < errosionRollSuccess)
-                                    {
-                                        adjacentCell.Clear();
-                                        if (strataFromTop < 10)
-                                        {
-                                            adjacentCell.AddObject(EmptyMaterial);
-                                        }
-                                        else
-                                        {
-                                            if (!isFinalStratum)
-                                            {
-                                                adjacentCell.AddObject(EmptyMaterial);
-                                            }
-                                            PlaceRandomScrapWallMoundInCell(cell, chanceScrapMound, randomScrapMoundBlueprint, randomScrapWallBlueprint);
-                                        }
-                                        if (!cellsToAddToOuter.Contains(adjacentCell))
-                                        {
-                                            cellsToAddToOuter.Add(adjacentCell);
-                                        }
-                                    }
-                                    if (!cellsToAddToOuter.Contains(adjacentCell))
-                                    {
-                                        cellsAlreadyRolled.Add(adjacentCell);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (!cellsToAddToOuter.IsNullOrEmpty())
-                {
-                    openAirRegion[Outer].AddRange(cellsToAddToOuter);
-                }
-                if (strataFromBottom < 9)
-                {
-                    bool doDebugBreakScrap = getDoDebug();
-
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Breaking/Deleting select Scrap Walls and Mounds",
-                        Indent: indent + 1, Toggle: doDebugBreakScrap);
-
-                    foreach (Cell scrapWallCell in zone.GetCellsWithObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall")))
-                    {
-                        Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugBreakScrap);
-                        Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(scrapWallCell)}: ({currentStratum})[{scrapWallCell.Location}]",
-                            Indent: indent + 2, Toggle: doDebugBreakScrap);
-
-                        if (DeleteOrDestroyScrapWallInCell(scrapWallCell))
-                        {
-                            Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(scrapWallCell)} did do {nameof(DeleteOrDestroyScrapWallInCell)}",
-                                Indent: indent + 3, Toggle: doDebugBreakScrap);
-                        }
-                        else
-                        {
-                            Debug.Logger.CheckNah(Verbosity.Max, $"{nameof(scrapWallCell)} didn't do {nameof(DeleteOrDestroyScrapWallInCell)}",
-                                Indent: indent + 3, Toggle: doDebugBreakScrap);
-                        }
-                    }
-                    Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugBreakScrap);
-                }
-
-                bool doHighlighting = true;
-                if (doHighlighting)
-                {
-                    foreach ((string label, List<Cell> region) in openAirRegion)
-                    {
-                        if (label == Inner)
-                        {
-                            foreach (Cell regionCell in region)
-                            {
-                                regionCell.HighlightGreen(Solid: false);
-                            }
-                        }
-                        if (label == Outer)
-                        {
-                            foreach (Cell regionCell in region)
-                            {
-                                regionCell.HighlightPurple(Solid: false);
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (isFinalStratum)
-            {
-                bool doDebugFinalStratum = getDoDebug();
-                Debug.Logger.LoopItem(Verbosity.Max, $"Rolling Tier 3-6 Relic by way of ExplodingDie and setting {nameof(HolyPlace)}",
-                    Indent: indent + 1, Toggle: doDebugFinalStratum);
-
-                int tier = new DieRoll("1d3").Explode(3, 1, 6);
-                if (RelicGenerator.GenerateRelic(Tier: tier, RandomName: true) is GameObject stiltWellRelic)
-                {
-                    stiltWellCell.Clear(Combat: true).AddObject(stiltWellRelic);
-
-                    Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(stiltWellRelic)} (T:{tier})", $"{stiltWellRelic.DebugName}",
-                        Indent: indent + 2, Toggle: doDebugFinalStratum);
-                }
-                else
-                {
-                    stiltWellCell.Clear(Combat: true).AddPopulation("Artifact 8R");
-
-                    Debug.Logger.CheckNah(Verbosity.Max, $"Relic Failed, Adding from population", $"Artifact 8R",
-                        Indent: indent + 2, Toggle: doDebugFinalStratum);
-                }
-                if (GameObjectFactory.Factory.CreateObject("Six Day Stilt Recoiler") is GameObject stiltRecoiler)
-                {
-                    stiltWellCell.AddObject(stiltRecoiler);
-
-                    Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(stiltRecoiler)}", $"{stiltRecoiler.DebugName}",
-                        Indent: indent + 2, Toggle: doDebugFinalStratum);
-                }
-                for (int i = 0; i < Stat.RandomCosmetic(1, 3); i++)
-                {
-                    int wedgeValue = Math.Max(1, Stat.RandomCosmetic(2, 3) - i);
-                    string creditWedgeBlueprint = $"CyberneticsCreditWedge" + (wedgeValue == 1 ? "" : wedgeValue);
-                    if (GameObjectFactory.Factory.CreateObject(creditWedgeBlueprint) is GameObject creditWedge)
-                    {
-                        stiltWellCell.AddObject(creditWedge);
-
-                        Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(creditWedge)}", $"{creditWedge.DebugName}",
-                            Indent: indent + 2, Toggle: doDebugFinalStratum);
-                    }
-                }
-                if (stiltWellCell.AddObject("HolyPlaceWidget").TryGetPart(out HolyPlace holyPlace))
-                {
-                    holyPlace.Faction = "Mechanimists";
-                }
-                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(holyPlace)}{nameof(holyPlace.Faction)}", $"{holyPlace?.Faction ?? NULL}",
-                    Good: holyPlace?.Faction == "Mechanimists", Indent: indent + 2, Toggle: doDebugFinalStratum);
-            }
-
-            PaintZoneFloors(zone, ZoneBelow, isFinalStratum, floorMaterial);
-
-            Debug.Logger.SetIndent(indent);
-            Debug.Logger.Footer(Verbosity.Max, $"{nameof(UD_SubGrandCathedralBuilder)}", $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", Toggle: doDebug);
-            return true;
-        }
-
-        public static void PaintCell(Cell C, string Floor = null, string TileColor = null, string DetailtColor = null, string Tile = null, bool Overwrite = true, bool OverrideFloorColors = false)
-        {
             string paintColorString = TileColor ?? "y";
             string paintTile = Tile ?? WeightedFloorTiles.SampleCosmetic();
-            string paintDetailColor = DetailtColor ?? "k";
+            string paintDetailColor = DetailColor ?? "k";
             string paintTileColor = paintColorString;
             string paintRenderString = "ú";
+
             GameObject floorSample = GameObject.CreateSample(Floor);
             if (floorSample != null && floorSample.TryGetPart(out Render floorRender))
             {
@@ -498,10 +154,21 @@ namespace XRL.World.ZoneBuilders
                 C.PaintRenderString = paintRenderString;
             }
             floorSample?.Obliterate();
+            Debug.Logger.SetIndent(indent);
         }
 
         public static void PaintZoneFloors(Zone Zone, Zone ZoneBelow, bool IsFinalStratum, string FloorMaterial)
         {
+            bool doDebug = getDoDebug(nameof(PaintZoneFloors));
+            Debug.Logger.GetIndent(out int indent);
+            Debug.Logger.Entry(Verbosity.Max,
+                nameof(UD_SubGrandCathedralBuilder) + "." + nameof(PaintZoneFloors) + "(" +
+                nameof(Zone.Z) + ": " + Zone.Z + ", " +
+                nameof(IsFinalStratum) + ": " + IsFinalStratum + ", " +
+                nameof(FloorMaterial) + ": " + FloorMaterial + ")",
+                Indent: indent + 1, Toggle: doDebug);
+
+            Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 1, Toggle: getDoDebug(nameof(PaintCell)));
             foreach (Cell cell in Zone.GetCells())
             {
                 if (cell.ParentZone == Zone)
@@ -564,9 +231,490 @@ namespace XRL.World.ZoneBuilders
                         }
                     }
                     bool doFloorMaterial = cellHasScrapWallBelow;
-                    PaintCell(cell, (doFloorMaterial ? FloorMaterial : null), TileColor, DetailColor, Overwrite: true, OverrideFloorColors: true);
+                    PaintCell(
+                        C: cell,
+                        Floor: doFloorMaterial ? FloorMaterial : null,
+                        TileColor: TileColor,
+                        DetailColor: DetailColor,
+                        Overwrite: true,
+                        OverrideFloorColors: true);
                 }
             }
+            Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 1, Toggle: doDebug);
+            Debug.Logger.SetIndent(indent);
+        }
+
+        bool CellShouldBeSolidified(Cell Cell)
+        {
+            return !Cell.HasObjectInheritsFrom("BaseScrapWall")
+                && !Cell.HasObjectWithBlueprint(EmptyMaterial)
+                && !Cell.HasObjectWithBlueprint("Air")
+                && !Cell.HasObjectWithBlueprint("SolidAir");
+        }
+        static bool HasWallThatNotScrapWall(Cell C) => C.HasObjectInheritsFrom("Wall") && !C.HasObjectInheritsFrom("BaseScrapWall");
+        static bool WantToPlaceWallInSubregionCell(
+            Cell Cell,
+            List<Cell> SubregionCells,
+            int ChanceIfOutter,
+            int ChanceOtherwise)
+        {
+            Debug.Logger.GetIndent(out int indent);
+            bool doDebug = getDoDebug(nameof(WantToPlaceWallInSubregionCell));
+            Debug.Logger.LoopItem(Verbosity.Max,
+                "(" + Cell.ParentZone.Z + ")[" + Cell.DebugName + "] " + nameof(WantToPlaceWallInSubregionCell) + ", " +
+                nameof(ChanceIfOutter) + ": " + ChanceIfOutter + ", " + 
+                nameof(ChanceOtherwise) + ": " + ChanceOtherwise,
+                Indent: indent + 1, Toggle: doDebug);
+
+            if (Cell.AnyAdjacentCell(Utils.HasWidget))
+            {
+                Debug.Logger.CheckNah(Verbosity.Max, nameof(Cell.AnyAdjacentCell) + " " + nameof(Utils.HasWidget),
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.Logger.SetIndent(indent);
+                return false;
+            }
+            if (Cell.HasObjectWithPart((Parts.StairsDown s) => s.PullDown))
+            {
+                Debug.Logger.CheckNah(Verbosity.Max, 
+                    nameof(Cell.HasObjectWithPart) + " " + nameof(Parts.StairsDown) + "." +
+                    nameof(Parts.StairsDown.PullDown) + " is " + true,
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.Logger.SetIndent(indent);
+                return false;
+            }
+            if (Cell.HasObjectWithPart((LiquidVolume l) => l.Volume > 9))
+            {
+                Debug.Logger.CheckNah(Verbosity.Max, 
+                    nameof(Cell.HasObjectWithPart) + " " + nameof(LiquidVolume) + "." +
+                    nameof(LiquidVolume.Volume) + " is GTE" + 10,
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.Logger.SetIndent(indent);
+                return false;
+            }
+            if (Cell.IsOuterCell(c => SubregionCells.Contains(c))
+                && ChanceIfOutter.in100())
+            {
+                Debug.Logger.CheckYeh(Verbosity.Max,
+                    nameof(UD_SacredWellHole.Extensions.IsOuterCell) + " Basis",
+                    nameof(SubregionCells) + "." + nameof(List<Cell>.Contains),
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.Logger.SetIndent(indent);
+                return true;
+            }
+            if (Cell.AnyAdjacentCell(HasWallThatNotScrapWall)
+                && ChanceIfOutter.in100())
+            {
+                Debug.Logger.CheckYeh(Verbosity.Max, nameof(Cell.AnyAdjacentCell) + " " + nameof(HasWallThatNotScrapWall),
+                    Indent: indent + 2, Toggle: doDebug);
+                Debug.Logger.SetIndent(indent);
+                return true;
+            }
+            bool otherwise = ChanceOtherwise.in100();
+            Debug.Logger.LoopItem(Verbosity.Max, nameof(ChanceOtherwise) + " in100",
+                Good: otherwise, Indent: indent + 2, Toggle: doDebug);
+            Debug.Logger.SetIndent(indent);
+            return otherwise;
+        }
+
+        public static GameObject PlaceRandomScrapWallMoundInCell(
+            Cell Cell,
+            int ChanceScrapMound,
+            string RandomScrapMoundBlueprint,
+            string RandomScrapWallBlueprint,
+            string Label = null,
+            int ExtraIndent = 0,
+            bool? doDebugOverride = null)
+        {
+            bool doDebug = doDebugOverride.HasValue ? doDebugOverride.GetValueOrDefault() : getDoDebug(nameof(PlaceRandomScrapWallMoundInCell));
+            GameObject placedObject = null;
+            if (ChanceScrapMound.in100())
+            {
+                placedObject = Cell.AddObject(RandomScrapMoundBlueprint);
+            }
+            else
+            {
+                placedObject = Cell.AddObject(RandomScrapWallBlueprint);
+            }
+            if (!Label.IsNullOrEmpty())
+            {
+                Label += " ";
+            }
+            Debug.Logger.GetIndent(out int indent);
+            Debug.Logger.LoopItem(Verbosity.Max,
+                Label + "(" + Cell.ParentZone.Z + ")[" + Cell.DebugName + "] Placed", placedObject?.DebugName ?? NULL,
+                Indent: indent + 1 + ExtraIndent, Toggle: doDebug);
+            Debug.Logger.SetIndent(indent);
+            return placedObject;
+        }
+
+        public static void ProcessOpenAirCell(
+            Cell SubregionCell,
+            List<Cell> SubregionCells,
+            int ChanceIfOutter,
+            int ChanceScrapMound,
+            int ChanceOtherwise,
+            int StrataFromBottom,
+            int ForStrataLessThanFromBottom,
+            bool IsFinalStratum,
+            string FloorMaterial,
+            string EmptyMaterial,
+            string RandomScrapMoundBlueprint,
+            string RandomScrapWallBlueprint,
+            string Label = null,
+            int ExtraIndent = 0)
+        {
+            if (SubregionCell == null
+                || SubregionCells.IsNullOrEmpty()
+                || FloorMaterial.IsNullOrEmpty()
+                || EmptyMaterial.IsNullOrEmpty()
+                || RandomScrapMoundBlueprint.IsNullOrEmpty()
+                || RandomScrapWallBlueprint.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            SubregionCell.Clear();
+            if (!IsFinalStratum)
+            {
+                if (StrataFromBottom < ForStrataLessThanFromBottom)
+                {
+                    SubregionCell.AddObject(FloorMaterial);
+                }
+                else
+                {
+                    SubregionCell.AddObject(EmptyMaterial);
+                }
+            }
+            if (StrataFromBottom < ForStrataLessThanFromBottom)
+            {
+                if (WantToPlaceWallInSubregionCell(SubregionCell, SubregionCells, ChanceIfOutter, ChanceOtherwise))
+                {
+                    PlaceRandomScrapWallMoundInCell(
+                        Cell: SubregionCell,
+                        ChanceScrapMound: ChanceScrapMound,
+                        RandomScrapMoundBlueprint: RandomScrapMoundBlueprint,
+                        RandomScrapWallBlueprint: RandomScrapWallBlueprint,
+                        Label: Label,
+                        ExtraIndent: ExtraIndent);
+                }
+            }
+        }
+        public void ProcessOpenAirCell(
+            Cell SubregionCell,
+            List<Cell> SubregionCells,
+            int ChanceIfOutter,
+            int ChanceScrapMound,
+            int ChanceOtherwise,
+            int ForStrataLessThanFromBottom = 6,
+            string Label = null,
+            int ExtraIndent = 0)
+        {
+            ProcessOpenAirCell(
+                SubregionCell: SubregionCell,
+                SubregionCells: SubregionCells,
+                ChanceIfOutter: ChanceIfOutter,
+                ChanceScrapMound: ChanceScrapMound,
+                ChanceOtherwise: ChanceOtherwise,
+                StrataFromBottom: StrataFromBottom,
+                ForStrataLessThanFromBottom: ForStrataLessThanFromBottom,
+                IsFinalStratum: IsFinalStratum,
+                FloorMaterial: FloorMaterial,
+                EmptyMaterial: EmptyMaterial,
+                RandomScrapMoundBlueprint: RandomScrapMoundBlueprint,
+                RandomScrapWallBlueprint: RandomScrapWallBlueprint,
+                Label: Label,
+                ExtraIndent: ExtraIndent);
+        }
+
+        public bool BuildZone(Zone Z)
+        {
+            Debug.Logger.Header(Verbosity.Max,
+                $"{nameof(UD_SubGrandCathedralBuilder)}",
+                $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})",
+                Toggle: doDebug);
+            Debug.Logger.ResetIndent(out int indent);
+
+            zone = Z;
+            CurrentStratum = zone.Z;
+
+            StiltWellCell = zone.GetCell(StiltWellLocation);
+            StrataFromBottom = LowestWellStratum - CurrentStratum;
+            StrataFromTop = zone.Z - 10;
+            IsFinalStratum = StrataFromBottom == 0;
+
+            if (StrataFromBottom < 5)
+            {
+                RandomScrapWallBlueprint = "RandomScrapWallOrScrapCorpseSometimesGigantic";
+            }
+
+            ZoneManager zoneManager = The.ZoneManager;
+
+            EmptyMaterial = StrataFromBottom > 10 ? EmptyMaterial : "QuantumAir";
+            FloorMaterial = StrataFromBottom > 10 ? FloorMaterial : "CompactedScrapFloor";
+
+            List<string> cathedralSubStrata = UD_SubStiltWorldBuilderExtension.CathedralSubStrata;
+            string zoneBelowID = null;
+            if (cathedralSubStrata.Count < StrataFromTop)
+            {
+                zoneBelowID = cathedralSubStrata[StrataFromTop];
+            }
+            ZoneBelow = !IsFinalStratum ? zoneManager.GetZone(zoneBelowID) : null;
+
+            Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(StrataFromBottom)}: {StrataFromBottom}, {nameof(StrataFromTop)}: {StrataFromTop}",
+                Indent: indent + 1, Toggle: getDoDebug());
+
+            PaintZoneFloors(zone, ZoneBelow, IsFinalStratum, !IsFinalStratum ? "BlackMarbleWalkway" : null);
+
+            UDSW_MostlySolidMaterial mostlySolidBuilder = new(Material: null, Materials: new() { "SolidAir", "Sandstone" }, ClearFirst: true);
+            if (StrataFromTop < 6)
+            {
+                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"All Cells, Count: {mostlySolidBuilder.Cells.Count}", Indent: indent + 1, Toggle: getDoDebug());
+                mostlySolidBuilder.Cells.AddRange(zone.GetCells());
+            }
+            else
+            {
+                List<Cell> cellsToSolidify = Event.NewCellList(zone.GetCells(CellShouldBeSolidified));
+                mostlySolidBuilder.Cells.AddRange(cellsToSolidify);
+
+                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"Filtered Cells, Count: {mostlySolidBuilder.Cells.Count}",
+                    Indent: indent + 1, Toggle: getDoDebug());
+            }
+            if (IsFinalStratum)
+            {
+                mostlySolidBuilder.Materials.Remove("SolidAir");
+                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(mostlySolidBuilder)}", $"Removed Solid Air from {nameof(mostlySolidBuilder.Materials)}",
+                    Indent: indent + 1, Toggle: getDoDebug());
+            }
+            mostlySolidBuilder.Cells.RemoveAll(c => c == StiltWellCell);
+            mostlySolidBuilder.BuildZone(zone);
+
+            if (StrataFromTop < 6)
+            {
+                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(Cell)}.{nameof(Cell.Clear)}()",
+                    Indent: indent + 1, Toggle: getDoDebug());
+
+                StiltWellCell.Clear(Combat: true);
+                if (StrataFromTop == 5)
+                {
+                    StiltWellCell.AddObject("SelfSacrificeHelper");
+                    StiltWellCell.AddObject("SpawnBlocker");
+                }
+            }
+            if (StrataFromTop < 5)
+            {
+                StiltWellCell.AddObject(EmptyMaterial);
+
+                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(Cell)}.{nameof(Cell.AddObject)}({EmptyMaterial})",
+                    Indent: indent + 1, Toggle: getDoDebug());
+            }
+            StiltWellCell.AddObject("FlyingWhitelistArea");
+            StiltWellCell.AddObject("DaylightCell");
+
+            foreach (Cell daylightCell in zone.GetCellsWithObject("DaylightCell"))
+            {
+                if (daylightCell != null && !daylightCell.HasObjectWithBlueprint("FlyingWhitelistArea"))
+                {
+                    daylightCell.AddObject("FlyingWhitelistArea");
+                }
+            }
+
+            static int getAirRadiusFromStratum(int StrataFromTop, int StrataFromTopOrBottom)
+            {
+                int stratumOffset = Math.Max(1, StrataFromTop - 1);
+                float stratumMulti = StrataFromTopOrBottom * 0.2125f;
+                return Math.Max(1, (int)(stratumOffset * stratumMulti));
+            }
+            int airRadius = 1;
+            if (StrataFromTop > 2 && StrataFromTop < 11)
+            {
+                airRadius = getAirRadiusFromStratum(StrataFromTop, StrataFromTop);
+            }
+            else
+            if (StrataFromTop > 10)
+            {
+                airRadius = getAirRadiusFromStratum(StrataFromTop, StrataFromBottom + 4);
+            }
+
+            Debug.Logger.LoopItem(Verbosity.Max, nameof(airRadius), airRadius.ToString(),
+                Indent: indent + 1, Toggle: getDoDebug());
+
+            Dictionary<string, List<Cell>> openAirRegion = StiltWellCell.GetCircleRegion(airRadius);
+            if (!openAirRegion.IsNullOrEmpty())
+            {
+                if (openAirRegion.ContainsKey(Inner))
+                {
+                    openAirRegion[Inner].RemoveAll(c => c == StiltWellCell);
+                    if (StrataFromBottom < 10)
+                    {
+                        openAirRegion[Inner].RemoveAll(c => !c.HasObjectWithBlueprint("Sandstone"));
+                    }
+                }
+
+                List<Cell> openAirCells = Event.NewCellList(openAirRegion.AllCellsInRegion());
+                List<Cell> cellsToAddToOuter = Event.NewCellList();
+
+                int chanceIfOutter = Math.Max(20, Math.Min((9 - StrataFromBottom) * 10, 90));
+                int chanceOtherwise = Math.Max(0, Math.Min((7 - StrataFromBottom) * 10, 70));
+                int chanceScrapMound = Math.Max(20, Math.Min(StrataFromBottom * 2, 30));
+                if (StrataFromBottom < 6)
+                {
+                    bool doDebugScrapWallMoundChances = getDoDebug("ScrapWallMound Chances");
+
+                    Debug.Logger.LoopItem(Verbosity.Max,
+                        nameof(openAirRegion) + " ScrapWallMound Chances (" + 
+                        nameof(StrataFromBottom) + ": " + StrataFromBottom + ")...",
+                        Indent: indent + 1, Toggle: doDebugScrapWallMoundChances);
+
+                    Debug.Logger.LoopItem(Verbosity.Max, nameof(chanceIfOutter), chanceIfOutter.ToString() + "%",
+                        Indent: indent + 2, Toggle: doDebugScrapWallMoundChances);
+                    Debug.Logger.LoopItem(Verbosity.Max, nameof(chanceOtherwise), chanceOtherwise.ToString() + "%",
+                        Indent: indent + 2, Toggle: doDebugScrapWallMoundChances);
+                    Debug.Logger.LoopItem(Verbosity.Max, nameof(chanceScrapMound), chanceScrapMound.ToString() + "%",
+                        Indent: indent + 2, Toggle: doDebugScrapWallMoundChances);
+                }
+
+                List<Cell> cellsAlreadyRolled = Event.NewCellList();
+
+                bool doDebugSubregionCells = getDoDebug("SubregionCells");
+                Debug.Logger.LoopItem(Verbosity.Max, Z.Z + ") " + nameof(openAirRegion),
+                    Indent: indent + 2, Toggle: doDebugSubregionCells);
+                Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugSubregionCells);
+                foreach ((string subregionLabel, List<Cell> subregionCells) in openAirRegion)
+                {
+                    Debug.Logger.LoopItem(Verbosity.Max, Z.Z + ") " + nameof(subregionLabel), subregionLabel,
+                        Indent: indent + 3, Toggle: doDebugSubregionCells);
+                    foreach (Cell cell in subregionCells)
+                    {
+                        ProcessOpenAirCell(
+                            SubregionCell: cell,
+                            SubregionCells: subregionCells,
+                            ChanceIfOutter: chanceIfOutter,
+                            ChanceScrapMound: chanceScrapMound,
+                            ChanceOtherwise: chanceOtherwise,
+                            ForStrataLessThanFromBottom: 6,
+                            Label: subregionLabel);
+
+                        if (subregionLabel == Outer)
+                        {
+                            foreach (Cell adjacentCell in cell.GetAdjacentCells())
+                            {
+                                if (!openAirCells.Contains(adjacentCell))
+                                {
+                                    int errosionRollSuccess = 4;
+                                    if (StrataFromBottom < 3)
+                                    {
+                                        errosionRollSuccess = 5;
+                                    }
+                                    if (!cellsAlreadyRolled.Contains(adjacentCell)
+                                        && !cellsToAddToOuter.Contains(adjacentCell)
+                                        && Stat.RollCached("1d9") < errosionRollSuccess)
+                                    {
+                                        ProcessOpenAirCell(
+                                            SubregionCell: adjacentCell,
+                                            SubregionCells: subregionCells,
+                                            ChanceIfOutter: chanceIfOutter,
+                                            ChanceScrapMound: chanceScrapMound,
+                                            ChanceOtherwise: chanceOtherwise,
+                                            ForStrataLessThanFromBottom: 5,
+                                            Label: subregionLabel,
+                                            ExtraIndent: 1);
+
+                                        if (!cellsToAddToOuter.Contains(adjacentCell))
+                                        {
+                                            cellsToAddToOuter.Add(adjacentCell);
+                                        }
+                                    }
+                                    if (!cellsToAddToOuter.Contains(adjacentCell))
+                                    {
+                                        cellsAlreadyRolled.Add(adjacentCell);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugSubregionCells);
+                }
+                if (!cellsToAddToOuter.IsNullOrEmpty())
+                {
+                    openAirRegion[Outer].AddRange(cellsToAddToOuter);
+                }
+                /*
+                if (strataFromBottom < 9)
+                {
+                    bool doDebugBreakScrap = getDoDebug();
+
+                    Debug.Logger.LoopItem(Verbosity.Max, $"Breaking/Deleting select Scrap Walls and Mounds",
+                        Indent: indent + 1, Toggle: doDebugBreakScrap);
+
+                    Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugBreakScrap);
+                    foreach (Cell scrapWallCell in zone.GetCellsWithObject(GO => GO.GetBlueprint().InheritsFrom("BaseScrapWall")))
+                    {
+                        bool deletedOrDestroyed = DeleteOrDestroyScrapWallInCell(scrapWallCell);
+
+                        Debug.Logger.LoopItem(Verbosity.Max, $"({currentStratum})[{scrapWallCell.Location}]",
+                            Good: deletedOrDestroyed, Indent: indent + 2, Toggle: doDebugBreakScrap);
+                    }
+                    Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugBreakScrap);
+                }
+                */
+            }
+
+            if (IsFinalStratum)
+            {
+                bool doDebugFinalStratum = getDoDebug();
+                Debug.Logger.LoopItem(Verbosity.Max, $"Rolling Tier 3-6 Relic by way of ExplodingDie and setting {nameof(HolyPlace)}",
+                    Indent: indent + 1, Toggle: doDebugFinalStratum);
+
+                int tier = new DieRoll("1d3").Explode(3, 1, 6);
+                if (RelicGenerator.GenerateRelic(Tier: tier, RandomName: true) is GameObject stiltWellRelic)
+                {
+                    StiltWellCell.Clear(Combat: true).AddObject(stiltWellRelic);
+
+                    Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(stiltWellRelic)} (T:{tier})", $"{stiltWellRelic.DebugName}",
+                        Indent: indent + 2, Toggle: doDebugFinalStratum);
+                }
+                else
+                {
+                    StiltWellCell.Clear(Combat: true).AddPopulation("Artifact 8R");
+
+                    Debug.Logger.CheckNah(Verbosity.Max, $"Relic Failed, Adding from population", $"Artifact 8R",
+                        Indent: indent + 2, Toggle: doDebugFinalStratum);
+                }
+                if (GameObjectFactory.Factory.CreateObject("Six Day Stilt Recoiler") is GameObject stiltRecoiler)
+                {
+                    StiltWellCell.AddObject(stiltRecoiler);
+
+                    Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(stiltRecoiler)}", $"{stiltRecoiler.DebugName}",
+                        Indent: indent + 2, Toggle: doDebugFinalStratum);
+                }
+                for (int i = 0; i < Stat.RandomCosmetic(1, 3); i++)
+                {
+                    int wedgeValue = Math.Max(1, Stat.RandomCosmetic(2, 3) - i);
+                    string creditWedgeBlueprint = $"CyberneticsCreditWedge" + (wedgeValue == 1 ? "" : wedgeValue);
+                    if (GameObjectFactory.Factory.CreateObject(creditWedgeBlueprint) is GameObject creditWedge)
+                    {
+                        StiltWellCell.AddObject(creditWedge);
+
+                        Debug.Logger.CheckYeh(Verbosity.Max, $"{nameof(creditWedge)}", $"{creditWedge.DebugName}",
+                            Indent: indent + 2, Toggle: doDebugFinalStratum);
+                    }
+                }
+                if (StiltWellCell.AddObject("HolyPlaceWidget").TryGetPart(out HolyPlace holyPlace))
+                {
+                    holyPlace.Faction = "Mechanimists";
+                }
+                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(holyPlace)}{nameof(holyPlace.Faction)}", $"{holyPlace?.Faction ?? NULL}",
+                    Good: holyPlace?.Faction == "Mechanimists", Indent: indent + 2, Toggle: doDebugFinalStratum);
+            }
+
+            // PaintZoneFloors(zone, ZoneBelow, isFinalStratum, floorMaterial);
+
+            Debug.Logger.SetIndent(indent);
+            Debug.Logger.Footer(Verbosity.Max, 
+                $"{nameof(UD_SubGrandCathedralBuilder)}", 
+                $"{nameof(BuildZone)}({nameof(Z)}: {Z.ZoneID})", 
+                Toggle: doDebug);
+            return true;
         }
     }
 }

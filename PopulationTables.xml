@@ -15,6 +15,28 @@
       <object Weight="10" Blueprint="ElectronicScrapWall" />
     </group>
   </population>
+  <population Name="ScrapWallCorpses">
+    <group Name="Options" Style="pickone">
+      <object Weight="15" Blueprint="SmallOilPuddle" />
+      <object Weight="10" Blueprint="SmallGrimePuddle" />
+      <object Weight="5" Blueprint="SmallUnctuousOilPuddle" />
+      <object Weight="10" Blueprint="SmallToxicGrimePuddle" />
+    </group>
+  </population>
+  
+  <population Name="ScrapWallsOrScrapCorpses">
+    <group Name="Options" Style="pickone">
+      <table Weight="3" Name="ScrapWalls" />
+      <table Weight="1" Name="ScrapWallCorpses" />
+    </group>
+  </population>
+  <population Name="ScrapWallsOrUnlikelyScrapCorpses">
+    <group Name="Options" Style="pickone">
+      <table Weight="9" Name="ScrapWalls" />
+      <table Weight="1" Name="ScrapWallCorpses" />
+    </group>
+  </population>
+  
   <population Name="Gigantic ScrapWalls">
     <group Name="Options" Style="pickone">
       <object Weight="15" Blueprint="Gigantic ScrapWall" />
@@ -23,13 +45,46 @@
       <object Weight="10" Blueprint="Gigantic ElectronicScrapWall" />
     </group>
   </population>
+  <population Name="Gigantic ScrapWallCorpses">
+    <group Name="Options" Style="pickone">
+      <object Weight="15" Blueprint="LargeOilPuddle" />
+      <object Weight="10" Blueprint="LargeGrimePuddle" />
+      <object Weight="5" Blueprint="LargeUnctuousOilPuddle" />
+      <object Weight="10" Blueprint="LargeToxicGrimePuddle" />
+    </group>
+  </population>
+  
+  <population Name="Gigantic ScrapWallsOrScrapCorpses">
+    <group Name="Options" Style="pickone">
+      <table Weight="3" Name="Gigantic ScrapWalls" />
+      <table Weight="1" Name="Gigantic ScrapWallCorpses" />
+    </group>
+  </population>
+  <population Name="Gigantic ScrapWallsOrUnlikelyScrapCorpses">
+    <group Name="Options" Style="pickone">
+      <table Weight="9" Name="Gigantic ScrapWalls" />
+      <table Weight="1" Name="Gigantic ScrapWallCorpses" />
+    </group>
+  </population>
+  
   <population Name="ScrapWallsSometimesGigantic">
     <group Name="Options" Style="pickone">
       <table Weight="8" Name="ScrapWalls" />
       <table Weight="2" Name="Gigantic ScrapWalls" />
     </group>
   </population>
-  
+  <population Name="ScrapWallsOrScrapCorpsesSometimesGigantic">
+    <group Name="Options" Style="pickone">
+      <table Weight="8" Name="ScrapWallsOrScrapCorpses" />
+      <table Weight="2" Name="Gigantic ScrapWallsOrScrapCorpses" />
+    </group>
+  </population>
+  <population Name="ScrapWallsOrUnlikelyScrapCorpsesSometimesGigantic">
+    <group Name="Options" Style="pickone">
+      <table Weight="8" Name="ScrapWallsOrUnlikelyScrapCorpses" />
+      <table Weight="2" Name="Gigantic ScrapWallsOrUnlikelyScrapCorpses" />
+    </group>
+  </population>
   
   <population Name="ScrapMounds">
     <group Name="Options" Style="pickone">
@@ -79,21 +134,21 @@
   <population Name="JunkOrMachineWall">
     <group Name="Options" Style="pickone">
       <table Weight="10" Name="RandomMachineWall" />
-      <table Weight="10" Name="SacrificialJunk" />
+      <table Weight="10" Name="SacrificialJunk" Hint="SetBonusModChance:50,SetMinModNumber:2" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallButProbablyWall">
     <group Name="Options" Style="pickone">
       <table Weight="15" Name="RandomMachineWall" />
-      <table Weight="5" Name="SacrificialJunk" />
+      <table Weight="5" Name="SacrificialJunk" Hint="SetBonusModChance:50,SetMinModNumber:2" />
     </group>
   </population>
   
   <population Name="JunkOrMachineWallButProbablyJunk">
     <group Name="Options" Style="pickone">
       <table Weight="5" Name="RandomMachineWall" />
-      <table Weight="15" Name="SacrificialJunk" />
+      <table Weight="15" Name="SacrificialJunk" Hint="SetBonusModChance:50,SetMinModNumber:2" />
     </group>
   </population>
   
@@ -123,7 +178,7 @@
   
   <population Name="JunkOrGarbage">
     <group Name="Options" Style="pickone">
-      <table Weight="40" Name="SacrificialJunk" />
+      <table Weight="40" Name="SacrificialJunk" Hint="SetBonusModChance:50,SetMinModNumber:2" />
       <table Weight="40" Name="GrimyGarbage" />
     </group>
   </population>

@@ -5,6 +5,7 @@
     <part Name="Render" DisplayName="[compacted scrap]" ColorString="&amp;k^w" TileColor="&amp;k" DetailColor="w"/>
     <part Name="Description" Short="Jagged metal shapes of the chrome form are disarranged to tessellate properly. Round casings require axel-joints to fill the gaps in their sequences. The boundaries of this world are grime-smeared and absent any presence." />
     <part Name="Physics" Weight="10000" FlameTemperature="99999" VaporTemperature="6000" Takeable="false" Solid="true" Conductivity="80" />
+    <part Name="UD_ScrapWallHelper" />
     <stat Name="Hitpoints" Value="5000" />
     <stat Name="ElectricResistance" Value="0" />
     <part Name="Metal" />
@@ -43,6 +44,22 @@
   </object>
   <object Name="SmallToxicGrimePuddle" Inherits="SmallOilPuddle">
     <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="oil-600,acid-300,sludge-100" />
+  </object>
+  
+  <object Name="LargeOilPuddle" Inherits="SmallOilPuddle">
+    <part Name="LiquidVolume" Volume="20" StartVolume="30-40" />
+  </object>
+  <object Name="LargeGelPuddle" Inherits="SmallGelPuddle">
+    <part Name="LiquidVolume" Volume="20" StartVolume="30-40" />
+  </object>
+  <object Name="LargeUnctuousOilPuddle" Inherits="SmallUnctuousOilPuddle">
+    <part Name="LiquidVolume" Volume="20" StartVolume="30-40" />
+  </object>
+  <object Name="LargeGrimePuddle" Inherits="SmallGrimePuddle">
+    <part Name="LiquidVolume" Volume="20" StartVolume="30-40" />
+  </object>
+  <object Name="LargeToxicGrimePuddle" Inherits="SmallToxicGrimePuddle">
+    <part Name="LiquidVolume" Volume="20" StartVolume="30-40" />
   </object>
   
   <object Name="ScrapWall" Inherits="BaseScrapWall">
@@ -86,6 +103,7 @@
   <object Name="Gigantic CyberneticScrapWall" Inherits="CyberneticScrapWall">
     <part Name="ModGigantic" />
   </object>
+  
   <object Name="RandomScrapWall" Inherits="BaseScrapWall">
     <part Name="Render" DisplayName="compacted random scrap" ColorString="&amp;K^g" DetailColor="Y"/>
     <part Name="Corpse" CorpseBlueprint="SmallGelPuddle" />
@@ -93,23 +111,38 @@
     <tag Name="PitDetailColor" Value="Y" />
     <part Name="ReplaceObject" Table="ScrapWalls" SeedWithZoneID="false" />
   </object>
+  <object Name="RandomScrapWallOrScrapCorpse" Inherits="RandomScrapWall">
+    <part Name="ReplaceObject" Table="ScrapWallsOrScrapCorpses" />
+  </object>
+  <object Name="RandomScrapWallOrUnlikelyScrapCorpse" Inherits="RandomScrapWall">
+    <part Name="ReplaceObject" Table="ScrapWallsOrUnlikelyScrapCorpses" />
+  </object>
   <object Name="Gigantic RandomScrapWall" Inherits="RandomScrapWall">
     <part Name="ReplaceObject" Table="Gigantic ScrapWalls" SeedWithZoneID="false" />
   </object>
   <object Name="RandomScrapWallSometimesGigantic" Inherits="RandomScrapWall">
     <part Name="ReplaceObject" Table="ScrapWallsSometimesGigantic" SeedWithZoneID="false" />
   </object>
-
+  <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic" Inherits="RandomScrapWall">
+    <part Name="ReplaceObject" Table="ScrapWallsOrScrapCorpsesSometimesGigantic" SeedWithZoneID="false" />
+  </object>
+  <object Name="RandomScrapWallOrUnlikelyScrapCorpseSometimesGigantic" Inherits="RandomScrapWall">
+    <part Name="ReplaceObject" Table="ScrapWallsOrUnlikelyScrapCorpsesSometimesGigantic" SeedWithZoneID="false" />
+  </object>
+  
   <object Name="BaseScrapMound" Inherits="Rubble">
     <part Name="Render" DisplayName="[scrap mound]" ColorString="&amp;w" TileColor="&amp;w" DetailColor="K" />
     <part Name="Description" Short="Irregular volumes of scrap are heaped together. Across its surface, points of order poke sporadically through the pile of entropy: a cybernetic finger, the gears of a Barathrum clock, a scratched piece of circuitboard." />
-    <part Name="Physics" Weight="10000" FlameTemperature="99999" VaporTemperature="6000" Takeable="false" Solid="true" Conductivity="80" />
+    <part Name="Physics" Weight="10000" FlameTemperature="99999" VaporTemperature="6000" Takeable="false" Solid="false" Conductivity="80" />
+    <part Name="UD_ScrapWallHelper" />
+    <!-- part Name="UD_JaggedEdges" /-->
     <stat Name="Hitpoints" Value="3500" />
     <stat Name="ElectricResistance" Value="0" />
     <part Name="Metal" />
     <part Name="Corpse" CorpseChance="33" BuildCorpseChance="33" CorpseBlueprint="SmallOilPuddle" />
     <part Name="DrawInTheDark" BackgroundTileColor="k" ForegroundTileColor="K" DetailColor="w" />
     <part Name="LeakWhenBroken" />
+    <tag Name="OverlayColor" Value="&amp;K^k" />
     <tag Name="Diggable" />
     <tag Name="VaporObject" Value="SmallOilyUnctuousLavaPuddle" />
     <tag Name="BaseObject" Value="*noinherit" />
@@ -123,6 +156,9 @@
   </object>
   <object Name="SmallOilyUnctuousLavaPuddle" Inherits="SmallOilPuddle">
     <part Name="LiquidVolume" Volume="10" StartVolume="15-20" InitialLiquid="lava-800,oil-150,gel-50" />
+  </object>
+  <object Name="LargeOilyUnctuousLavaPuddle" Inherits="SmallOilyUnctuousLavaPuddle">
+    <part Name="LiquidVolume" Volume="20" StartVolume="30-40" />
   </object>
   
   <object Name="ScrapMound" Inherits="BaseScrapMound">

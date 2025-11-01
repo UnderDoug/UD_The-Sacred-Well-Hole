@@ -7,6 +7,9 @@ using XRL.Rules;
 using XRL.World.Effects;
 using XRL.World.Parts;
 using XRL.World.WorldBuilders;
+using XRL.World.Tinkering;
+
+using static XRL.World.ZoneBuilders.UD_SubGrandCathedralBuilder;
 
 using Verbosity = UD_Modding_Toolbox.UD_Logger.Verbosity;
 
@@ -18,8 +21,6 @@ using static UD_SacredWellHole.Const;
 using static UD_SacredWellHole.Options;
 
 using Debug = UD_SacredWellHole.Debug;
-using XRL.World.Tinkering;
-using XRL.Liquids;
 
 namespace XRL.World.ZoneBuilders
 {
@@ -92,7 +93,8 @@ namespace XRL.World.ZoneBuilders
 
             Cell stiltWellCell = zone.GetCell(StiltWellLocation);
 
-            Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(WantScrappy)}", $"{WantScrappy}", Good: WantScrappy, Indent: indent + 1, Toggle: getDoDebug());
+            Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(WantScrappy)}", $"{WantScrappy}",
+                Good: WantScrappy, Indent: indent + 1, Toggle: getDoDebug());
 
             if (WantScrappy)
             {
@@ -101,10 +103,11 @@ namespace XRL.World.ZoneBuilders
                 Debug.Logger.Entry(Verbosity.Max, $"Adding Items...", Indent: indent + 1, Toggle: doDebug);
                 foreach (Cell emptyCell in zone.GetCells(c => IsCellEmptyForThePurposeOfHavingScrapPlaced(c, StiltWellLocation)))
                 {
+                    /*
                     Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebug);
                     Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(emptyCell)}", $"({currentStratum})[{emptyCell.Location}]",
                         Indent: indent + 2, Toggle: doDebug);
-
+                    */
                     if (emptyCell == stiltWellCell)
                     {
                         Debug.Logger.CheckNah(Verbosity.Max, $"{nameof(emptyCell)} is {nameof(stiltWellCell)}",
@@ -113,85 +116,50 @@ namespace XRL.World.ZoneBuilders
                     }
 
                     string randomScrapMoundBlueprint = "RandomScrapMound";
-                    string randomScrapWallBlueprint = "RandomScrapWallSometimesGigantic";
+                    string randomScrapWallBlueprint = "RandomScrapWallOrUnlikelyScrapCorpseSometimesGigantic";
                     string sacrificialJunkTable = "JunkOrGarbageButProbablyGarbage";
 
                     GameObject placedObject = null;
-
+                    string placementContext = "nothing";
                     if (currentStratum > 19
                         && emptyCell.AnyAdjacentCell(c => c.HasObjectWithBlueprintEndsWith("ScrapWall"))
                         && 3.in10())
                     {
-                        if (8.in10())
-                        {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", randomScrapMoundBlueprint,
-                                Indent: indent + 4, Toggle: doDebug);
-
-                            placedObject = emptyCell.AddObject(randomScrapMoundBlueprint);
-                        }
-                        else
-                        {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", randomScrapWallBlueprint,
-                                Indent: indent + 4, Toggle: doDebug);
-
-                            placedObject = emptyCell.AddObject(randomScrapWallBlueprint);
-                        }
+                        placedObject = PlaceRandomScrapWallMoundInCell(
+                            Cell: emptyCell,
+                            ChanceScrapMound: 80,
+                            RandomScrapMoundBlueprint: randomScrapMoundBlueprint,
+                            RandomScrapWallBlueprint: randomScrapWallBlueprint,
+                            doDebugOverride: false);
+                        placementContext = nameof(PlaceRandomScrapWallMoundInCell);
                     }
                     else
                     {
-                        if (Stat.RollCached("1d25") == 1)
+                        if (Stat.RollCached("1d25") == 1
+                            && GameObject.CreateUnmodified(randomScrapMoundBlueprint) is GameObject randomScrapMound)
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", randomScrapMoundBlueprint,
-                                Indent: indent + 4, Toggle: doDebug);
-
-                            placedObject = emptyCell.AddObject(randomScrapMoundBlueprint);
+                            placedObject = randomScrapMound;
+                            emptyCell.AddObject(placedObject);
+                            placementContext = randomScrapMoundBlueprint;
                         }
                         else
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, $"Placing", sacrificialJunkTable,
-                                Indent: indent + 4, Toggle: doDebug);
-
-                            GameObject populationObject = null;
-                            if (PopulationManager.GenerateOne(sacrificialJunkTable)?.Blueprint is string populationBlueprint)
+                            if (PopulationManager.CreateOneFrom(
+                                PopulationName: sacrificialJunkTable,
+                                BonusModChance: 50,
+                                SetModNumber: 2) is GameObject populationObject)
                             {
-                                placedObject = populationObject = emptyCell.AddObject(populationBlueprint);
-                            }
-                            else
-                            {
-                                Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(populationObject)} rolled \"nothing\"",
-                                    Indent: indent + 5, Toggle: doDebug);
-                            }
-                            if (populationObject != null)
-                            {
-                                Debug.Logger.LoopItem(Verbosity.Max, $"{populationObject?.DebugName ?? NULL}",
-                                    Indent: indent + 5, Toggle: doDebug);
+                                placedObject = populationObject;
+                                emptyCell.AddObject(placedObject);
 
-                                if (!populationObject.GetBlueprint().InheritsFrom("TradeGood") || Stat.RollCached("1d4") == 1)
-                                {
-                                    int setModNumber = (Stat.RollCached("1d4") == 1) ? 2 : 1;
-
-                                    Debug.Logger.LoopItem(Verbosity.Max,
-                                        $"Modding {populationObject?.DebugName ?? NULL}", $"{nameof(setModNumber)} ({setModNumber})",
-                                        Indent: indent + 6, Toggle: doDebug);
-
-                                    int appliedMods = ModificationFactory.ApplyModifications(
-                                        GO: populationObject,
-                                        Blueprint: populationObject.GetBlueprint(),
-                                        BonusModChance: 100,
-                                        SetModNumber: setModNumber,
-                                        Context: "Creation");
-
-                                    Debug.Logger.LoopItem(Verbosity.Max, $"{nameof(appliedMods)}", $"{appliedMods}",
-                                        Indent: indent + 6, Toggle: doDebug);
-                                }
-                                else
-                                {
-                                    Debug.Logger.LoopItem(Verbosity.Max, $"Modding {nameof(populationObject)}", $"Skipped",
-                                        Indent: indent + 6, Toggle: doDebug);
-                                }
+                                placementContext = sacrificialJunkTable;
                             }
                         }
                     }
+                    Debug.Logger.LoopItem(Verbosity.Max,
+                        "(" + currentStratum + ")[" + emptyCell.Location +"] " + 
+                        "Placing " + placementContext, placedObject?.DebugName ?? NULL,
+                        Indent: indent + 2, Toggle: doDebug);
                 }
                 Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebug);
             }
@@ -201,7 +169,8 @@ namespace XRL.World.ZoneBuilders
             foreach (GameObject item in zone.GetObjectsThatInheritFrom("Item"))
             {
                 Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugScrapping);
-                Debug.Logger.LoopItem(Verbosity.Max, $"(Z:{currentStratum}) {nameof(item)}", $"{item?.DebugName ?? NULL}",
+                Debug.Logger.LoopItem(Verbosity.Max, 
+                    $"(Z:{currentStratum})[{item?.CurrentCell?.DebugName}] {nameof(item)}", $"{item?.DebugName ?? NULL}",
                     Indent: indent + 2, Toggle: doDebugScrapping);
 
                 if (item?.Blueprint != "Garbage")
@@ -227,7 +196,8 @@ namespace XRL.World.ZoneBuilders
                         && !item.InheritsFrom("Scrap")
                         && !item.InheritsFrom("TradeGood")
                         && !item.InheritsFrom("BaseCurrency")
-                        && !item.InheritsFrom("BaseCyberneticsCreditWedge"))
+                        && !item.InheritsFrom("BaseCyberneticsCreditWedge")
+                        && !item.HasPart("SSR_BoosterPack"))
                     {
                         if (item.CurrentCell.Location == stiltWellCell.Location)
                         {
@@ -236,8 +206,9 @@ namespace XRL.World.ZoneBuilders
                         }
                         else
                         {
-                            item.ReplaceWith(PopulationManager.GenerateOne("GrimyGarbage")?.Blueprint ?? "Garbage");
-                            Debug.Logger.CheckYeh(Verbosity.Max, $"Replaced {nameof(item)} with {item?.DebugName ?? NULL}",
+                            string newBlueprint = PopulationManager.GenerateOne("GrimyGarbage")?.Blueprint ?? "Garbage";
+                            GameObject newItem = item.ReplaceWith(newBlueprint);
+                            Debug.Logger.CheckYeh(Verbosity.Max, $"Replaced {nameof(item)} with {newItem?.DebugName ?? NULL}",
                                 Indent: indent + 4, Toggle: doDebugScrapping);
 
                             continue;
@@ -267,7 +238,7 @@ namespace XRL.World.ZoneBuilders
                     bool busted = false;
                     if (disrepairTicket == Disrepair.Fine)
                     {
-                        Debug.Logger.LoopItem(Verbosity.Max, nameof(Disrepair) + "." + nameof(Disrepair.Fine),
+                        Debug.Logger.LoopItem(Verbosity.Max, Disrepair.Fine.ToString(),
                             Indent: indent + 4, Toggle: doDebugScrapping);
 
                         continue;
@@ -276,22 +247,22 @@ namespace XRL.World.ZoneBuilders
                     {
                         if (rusted = item.ApplyEffect(new Rusted()))
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, nameof(Disrepair) + "." + nameof(Disrepair.Rust),
+                            Debug.Logger.LoopItem(Verbosity.Max, Disrepair.Rust.ToString(),
                                 Indent: indent + 4, Toggle: doDebugScrapping);
                             continue;
                         }
-                        Debug.Logger.LoopItem(Verbosity.Max, "failed " + nameof(Disrepair) + "." + nameof(Disrepair.Rust),
+                        Debug.Logger.LoopItem(Verbosity.Max, "failed " + Disrepair.Rust.ToString(),
                             Indent: indent + 4, Toggle: doDebugScrapping);
                     }
                     if (disrepairTicket == Disrepair.Bust || !rusted)
                     {
                         if (busted = item.ApplyEffect(new Broken()))
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, nameof(Disrepair) + "." + nameof(Disrepair.Bust),
+                            Debug.Logger.LoopItem(Verbosity.Max, Disrepair.Bust.ToString(),
                                 Indent: indent + 4, Toggle: doDebugScrapping);
                             continue;
                         }
-                        Debug.Logger.LoopItem(Verbosity.Max, "failed " + nameof(Disrepair) + "." + nameof(Disrepair.Bust),
+                        Debug.Logger.LoopItem(Verbosity.Max, "failed " + Disrepair.Bust.ToString(),
                             Indent: indent + 4, Toggle: doDebugScrapping);
                     }
                     if (disrepairTicket == Disrepair.Scuff || !busted)
@@ -299,12 +270,12 @@ namespace XRL.World.ZoneBuilders
                         if (item.GetStat("Hitpoints") is Statistic hitpoints)
                         {
                             hitpoints.Penalty = hitpoints.BaseValue - 1;
-                            Debug.Logger.LoopItem(Verbosity.Max, nameof(Disrepair) + "." + nameof(Disrepair.Scuff),
+                            Debug.Logger.LoopItem(Verbosity.Max, Disrepair.Scuff.ToString(),
                                 Indent: indent + 4, Toggle: doDebugScrapping);
                         }
                         else
                         {
-                            Debug.Logger.LoopItem(Verbosity.Max, "failed " + nameof(Disrepair) + "." + nameof(Disrepair.Scuff),
+                            Debug.Logger.LoopItem(Verbosity.Max, "failed " + Disrepair.Scuff.ToString(),
                                 Indent: indent + 4, Toggle: doDebugScrapping);
                         }
                     }
@@ -323,56 +294,33 @@ namespace XRL.World.ZoneBuilders
                 $"Cycling Scrap Walls/Mounds to add mods and make {nameof(Rusted)} or {nameof(Broken)}...",
                 Indent: indent + 1, Toggle: doDebugScrapWalls);
 
-            foreach (GameObject scrapWall in zone.GetObjects(IsScrapWallMound))
+            foreach (GameObject scrapWallMound in zone.GetObjects(IsScrapWallMound))
             {
-                Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: getDoDebug());
-                Debug.Logger.LoopItem(Verbosity.Max,
-                    $"(Z:{currentStratum}) {nameof(scrapWall)}", $"{scrapWall?.DebugName ?? NULL}",
-                    Indent: indent + 2, Toggle: doDebugScrapWalls);
-
                 if (currentStratum == LowestWellStratum
-                    && scrapWall.CurrentCell == stiltWellCell)
+                    && scrapWallMound.CurrentCell == stiltWellCell)
                 {
+                    Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugScrapWalls);
+                    Debug.Logger.LoopItem(Verbosity.Max,
+                        $"(Z:{currentStratum})[{scrapWallMound.CurrentCell.DebugName}] {nameof(scrapWallMound)}",
+                        $"{scrapWallMound?.DebugName ?? NULL}",
+                        Indent: indent + 2, Toggle: doDebugScrapWalls);
+
                     Debug.Logger.CheckNah(Verbosity.Max,
-                        $"{nameof(scrapWall)}.{nameof(scrapWall.CurrentCell)} is {nameof(stiltWellCell)}",
+                        $"{nameof(scrapWallMound)}.{nameof(scrapWallMound.CurrentCell)} is {nameof(stiltWellCell)}",
                         Indent: indent + 3, Toggle: doDebugScrapWalls);
-                    scrapWall.Obliterate();
+                    scrapWallMound.Obliterate();
                     continue;
                 }
 
-                if (MaybeApplyGearbox(scrapWall))
+                if (scrapWallMound.HasPart<AnimatedObject>()
+                    && scrapWallMound.TryGetPart(out Leveler leveler))
                 {
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Added", $"{nameof(ModGearbox)}",
-                        Indent: indent + 3, Toggle: doDebugScrapWalls);
-                }
-                if (MaybeApplyWired(scrapWall))
-                {
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Added", $"{nameof(ModWired)}",
-                        Indent: indent + 3, Toggle: doDebugScrapWalls);
-                }
-                if (MaybeApplyPiped(scrapWall))
-                {
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Added", $"{nameof(ModPiping)}",
-                        Indent: indent + 3, Toggle: doDebugScrapWalls);
-                }
-                if (MaybeApplyEnergyCellSocket(scrapWall))
-                {
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Added", $"{nameof(EnergyCellSocket)}",
-                        Indent: indent + 3, Toggle: doDebugScrapWalls);
-                }
-                if (MaybeApplyFushionPower(scrapWall))
-                {
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Added", $"{nameof(FusionReactor)}",
-                        Indent: indent + 3, Toggle: doDebugScrapWalls);
-                }
-                if (MaybeApplyRustedOrBusted(scrapWall, out string appliedRustedOrBusted))
-                {
-                    Debug.Logger.LoopItem(Verbosity.Max, $"Applied", $"{appliedRustedOrBusted}",
-                        Indent: indent + 3, Toggle: doDebugScrapWalls);
-                }
-                if (scrapWall.HasPart<AnimatedObject>()
-                    && scrapWall.TryGetPart(out Leveler leveler))
-                {
+                    Debug.Logger.Divider(Verbosity.Max, HONLY, 40, Indent: indent + 2, Toggle: doDebugScrapWalls);
+                    Debug.Logger.LoopItem(Verbosity.Max,
+                        $"(Z:{currentStratum})[{scrapWallMound.CurrentCell.DebugName}] {nameof(scrapWallMound)}",
+                        $"{scrapWallMound?.DebugName ?? NULL}",
+                        Indent: indent + 2, Toggle: doDebugScrapWalls);
+
                     Debug.Logger.LoopItem(Verbosity.Max, $"Found", $"{nameof(AnimatedObject)}",
                         Indent: indent + 3, Toggle: doDebugScrapWalls);
 
@@ -382,21 +330,21 @@ namespace XRL.World.ZoneBuilders
                         Indent: indent + 4, Toggle: doDebugScrapWalls);
 
                     Debug.Logger.LoopItem(Verbosity.Max,
-                        $"-] {nameof(scrapWall)}.{nameof(scrapWall.Level)}", $"{scrapWall.Level}",
+                        $"-] {nameof(scrapWallMound)}.{nameof(scrapWallMound.Level)}", $"{scrapWallMound.Level}",
                         Indent: indent + 5, Toggle: doDebugScrapWalls);
 
                     for (int i = 0; i < scrapWallLevels; i++)
                     {
                         leveler.LevelUp();
                         Debug.Logger.LoopItem(Verbosity.Max,
-                            $"{i}] {nameof(scrapWall)}.{nameof(scrapWall.Level)}", $"{scrapWall.Level}",
+                            $"{i}] {nameof(scrapWallMound)}.{nameof(scrapWallMound.Level)}", $"{scrapWallMound.Level}",
                             Indent: indent + 5, Toggle: doDebugScrapWalls);
                     }
-                    scrapWall.RandomlySpendPoints();
-                    scrapWall.ReceivePopulation("HumanoidEquipment 3");
-                    if (scrapWall.IsGiganticCreature || scrapWall.IsGiganticEquipment)
+                    scrapWallMound.RandomlySpendPoints();
+                    scrapWallMound.ReceivePopulation("HumanoidEquipment 3");
+                    if (scrapWallMound.IsGiganticCreature || scrapWallMound.IsGiganticEquipment)
                     {
-                        scrapWall.ForeachInventoryAndEquipment(delegate (GameObject item)
+                        scrapWallMound.ForeachInventoryAndEquipment(delegate (GameObject item)
                         {
                             if (ItemModding.ModificationApplicable(nameof(ModGigantic), item))
                             {
@@ -474,7 +422,7 @@ namespace XRL.World.ZoneBuilders
             }
             return false;
         }
-        public static bool MaybeApplyFushionPower(GameObject ScrapWall)
+        public static bool MaybeApplyFusionPower(GameObject ScrapWall)
         {
             if (ScrapWall.HasPart<ModWired>()
                 && 15.in100()
@@ -537,6 +485,15 @@ namespace XRL.World.ZoneBuilders
             if (Cell.HasObjectInheritsFrom("Wall"))
             {
                 Debug.Logger.CheckNah(verbosity, "Wall",
+                    Indent: indent + 2, Toggle: doDebug);
+
+                Debug.Logger.SetIndent(indent);
+                return false;
+            }
+            if (Cell.HasObjectWithPart((LiquidVolume l) => l.Volume > 9))
+            {
+                Debug.Logger.CheckNah(verbosity, nameof(Cell.HasObjectWithPart) + " " + nameof(LiquidVolume) + "." +
+                    nameof(LiquidVolume.Volume) + " is GTE" + 10,
                     Indent: indent + 2, Toggle: doDebug);
 
                 Debug.Logger.SetIndent(indent);

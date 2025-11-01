@@ -968,11 +968,11 @@
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="11">
-    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic"></object>
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="11">
-    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic"></object>
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="40" Y="11">
@@ -1066,15 +1066,15 @@
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="37" Y="12">
-    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic"></object>
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="12">
-    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic"></object>
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="12">
-    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic"></object>
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="40" Y="12">
@@ -1172,7 +1172,7 @@
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="38" Y="13">
-    <object Name="RandomScrapWallSometimesGigantic"></object>
+    <object Name="RandomScrapWallOrScrapCorpseSometimesGigantic"></object>
     <object Name="CompactedScrapFloor"></object>
   </cell>
   <cell X="39" Y="13">

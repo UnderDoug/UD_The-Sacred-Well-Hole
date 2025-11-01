@@ -12,6 +12,7 @@ using XRL.World.ZoneBuilders;
 using UD_Modding_Toolbox;
 
 using static UD_SacredWellHole.Options;
+using XRL;
 
 namespace UD_SacredWellHole
 {
@@ -492,6 +493,24 @@ namespace UD_SacredWellHole
             return false;
         }
 
+        public static bool HasObjectWithPart<T>(this Cell Cell, Predicate<T> Filter = null)
+            where T : IPart
+        {
+            if (Cell == null)
+            {
+                throw new ArgumentNullException(nameof(Cell), nameof(Cell) + " can't be null");
+            }
+            foreach (GameObject cellObject in Cell.GetObjectsWithPart(typeof(T).Name))
+            {
+                if (cellObject.GetPart<T>() is T tPart
+                    && (Filter == null || Filter(tPart)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static int Explode(this DieRoll DieRoll, int Start = 0, int Step = 0, int Limit = 0)
         {
             bool doDebug = getDoDebug(nameof(Explode));
@@ -629,6 +648,55 @@ namespace UD_SacredWellHole
         public static bool HasObjectInDirectionInheritsFrom(this Cell Cell, string Direction, string Blueprint, bool BuiltOnly = true)
         {
             return Cell.GetCellFromDirection(Direction, BuiltOnly).HasObjectInheritsFrom(Blueprint);
+        }
+
+        public static int GetTotalX(this Zone Zone)
+        {
+            return (Zone.wX * 3) + Zone.X;
+        }
+        public static int GetTotalY(this Zone Zone)
+        {
+            return (Zone.wY * 3) + Zone.Y;
+        }
+        public static (int X, int Y) GetTotalXY(this Zone Zone)
+        {
+            return (Zone.GetTotalX(), Zone.GetTotalY());
+        }
+        public static bool IsOneZoneAway(this Zone Zone, Zone OtherZone)
+        {
+            return Zone.GetZoneWorld() == OtherZone.GetZoneWorld()
+                && !Zone.IsWorldMap()
+                && !OtherZone.IsWorldMap()
+                && (Math.Abs(Zone.Z - OtherZone.Z) == 1
+                    || (Zone.GetTotalXY() is (int, int) zoneCoords
+                        && OtherZone.GetTotalXY() is (int, int) otherZoneCoords
+                        && (Math.Abs(zoneCoords.X - otherZoneCoords.X) == 1
+                            || Math.Abs(zoneCoords.Y - otherZoneCoords.Y) == 1)));
+        }
+        public static bool IsWithinOneZone(this Zone Zone, Zone OtherZone)
+        {
+            return Zone.GetZoneWorld() == OtherZone.GetZoneWorld()
+                && !Zone.IsWorldMap()
+                && !OtherZone.IsWorldMap()
+                && (Math.Abs(Zone.Z - OtherZone.Z) <= 1
+                    || (Zone.GetTotalXY() is (int, int) zoneCoords
+                        && OtherZone.GetTotalXY() is (int, int) otherZoneCoords
+                        && (Math.Abs(zoneCoords.X - otherZoneCoords.X) <= 1
+                            || Math.Abs(zoneCoords.Y - otherZoneCoords.Y) <= 1)));
+        }
+        public static bool IsPlayerOneZoneAway(this Zone Zone)
+        {
+            return Zone != null
+                && The.Player is GameObject player
+                && player.CurrentZone is Zone playerZone
+                && Zone.IsOneZoneAway(playerZone);
+        }
+        public static bool IsPlayerWithinOneZone(this Zone Zone)
+        {
+            return Zone != null
+                && The.Player is GameObject player
+                && player.CurrentZone is Zone playerZone
+                && Zone.IsWithinOneZone(playerZone);
         }
     }
 }

@@ -58,6 +58,6 @@ namespace UD_SacredWellHole
         [OptionFlag] public static bool DebugIncludeInMessage;
 
         // Checkbox settings
-        // [OptionFlag] public static bool ExampleOption;
+        [OptionFlag] public static bool Preload_WellHoleZones_DuringWorldgen;
     }
 }

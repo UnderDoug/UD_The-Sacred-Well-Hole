@@ -47,7 +47,7 @@ namespace XRL.World.WorldBuilders
 
         public static Location2D StiltWellLocation => GetStiltWellLocation(CathedralZone); // [38,12]
 
-        public static Dictionary<int, string> CathedralSubStrata => GetCathedralStrataSubStrataZoneIDs(CathedralZone);
+        public static List<string> CathedralSubStrata => GetCathedralStrataSubStrataZoneIDs(CathedralZone);
         public static int LowestWellStratum => 25;
 
         private JoppaWorldBuilder Builder = null;
@@ -80,8 +80,9 @@ namespace XRL.World.WorldBuilders
             if (The.ZoneManager is ZoneManager zoneManager)
             {
                 UnityEngine.Debug.Log("Adjusting builders...");
-                foreach ((int stratum, string zID) in CathedralSubStrata)
+                foreach (string zID in CathedralSubStrata)
                 {
+                    int stratum = CathedralSubStrata.IndexOf(zID) + 1;
                     UnityEngine.Debug.Log("    [" + stratum + "] " + zID);
                     zoneManager.SetZoneProperty(zID, "NoBiomes", "Yes");
                     zoneManager.SetZoneProperty(zID, "ZoneTierOverride", 5.ToString());
@@ -89,30 +90,50 @@ namespace XRL.World.WorldBuilders
                     // zoneManager.RemoveZoneBuilders(zID, nameof(FactionEncounters));
                     zoneManager.RemoveZoneBuilders(zID, nameof(Strata));
                 }
-                Stopwatch sw = new();
-                sw.Start();
-                bool prebuildSuccess = false;
-                try
+
+                if (Preload_WellHoleZones_DuringWorldgen)
                 {
-                    if (CathedralSubStrata.ContainsKey(1)
-                        && CathedralSubStrata[1] is string firstStratum)
+                    Stopwatch sw = new();
+                    sw.Start();
+                    bool prebuildSuccess = false;
+                    try
                     {
-                        UnityEngine.Debug.Log("Pre-build " + firstStratum + "...");
-                        zoneManager.GenerateZone(firstStratum);
-                        prebuildSuccess = true;
+                        if (!CathedralSubStrata.IsNullOrEmpty())
+                        {
+                            int strataCount = CathedralSubStrata.Count;
+
+                            UnityEngine.Debug.Log("Attempting Pre-build Bottom-Up...");
+                            for (int i = strataCount - 1; i >= 0; i--)
+                            {
+                                if (CathedralSubStrata[i] is string stratum)
+                                {
+                                    UnityEngine.Debug.Log("    Pre-build " + stratum + "...");
+                                    zoneManager.GenerateZone(stratum);
+                                    prebuildSuccess = true;
+                                }
+                            }
+                            if (!prebuildSuccess
+                                && CathedralSubStrata[0] is string firstStratum)
+                            {
+                                UnityEngine.Debug.Log("Attempting Pre-build First Straum (cascade)...");
+                                UnityEngine.Debug.Log("    Pre-build " + firstStratum + "...");
+                                zoneManager.GenerateZone(firstStratum);
+                                prebuildSuccess = true;
+                            }
+                        }
                     }
-                }
-                catch (Exception x)
-                {
-                    prebuildSuccess = false;
-                    MetricsManager.LogException(nameof(SacrificeArtifacts), x, "game_mod_exception");
-                }
-                finally
-                {
-                    sw.Stop();
-                    UnityEngine.Debug.Log("..." + nameof(SacrificeArtifacts) + " pre-build took " + 
-                        sw.Elapsed.TotalSeconds.Things("second") + " | " + 
-                        (prebuildSuccess ? "success" : "failed"));
+                    catch (Exception x)
+                    {
+                        prebuildSuccess = false;
+                        MetricsManager.LogException(nameof(SacrificeArtifacts), x, "game_mod_exception");
+                    }
+                    finally
+                    {
+                        sw.Stop();
+                        UnityEngine.Debug.Log("..." + nameof(SacrificeArtifacts) + " pre-build took " +
+                            sw.Elapsed.TotalSeconds.Things("second") + " | " +
+                            (prebuildSuccess ? "success" : "failed"));
+                    }
                 }
             }
 
@@ -135,21 +156,22 @@ namespace XRL.World.WorldBuilders
             return null;
         }
 
-        public static Dictionary<int, string> GetCathedralStrataSubStrataZoneIDs(Zone Z)
+        public static List<string> GetCathedralStrataSubStrataZoneIDs(Zone Z)
         {
             if (Z == null)
             {
                 return null;
             }
-            Dictionary<int, string> cathedralStrata = new();
-            for (int i = 1; i < LowestWellStratum - 9; i++)
-            {
-                int stratum = Z.Z + i;
+            List<string> cathedralStrata = new();
 
-                string stratumBelow = ZoneID.Assemble(Z.ZoneWorld, Z.wX, Z.wY, Z.X, Z.Y, stratum);
-                if (stratumBelow != null)
+            int stratum = Z.Z;
+            for (int i = 0; i < LowestWellStratum - 10; i++)
+            {
+                string stratumBelow = ZoneID.Assemble(Z.ZoneWorld, Z.wX, Z.wY, Z.X, Z.Y, ++stratum);
+                if (stratumBelow != null
+                    && !cathedralStrata.Contains(stratumBelow))
                 {
-                    cathedralStrata.TryAdd(i, stratumBelow);
+                    cathedralStrata.Add(stratumBelow);
                 }
             }
             return cathedralStrata;

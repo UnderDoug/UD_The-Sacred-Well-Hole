@@ -55,8 +55,13 @@ namespace XRL.World.Parts
         public bool DerivativeSolidifies;
         public Cell CellBelow => ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
 
+        public long TimeTickOffset;
+
         [SerializeField]
         private bool CurrentlyLazy;
+
+        [SerializeField]
+        private bool DoneInitial;
 
         public SolidAir()
         {
@@ -65,7 +70,11 @@ namespace XRL.World.Parts
             SolidifyingBlueprint = null;
             DerivativeSolidifies = true;
 
+            TimeTickOffset = Stat.Random(0, 7);
+
             CurrentlyLazy = false;
+
+            DoneInitial = false;
         }
         public SolidAir(
             GameObject AirObject,
@@ -86,6 +95,18 @@ namespace XRL.World.Parts
                   SolidifyingBlueprint: QuantumAir.SolidifyingBlueprint,
                   DerivativeSolidifies: QuantumAir.DerivativeSolidifies)
         {
+            DoneInitial = true;
+        }
+
+        public bool ShouldBeFloor()
+        {
+            return !QuantumAir.ShouldBeAir(
+                QuantumAirObject: ParentObject,
+                SolidifyingBlueprint: SolidifyingBlueprint,
+                CellBelow: CellBelow,
+                CurrentlyLazy: ref CurrentlyLazy,
+                DerivativeSolidifies: DerivativeSolidifies,
+                Source: nameof(SolidAir));
         }
 
         public bool CollapseAir(MinEvent FromEvent = null)
@@ -108,27 +129,38 @@ namespace XRL.World.Parts
                     AirMaterial = "QuantumAir";
                 }
                 Debug.LoopItem(4, $"{nameof(AirMaterial)}", $"{AirMaterial}", Indent: indent + 2, Toggle: doDebug);
-                AirObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(AirMaterial);
-                if (!AirObject.TryGetPart(out QuantumAir quantumAir))
+                if ((AirObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(AirMaterial)) != null)
                 {
-                    quantumAir = AirObject.AddPart(new QuantumAir(this));
-                }
-                if (AirObject != null)
-                {
-                    Debug.CheckYeh(4, $"Collapsing...", Indent: indent + 2, Toggle: doDebug);
-                    solidAirCell.RemoveObject(solidAirObject, System: true, Silent: true, ParentEvent: FromEvent);
-                    solidAirCell.AddObject(AirObject, System: true, Silent: true, ParentEvent: FromEvent);
+                    if (!AirObject.TryGetPart(out QuantumAir quantumAir))
+                    {
+                        quantumAir = AirObject.AddPart(new QuantumAir(this));
+                    }
+                    if (AirObject != null)
+                    {
+                        Debug.CheckYeh(4, $"Collapsing...", Indent: indent + 2, Toggle: doDebug);
+                        solidAirCell.RemoveObject(solidAirObject, System: true, Silent: true, ParentEvent: FromEvent);
+                        solidAirCell.AddObject(AirObject, System: true, Silent: true, ParentEvent: FromEvent);
 
-                    Debug.LastIndent = indent;
-                    return true;
-                }
-                else
-                {
-                    Debug.CheckNah(4, $"Collapse failed...", Indent: indent + 2, Toggle: doDebug);
+                        Debug.LastIndent = indent;
+                        return true;
+                    }
                 }
             }
+            Debug.CheckNah(4, $"Collapse failed...", Indent: indent + 2, Toggle: doDebug);
             Debug.LastIndent = indent;
             return false;
+        }
+
+        public void AttemptCollapse(IZoneEvent E)
+        {
+            Zone zone = E?.Zone ?? The.ActiveZone;
+            if (zone != null
+                && ParentObject?.CurrentCell?.ParentZone == zone
+                && zone.IsPlayerWithinOneZone()
+                && !ShouldBeFloor())
+            {
+                CollapseAir(E);
+            }
         }
 
         public override bool WantTurnTick()
@@ -138,35 +170,33 @@ namespace XRL.World.Parts
         public override void TurnTick(long TimeTick, int Amount)
         {
             base.TurnTick(TimeTick, Amount);
-            if (The.CurrentTurn % 30L == 0)
+            if (CurrentlyLazy && TimeTick % 30L == TimeTickOffset)
             {
                 CurrentlyLazy = false;
+
+                AttemptCollapse(null);
             }
         }
         public override void Register(GameObject Object, IEventRegistrar Registrar)
         {
             Registrar.Register(EnteringCellEvent.ID, EventOrder.VERY_EARLY);
-            Registrar.Register(ObjectEnteringCellEvent.ID, EventOrder.VERY_EARLY);
+            // Registrar.Register(ObjectEnteringCellEvent.ID, EventOrder.VERY_EARLY);
             base.Register(Object, Registrar);
         }
         public override bool WantEvent(int ID, int Cascade)
         {
             return base.WantEvent(ID, Cascade)
                 || (!CurrentlyLazy && ID == ZoneActivatedEvent.ID)
-                || (!CurrentlyLazy && ID == ZoneThawedEvent.ID)
+                || ID == ZoneThawedEvent.ID
                 || (!CurrentlyLazy && ID == BeforeZoneBuiltEvent.ID);
         }
         public override bool HandleEvent(EnteringCellEvent E)
         {
-            if (!CurrentlyLazy
+            bool doneInitial = DoneInitial;
+            DoneInitial = true;
+            if (!doneInitial
                 && ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
-                && QuantumAir.ShouldBeAir(
-                    QuantumAirObject: ParentObject,
-                    SolidifyingBlueprint: SolidifyingBlueprint,
-                    CellBelow: CellBelow,
-                 CurrentlyLazy: ref CurrentlyLazy,
-                    DerivativeSolidifies: DerivativeSolidifies,
-                    Source: nameof(SolidAir)))
+                && !ShouldBeFloor())
             {
                 CollapseAir(E);
             }
@@ -176,13 +206,7 @@ namespace XRL.World.Parts
         {
             if (!CurrentlyLazy
                 && ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
-                && QuantumAir.ShouldBeAir(
-                    QuantumAirObject: ParentObject,
-                    SolidifyingBlueprint: SolidifyingBlueprint,
-                    CellBelow: CellBelow,
-                    CurrentlyLazy: ref CurrentlyLazy,
-                    DerivativeSolidifies: DerivativeSolidifies,
-                    Source: nameof(SolidAir)))
+                && !ShouldBeFloor())
             {
                 CollapseAir(E);
             }
@@ -190,44 +214,19 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ZoneActivatedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && QuantumAir.ShouldBeAir(
-                    QuantumAirObject: ParentObject,
-                    SolidifyingBlueprint: SolidifyingBlueprint,
-                    CellBelow: CellBelow,
-                    CurrentlyLazy: ref CurrentlyLazy,
-                    DerivativeSolidifies: DerivativeSolidifies,
-                    Source: nameof(SolidAir)))
-            {
-                CollapseAir(E);
-            }
+            AttemptCollapse(E);
             return base.HandleEvent(E);
         }
         public override bool HandleEvent(ZoneThawedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && QuantumAir.ShouldBeAir(
-                    QuantumAirObject: ParentObject,
-                    SolidifyingBlueprint: SolidifyingBlueprint,
-                    CellBelow: CellBelow,
-                    CurrentlyLazy: ref CurrentlyLazy,
-                    DerivativeSolidifies: DerivativeSolidifies,
-                    Source: nameof(SolidAir)))
-            {
-                CollapseAir(E);
-            }
+            CurrentlyLazy = false;
             return base.HandleEvent(E);
         }
         public override bool HandleEvent(BeforeZoneBuiltEvent E)
         {
             if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && QuantumAir.ShouldBeAir(
-                    QuantumAirObject: ParentObject,
-                    SolidifyingBlueprint: SolidifyingBlueprint,
-                    CellBelow: CellBelow,
-                    CurrentlyLazy: ref CurrentlyLazy,
-                    DerivativeSolidifies: DerivativeSolidifies,
-                    Source: nameof(SolidAir)))
+                && !ShouldBeFloor()
+                && E.Zone.IsPlayerWithinOneZone())
             {
                 CollapseAir(E);
             }

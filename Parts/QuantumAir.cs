@@ -54,8 +54,13 @@ namespace XRL.World.Parts
         public bool DerivativeSolidifies;
         public Cell CellBelow => ParentObject?.CurrentCell?.GetCellFromDirection("D", BuiltOnly: false);
 
+        public long TimeTickOffset;
+
         [SerializeField]
         private bool CurrentlyLazy;
+
+        [SerializeField]
+        private bool DoneInitial;
 
         public QuantumAir()
         {
@@ -63,7 +68,11 @@ namespace XRL.World.Parts
             SolidifyingBlueprint = null;
             DerivativeSolidifies = true;
 
+            TimeTickOffset = Stat.Random(0, 7);
+
             CurrentlyLazy = false;
+
+            DoneInitial = false;
         }
         public QuantumAir(
             GameObject FloorObject, 
@@ -84,6 +93,7 @@ namespace XRL.World.Parts
                   SolidifyingBlueprint: SolidAir.SolidifyingBlueprint,
                   DerivativeSolidifies: SolidAir.DerivativeSolidifies)
         {
+            DoneInitial = true;
         }
 
         public override void Attach()
@@ -221,9 +231,8 @@ namespace XRL.World.Parts
                     FloorMaterial = wallBelow?.GetPropertyOrTag("QuantumAirFloorMaterial", null) ?? "SolidAir";
                 }
                 Debug.LoopItem(4, $"{nameof(FloorMaterial)}", $"{FloorMaterial}", Indent: indent + 2, Toggle: doDebug);
-                FloorObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(FloorMaterial);
 
-                if (FloorObject != null)
+                if ((FloorObject ??= GameObjectFactory.Factory.CreateUnmodifiedObject(FloorMaterial)) != null)
                 {
                     Debug.CheckYeh(4, $"Solidifying", Indent: indent + 2, Toggle: doDebug);
                     if (!FloorObject.TryGetPart(out SolidAir solidAir))
@@ -234,6 +243,7 @@ namespace XRL.World.Parts
                     {
                         quantumAirCell.RemoveObject(quantumAirObject, System: true, Silent: true, ParentEvent: FromEvent);
                         quantumAirCell.AddObject(FloorObject, System: true, Silent: true, ParentEvent: FromEvent);
+
                         if (wallBelow != null && wallBelow.Render != null)
                         {
                             if (FloorObject.TryGetPart(out RandomColors randomColors))
@@ -246,14 +256,23 @@ namespace XRL.World.Parts
                         Debug.LastIndent = indent;
                         return true;
                     }
-                    else
-                    {
-                        Debug.CheckNah(4, $"Solidification failed...", Indent: indent + 2, Toggle: doDebug);
-                    }
                 }
             }
+            Debug.CheckNah(4, $"Solidification failed...", Indent: indent + 2, Toggle: doDebug);
             Debug.LastIndent = indent;
             return false;
+        }
+
+        public void AttemptSolidify(IZoneEvent E)
+        {
+            Zone zone = E?.Zone ?? The.ActiveZone;
+            if (zone != null
+                && ParentObject?.CurrentCell?.ParentZone == zone
+                && zone.IsPlayerWithinOneZone()
+                && !ShouldBeAir())
+            {
+                SolidifyAir(E);
+            }
         }
 
         public override bool WantTurnTick()
@@ -263,27 +282,31 @@ namespace XRL.World.Parts
         public override void TurnTick(long TimeTick, int Amount)
         {
             base.TurnTick(TimeTick, Amount);
-            if (The.CurrentTurn % 30L == 0)
+            if (CurrentlyLazy && TimeTick % 30L == TimeTickOffset)
             {
                 CurrentlyLazy = false;
+
+                AttemptSolidify(null);
             }
         }
         public override void Register(GameObject Object, IEventRegistrar Registrar)
         {
             Registrar.Register(EnteringCellEvent.ID, EventOrder.VERY_EARLY);
-            Registrar.Register(ObjectEnteringCellEvent.ID, EventOrder.VERY_EARLY);
+            // Registrar.Register(ObjectEnteringCellEvent.ID, EventOrder.VERY_EARLY);
             base.Register(Object, Registrar);
         }
         public override bool WantEvent(int ID, int Cascade)
         {
             return base.WantEvent(ID, Cascade)
                 || (!CurrentlyLazy && ID == ZoneActivatedEvent.ID)
-                || (!CurrentlyLazy && ID == ZoneThawedEvent.ID)
+                || ID == ZoneThawedEvent.ID
                 || (!CurrentlyLazy && ID == BeforeZoneBuiltEvent.ID);
         }
         public override bool HandleEvent(EnteringCellEvent E)
         {
-            if (!CurrentlyLazy
+            bool doneInitial = DoneInitial;
+            DoneInitial = true;
+            if (!doneInitial
                 && ParentObject?.CurrentCell?.ParentZone == E.Cell.ParentZone
                 && !ShouldBeAir())
             {
@@ -303,20 +326,12 @@ namespace XRL.World.Parts
         }
         public override bool HandleEvent(ZoneActivatedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && !ShouldBeAir())
-            {
-                SolidifyAir(E);
-            }
+            AttemptSolidify(E);
             return base.HandleEvent(E);
         }
         public override bool HandleEvent(ZoneThawedEvent E)
         {
-            if (ParentObject?.CurrentCell?.ParentZone == E.Zone
-                && !ShouldBeAir())
-            {
-                SolidifyAir(E);
-            }
+            CurrentlyLazy = false;
             return base.HandleEvent(E);
         }
         public override bool HandleEvent(BeforeZoneBuiltEvent E)

@@ -1,18 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects>
-
-  <!-- 
-      
-      "Fixes"
-      
-   -->
-  <object Name="Widget" Load="Merge">
-    <tag Name="HideInNearbyItemsList" />
-    <tag Name="HideCon" />
-    <tag Name="NoTwiddle" />
-    <tag Name="NoPassByMessage" />
-  </object>
-  
   <!-- 
       
       Zone mutators, Tile mutators, Multi-tile presets, Quest triggers, UI widgets

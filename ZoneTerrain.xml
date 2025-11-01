@@ -29,6 +29,7 @@
     <part Name="Render" DisplayName="compacted scrap" Tile="Tiles/sw_floor_brickb4.bmp" ColorString="&amp;K" TileColor="&amp;K" DetailColor="y" />
     <part Name="RandomColors" TileColor="w,w,K,K,r" DetailColor="c,g,y" />
     <part Name="PickRandomTile" Tile="Tiles/sw_floor_brickb~#1-4~.bmp" />
+    <tag Name="OverlayColor" Value="&amp;K^k" />
   </object>
   
 </objects>
