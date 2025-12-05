@@ -379,7 +379,7 @@
     </group>
   </population>
 
-  <population Name="Well unk 5">
+  <population Name="Well Junk 5">
     <group Name="Items" Style="pickone">
       <table Weight="95" Number="1" Name="Well Junk 5C" />
       <table Weight="5" Number="1" Name="JWell unk 5R" />
