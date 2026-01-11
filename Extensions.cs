@@ -443,9 +443,7 @@ namespace UD_SacredWellHole
                 {
                     adjacentCells++;
                     if (Basis(adjacentCell))
-                    {
                         adjacentBasisCells++;
-                    }
                 }
                 return adjacentCells == 0
                     || adjacentBasisCells < adjacentCells;
@@ -465,29 +463,26 @@ namespace UD_SacredWellHole
                 foreach (Cell adjacentCell in C.GetAdjacentCells())
                 {
                     bool isCardinal = C.X == adjacentCell.X || C.Y == adjacentCell.Y;
+
                     if (isCardinal)
-                    {
                         adjacentCardinalCells++;
-                    }
                     else
-                    {
                         adjacentOrdinalCells++;
-                    }
+
                     if (Basis(adjacentCell))
                     {
                         if (isCardinal)
-                        {
                             adjacentCardinalBasisCells++;
-                        }
                         else
-                        {
                             adjacentOrdinalBasisCells++;
-                        }
                     }
 
                     bool cardinalsMatch = adjacentCardinalCells == adjacentCardinalBasisCells;
                     bool ordinalsMatch = adjacentOrdinalCells == adjacentOrdinalBasisCells;
-                    return cardinalsMatch && (ordinalsMatch || (!Strict && adjacentOrdinalCells - 1 == adjacentOrdinalBasisCells));
+                    return cardinalsMatch 
+                        && (ordinalsMatch 
+                            || (!Strict 
+                                && adjacentOrdinalCells - 1 == adjacentOrdinalBasisCells));
                 }
             }
             return false;
